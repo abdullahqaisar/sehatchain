@@ -1,24 +1,11 @@
 import * as React from "react";
-import Navbar from "./Navbar";
 
-import { Box, Button, styled, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import { Container } from "@mui/system";
 
 import heroImage from "../../assets/images/hero.png";
 
 const Hero = () => {
-  const CustomBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    justifyContent: "center",
-    marginTop: theme.spacing(3),
-    alignItems: "center",
-    textAlign: "center",
-    [theme.breakpoints.down("md")]: {
-      flexDirection: "column",
-      alignItems: "center",
-      textAlign: "center",
-    },
-  }));
   return (
     <Box
       id="hero"
@@ -26,7 +13,7 @@ const Hero = () => {
         backgroundColor: "#001E3C",
         position: "relative",
         pt: 4,
-        pb: { xs: 8, md: 10 },
+        pb: { xs: 8, md: 8 },
       }}
     >
       <Container maxWidth="lg">
@@ -83,7 +70,7 @@ const Hero = () => {
                   </Typography>
                 </Typography>
               </Box>
-              <Box sx={{ mb: 4, width: { xs: "100%", md: "80%" } }}>
+              <Box sx={{ mb: 4, width: { xs: "100%", md: "7" } }}>
                 <Typography sx={{ color: "#9A9A9A", lineHeight: 1.6 }}>
                   {
                     "Get customized models according to the your needs, trained in realtime based on your request. Data will be shared using the best privacy preserving techniques."
@@ -92,18 +79,20 @@ const Hero = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} md={5} sx={{ position: "relative" }}>
-            <Box
-              sx={{ alignItems: "center", textAlign: "center" }}
-            >
+          <Grid
+            container
+            alignItems="center"
+            justify="center"
+            item
+            xs={12}
+            md={5}
+          >
+            <Box>
               <img
                 src={heroImage}
                 alt="hero"
                 style={{
-                  maxWidth: "90%",
-                  marginBottom: "2rem",
-                  padding: "0, 10rem",
-
+                  maxWidth: "100%",
                   justifyContent: "center",
                 }}
               />

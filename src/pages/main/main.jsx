@@ -1,11 +1,14 @@
 import React from "react";
-import { Hero, Navbar } from "../../components/main";
+import { AboutUs, Hero, Navbar } from "../../components/main";
+import Footer from "../../components/main/Footer";
 
 export default function Main() {
   return (
     <div>
       <Navbar />
       <Hero />
+      <AboutUs />
+      <Footer />
     </div>
   );
 }
