@@ -6,3 +6,4 @@
 // export { default as HomeNewsLetter } from './newsletter'
 
 export {default as Navbar} from './Navbar'
+export {default as Hero} from './Hero'

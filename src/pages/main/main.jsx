@@ -1,11 +1,11 @@
 import React from "react";
-import Navbar from "../../components/main/Navbar";
+import { Hero, Navbar } from "../../components/main";
 
 export default function Main() {
   return (
-    <div className="Main">
+    <div>
       <Navbar />
-      <h1>My Main Page</h1>
+      <Hero />
     </div>
   );
 }

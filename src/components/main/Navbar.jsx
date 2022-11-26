@@ -2,11 +2,10 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import FeaturedPlayListIcon from "@mui/icons-material/FeaturedPlayList";
-import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
-import ListAltIcon from "@mui/icons-material/ListAlt";
+import FlagIcon from "@mui/icons-material/Flag";
 import HomeIcon from "@mui/icons-material/Home";
 import ContactsIcon from "@mui/icons-material/Contacts";
+import InfoIcon from "@mui/icons-material/Info";
 import { Container } from "@mui/system";
 import CustomButton from "../CustomButton";
 import { useState } from "react";
@@ -53,9 +52,9 @@ export const Navbar = () => {
               <ListItemButton>
                 <ListItemIcon>
                   {index === 0 && <HomeIcon />}
-                  {index === 1 && <FeaturedPlayListIcon />}
-                  {index === 2 && <MiscellaneousServicesIcon />}
-                  {index === 3 && <ListAltIcon />}
+                  {index === 1 && <InfoIcon />}
+                  {index === 2 && <FlagIcon />}
+                  {index === 3 && <FlagIcon />}
                   {index === 4 && <ContactsIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
@@ -90,10 +89,10 @@ export const Navbar = () => {
   const CustomMenuIcon = styled(MenuIcon)(({ theme }) => ({
     cursor: "pointer",
     display: "none",
+    color: "#fff",
     marginRight: theme.spacing(2),
     [theme.breakpoints.down("md")]: {
       display: "block",
-      
     },
   }));
 
@@ -101,12 +100,14 @@ export const Navbar = () => {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: theme.spacing(0.5, 10),
-    maxWidth: "100%",
+    padding: theme.spacing(0, 10),
+    margin: theme.spacing(0, 0, 0, 0),
     backgroundColor: "#071B2F",
+    disableGutters: true,
     [theme.breakpoints.down("md")]: {
-      padding: theme.spacing(10),
+      padding: theme.spacing(1),
       maxWidth: false,
+      disableGutters: true,
     },
   }));
 
@@ -119,61 +120,62 @@ export const Navbar = () => {
   }));
 
   return (
-    <NavbarContainer maxWidth={false}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "2.5rem",
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          
-          <CustomMenuIcon onClick={toggleDrawer("left", true)} />
-          <Drawer
-            anchor="left"
-            open={mobileMenu["left"]}
-            onClose={toggleDrawer("left", false)}
-          >
-            {list("left")}
-          </Drawer>
-          <NavbarLogo src={Logo} alt="logo" />
+    <Box>
+      <NavbarContainer maxWidth={false}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "3rem",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <CustomMenuIcon onClick={toggleDrawer("left", true)} />
+            <Drawer
+              anchor="left"
+              open={mobileMenu["left"]}
+              onClose={toggleDrawer("left", false)}
+            >
+              {list("left")}
+            </Drawer>
+            <NavbarLogo src={Logo} alt="logo" />
 
-          {/* <Typography
+            {/* <Typography
             variant="p"
             component="div"
             sx={{ fontWeight: "bold", color: "#fff" }}
           >
             .com
           </Typography> */}
+          </Box>
+
+          <NavbarLinksBox>
+            <NavLink variant="body2">Home</NavLink>
+            <NavLink variant="body2">About Us</NavLink>
+            <NavLink variant="body2">Features</NavLink>
+            <NavLink variant="body2">Our Goal</NavLink>
+            <NavLink variant="body2">Contact Us</NavLink>
+          </NavbarLinksBox>
         </Box>
 
-        <NavbarLinksBox>
-          <NavLink variant="body2">Home</NavLink>
-          <NavLink variant="body2">About Us</NavLink>
-          <NavLink variant="body2">Features</NavLink>
-          <NavLink variant="body2">Our Goal</NavLink>
-          <NavLink variant="body2">Contact Us</NavLink>
-        </NavbarLinksBox>
-      </Box>
-
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "1rem",
-        }}
-      >
-        {/* <NavLink variant="body2">Sign Up</NavLink> */}
-        <CustomButton
-          backgroundColor="#217BF4"
-          color="#fff"
-          buttonText="Login"
-        />
-      </Box>
-    </NavbarContainer>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1rem",
+          }}
+        >
+          {/* <NavLink variant="body2">Sign Up</NavLink> */}
+          <CustomButton
+            backgroundColor="#217BF4"
+            color="#fff"
+            buttonText="Login"
+          />
+        </Box>
+      </NavbarContainer>
+    </Box>
   );
 };
 
