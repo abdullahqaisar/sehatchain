@@ -11,9 +11,10 @@ const Hero = () => {
       id="hero"
       sx={{
         backgroundColor: "#001E3C",
-        position: "relative",
         pt: 6,
         pb: { xs: 12, md: 8 },
+        px: { xs: 3, sm: 6, md: 6 },
+
       }}
     >
       <Container maxWidth="xl">
@@ -37,7 +38,7 @@ const Hero = () => {
                   component="h3"
                   sx={{
                     position: "relative",
-                    fontSize: { xs: 40, md: 60, lg: 72 },
+                    fontSize: { xs: 40, md: 45 },
                     letterSpacing: 0,
                     fontWeight: "bold",
                     lineHeight: 0,

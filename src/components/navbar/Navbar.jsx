@@ -120,8 +120,8 @@ export const Navbar = () => {
   }));
 
   return (
-    <Box>
-      <NavbarContainer maxWidth={false}>
+    <Box >
+      <NavbarContainer maxWidth={false} sx={{ px: { xs: 3, sm: 6, md: 6 } }}>
         <Box
           sx={{
             display: "flex",
