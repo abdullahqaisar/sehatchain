@@ -14,9 +14,6 @@ const Hero = () => {
         pt: 6,
         pb: { xs: 12, md: 6 },
         px: { xs: 3, sm: 6, md: 6 },
-        justifyContent: "center",
-        alignItems: "center",
-
       }}
     >
       <Container maxWidth={false}>
@@ -82,14 +79,7 @@ const Hero = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid
-            container
-            alignItems="center"
-            justify="center"
-            item
-            xs={12}
-            md={6}
-          >
+          <Grid alignItems="center" justify="center" item xs={12} md={6}>
             <Box>
               <img
                 src={heroImage}

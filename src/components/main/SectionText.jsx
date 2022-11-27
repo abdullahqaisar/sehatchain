@@ -1,7 +1,5 @@
 import React from "react";
 import { Box, Typography, Grid } from "@mui/material";
-import { Container } from "@mui/system";
-
 import { styled } from "@mui/material";
 
 function SectionText(props) {
@@ -21,10 +19,16 @@ function SectionText(props) {
 
   return (
     <Grid>
-      <Grid item textAlign="left">
-        <NameTypography variant="p">{props.sectionName}</NameTypography>
-        <QuestionTypography variant="h5">{props.question}</QuestionTypography>
-        <DescTypography variant="p">{props.description}</DescTypography>
+      <Grid item textAlign={props.align} md={10}>
+          <NameTypography variant="h6" marginBottom={2}>
+            {props.sectionName}
+          </NameTypography>
+          <QuestionTypography variant="h4" marginBottom={2}>
+            {props.question}
+          </QuestionTypography>
+          <DescTypography variant="p" marginBottom={2}>
+            {props.description}
+          </DescTypography>
       </Grid>
     </Grid>
   );
