@@ -11,12 +11,15 @@ const Hero = () => {
       id="hero"
       sx={{
         backgroundColor: "#001E3C",
-        pt: 2,
-        pb: { xs: 12, md: 8 },
+        pt: 6,
+        pb: { xs: 12, md: 6 },
         px: { xs: 3, sm: 6, md: 6 },
+        justifyContent: "center",
+        alignItems: "center",
+
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           spacing={0}
@@ -37,7 +40,7 @@ const Hero = () => {
                   component="h3"
                   sx={{
                     position: "relative",
-                    fontSize: { xs: 40, md: 50 },
+                    fontSize: { xs: 40, md: 55 },
                     letterSpacing: 0,
                     fontWeight: "bold",
                     lineHeight: 0,
@@ -86,14 +89,13 @@ const Hero = () => {
             item
             xs={12}
             md={6}
-            lg={6}
           >
             <Box>
               <img
                 src={heroImage}
                 alt="hero"
                 style={{
-                  maxWidth: "100%",
+                  maxWidth: "90%",
                   justifyContent: "center",
                 }}
               />
