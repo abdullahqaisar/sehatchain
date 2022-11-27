@@ -16,7 +16,7 @@ const Hero = () => {
         pb: { xs: 12, md: 8 },
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid
           container
           spacing={0}
