@@ -1,15 +1,16 @@
 {
   "files": {
     "main.css": "/sehatchain/static/css/main.964fdded.css",
-    "main.js": "/sehatchain/static/js/main.ff039c30.js",
+    "main.js": "/sehatchain/static/js/main.e5478ede.js",
+    "static/media/goal.png": "/sehatchain/static/media/goal.f2c19b7e842e3e0b82ee.png",
     "static/media/hero.png": "/sehatchain/static/media/hero.0fffab6c70329eae77ff.png",
     "static/media/logo.png": "/sehatchain/static/media/logo.efa0f3656c2e9aaf39bb.png",
     "index.html": "/sehatchain/index.html",
     "main.964fdded.css.map": "/sehatchain/static/css/main.964fdded.css.map",
-    "main.ff039c30.js.map": "/sehatchain/static/js/main.ff039c30.js.map"
+    "main.e5478ede.js.map": "/sehatchain/static/js/main.e5478ede.js.map"
   },
   "entrypoints": [
     "static/css/main.964fdded.css",
-    "static/js/main.ff039c30.js"
+    "static/js/main.e5478ede.js"
   ]
 }
