@@ -12,17 +12,17 @@ const Hero = () => {
       sx={{
         backgroundColor: "#001E3C",
         position: "relative",
-        pt: 4,
-        pb: { xs: 8, md: 8 },
+        pt: 6,
+        pb: { xs: 12, md: 8 },
       }}
     >
       <Container maxWidth="lg">
         <Grid
           container
           spacing={0}
-          sx={{ mt: 4, flexDirection: { xs: "column", md: "unset" } }}
+          sx={{ flexDirection: { xs: "column", md: "unset" } }}
         >
-          <Grid item xs={12} md={7}>
+          <Grid item xs={12} md={6}>
             <Box
               sx={{
                 textAlign: { xs: "center", md: "left" },
@@ -37,7 +37,7 @@ const Hero = () => {
                   component="h3"
                   sx={{
                     position: "relative",
-                    fontSize: { xs: 40, md: 72 },
+                    fontSize: { xs: 40, md: 60, lg: 72 },
                     letterSpacing: 0,
                     fontWeight: "bold",
                     lineHeight: 0,
@@ -85,7 +85,8 @@ const Hero = () => {
             justify="center"
             item
             xs={12}
-            md={5}
+            md={6}
+            lg={6}
           >
             <Box>
               <img

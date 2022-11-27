@@ -140,14 +140,6 @@ export const Navbar = () => {
               {list("left")}
             </Drawer>
             <NavbarLogo src={Logo} alt="logo" />
-
-            {/* <Typography
-            variant="p"
-            component="div"
-            sx={{ fontWeight: "bold", color: "#fff" }}
-          >
-            .com
-          </Typography> */}
           </Box>
 
           <NavbarLinksBox>

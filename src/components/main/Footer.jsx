@@ -1,6 +1,11 @@
 import * as React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { styled } from "@mui/material";
+
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import TwitterIcon from "@mui/icons-material/Twitter";
 
 import Logo from "../../assets/images/logos/logo.png";
 
@@ -10,38 +15,50 @@ const Footer = () => {
     color: "#fff",
     padding: theme.spacing(0, 4),
     display: "flex",
+    alignItems: "center",
     [theme.breakpoints.down("md")]: {},
   }));
 
   const FooterLogo = styled("img")(({ theme }) => ({
-    maxWidth: "120px",
-    [theme.breakpoints.down("md")]: {},
+    maxWidth: 120,
+    [theme.breakpoints.down("md")]: {
+      maxWidth: 80,
+    },
+  }));
+
+  const FbIcon = styled(FacebookIcon)(({ theme }) => ({
+    maxWidth: 40,
+    [theme.breakpoints.down("sm")]: { maxWidth: 20 },
+  }));
+
+  const InstaIcon = styled(InstagramIcon)(({ theme }) => ({
+    maxWidth: 40,
+    [theme.breakpoints.down("sm")]: { maxWidth: 20 },
+  }));
+
+  const TwIcon = styled(TwitterIcon)(({ theme }) => ({
+    maxWidth: 40,
+    [theme.breakpoints.down("sm")]: { maxWidth: 20 },
+  }));
+
+  const LinkedinIcon = styled(LinkedInIcon)(({ theme }) => ({
+    color: "#fff",
+    maxWidth: 40,
+    [theme.breakpoints.down("sm")]: { maxWidth: 20 },
   }));
 
   return (
     <CustomBox>
-      <FooterLogo src={Logo} alt="logo" align="center" />
-      <Typography
-        variant="p"
-        align="right"
-        justifyContent="center"
-        gutterBottom
-      >
-        sehatchain.com
-      </Typography>
-      {/* <Box sx={{ flex: "1", textAlign: "center" }}>
-        
-      </Box> */}
-      {/* <Box sx={{ flex: "1", textAlign: "center" }}>
-        <Typography variant="p" align="left" gutterBottom>
-          sehatchain.com
-        </Typography>
+      <Box sx={{ flex: "1", textAlign: "left", alignItems: "center" }}>
+        <FooterLogo src={Logo} alt="logo" />
       </Box>
-      <Box sx={{ flex: "1", textAlign: "center" }}>
-        <Typography variant="p" align="left" gutterBottom>
-          sehatchain.com
-        </Typography>
-      </Box> */}
+
+      <Box sx={{ flex: "1", textAlign: "right", alignItems: "center" }}>
+        <FbIcon sx={{ mx: 0.5 }} />
+        <LinkedinIcon sx={{ mx: 0.5 }} />
+        <TwIcon sx={{ mx: 0.5 }} />
+        <InstaIcon sx={{ mx: 0.5 }} />
+      </Box>
     </CustomBox>
   );
 };
