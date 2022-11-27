@@ -5,6 +5,5 @@
 // export { default as HomeOurMentors } from './mentors'
 // export { default as HomeNewsLetter } from './newsletter'
 
-export {default as Navbar} from './Navbar'
 export {default as Hero} from './Hero'
 export {default as AboutUs} from './AboutUs'

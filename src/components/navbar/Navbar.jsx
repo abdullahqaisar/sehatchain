@@ -10,6 +10,8 @@ import { Container } from "@mui/system";
 import CustomButton from "../CustomButton";
 import { useState } from "react";
 
+import { NavbarItems } from "./Navbar.data";
+
 import Logo from "../../assets/images/logos/logo.png";
 
 import {
@@ -46,27 +48,25 @@ export const Navbar = () => {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {["Home", "AboutUs", "Features", "Our Goal", "Contact Us"].map(
-          (text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index === 0 && <HomeIcon />}
-                  {index === 1 && <InfoIcon />}
-                  {index === 2 && <FlagIcon />}
-                  {index === 3 && <FlagIcon />}
-                  {index === 4 && <ContactsIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          )
-        )}
+        {NavbarItems.map((text, index) => (
+          <ListItem key={text}>
+            <ListItemButton>
+              <ListItemIcon>
+                {index === 0 && <HomeIcon />}
+                {index === 1 && <InfoIcon />}
+                {index === 2 && <FlagIcon />}
+                {index === 3 && <FlagIcon />}
+                {index === 4 && <ContactsIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Box>
   );
 
-  const NavLink = styled(Typography)(({ theme }) => ({
+  const NavLink = styled(Typography)(() => ({
     fontSize: "14px",
     color: "#fff",
     fontWeight: "400",
@@ -143,11 +143,9 @@ export const Navbar = () => {
           </Box>
 
           <NavbarLinksBox>
-            <NavLink variant="body2">Home</NavLink>
-            <NavLink variant="body2">About Us</NavLink>
-            <NavLink variant="body2">Features</NavLink>
-            <NavLink variant="body2">Our Goal</NavLink>
-            <NavLink variant="body2">Contact Us</NavLink>
+            {NavbarItems.map((text, index) => (
+              <NavLink>{text}</NavLink>
+            ))}
           </NavbarLinksBox>
         </Box>
 
