@@ -50,7 +50,8 @@ const Features = () => {
                 >
                   <Box
                     sx={{
-                      m: 5,
+                      mx: 3,
+                      my: 5,
                       backgroundColor: "#217BF4",
                       borderRadius: "20%",
                       height: 80,

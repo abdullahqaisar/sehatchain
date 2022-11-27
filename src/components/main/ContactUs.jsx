@@ -5,6 +5,7 @@ import InputBase from "@mui/material/InputBase";
 import { Box, Grid, Typography, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 
+import { CustomButton } from "../customButton";
 import SectionText from "./SectionText";
 
 const AboutUs = () => {
@@ -69,6 +70,20 @@ const AboutUs = () => {
                   mb: { xs: 2, md: 2 },
                 }}
               />
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "1rem",
+                }}
+              >
+                <CustomButton
+                  backgroundColor="#217BF4"
+                  color="#fff"
+                  buttonText="Submit"
+                />
+              </Box>
             </Grid>
           </Grid>
         </Grid>
