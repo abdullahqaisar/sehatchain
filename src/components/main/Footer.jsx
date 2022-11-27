@@ -20,6 +20,7 @@ const Footer = () => {
   }));
 
   const FooterLogo = styled("img")(({ theme }) => ({
+    cursor: "pointer",
     maxWidth: 120,
     [theme.breakpoints.down("md")]: {
       maxWidth: 80,
@@ -27,21 +28,25 @@ const Footer = () => {
   }));
 
   const FbIcon = styled(FacebookIcon)(({ theme }) => ({
+    cursor: "pointer",
     maxWidth: 40,
     [theme.breakpoints.down("sm")]: { maxWidth: 20 },
   }));
 
   const InstaIcon = styled(InstagramIcon)(({ theme }) => ({
+    cursor: "pointer",
     maxWidth: 40,
     [theme.breakpoints.down("sm")]: { maxWidth: 20 },
   }));
 
   const TwIcon = styled(TwitterIcon)(({ theme }) => ({
+    cursor: "pointer",
     maxWidth: 40,
     [theme.breakpoints.down("sm")]: { maxWidth: 20 },
   }));
 
   const LinkedinIcon = styled(LinkedInIcon)(({ theme }) => ({
+    cursor: "pointer",
     color: "#fff",
     maxWidth: 40,
     [theme.breakpoints.down("sm")]: { maxWidth: 20 },
