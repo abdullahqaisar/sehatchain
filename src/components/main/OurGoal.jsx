@@ -21,9 +21,11 @@ const AboutUs = () => {
           <Grid item md={6}>
             <Grid sm={12} md={10}>
               <SectionText
-                sectionName="About Us"
-                question="What is SehatChain?"
-                description="An AI and Blockchain powered tool for researchers and healthcare professionals to buy pre-trained models of healthcare data."
+                sectionName="Our Goal"
+                question="Why are we here?"
+                description="We aim at making a tool which can make it easier for researchers 
+                    and healthcare professionals to find trained models for their tasks using 
+                    the most emerging technology like blockchain"
                 align="left"
               />
             </Grid>
