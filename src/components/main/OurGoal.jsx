@@ -10,6 +10,7 @@ import SectionText from "./SectionText";
 const AboutUs = () => {
   return (
     <Box
+      id="our-goal"
       sx={{
         pt: 6,
         pb: { xs: 12, md: 6 },

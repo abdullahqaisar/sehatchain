@@ -48,7 +48,7 @@ export const Navbar = () => {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {NavbarItems.map((text, index) => (
+        {NavbarItems.map(({ text, id }, index) => (
           <ListItem key={text}>
             <ListItemButton>
               <ListItemIcon>
@@ -120,7 +120,7 @@ export const Navbar = () => {
   }));
 
   return (
-    <Box >
+    <Box>
       <NavbarContainer maxWidth={false} sx={{ px: { xs: 3, sm: 6, md: 6 } }}>
         <Box
           sx={{
@@ -139,12 +139,33 @@ export const Navbar = () => {
             >
               {list("left")}
             </Drawer>
-            <NavbarLogo src={Logo} alt="logo" />
+            <NavbarLogo
+              src={Logo}
+              alt="logo"
+              onClick={() => {
+                const anchor = document.querySelector("#hero");
+                console.log("hi");
+                anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+              }}
+            />
           </Box>
 
           <NavbarLinksBox>
-            {NavbarItems.map((text, index) => (
-              <NavLink>{text}</NavLink>
+            {NavbarItems.map(({ text, id }, index) => (
+              <NavLink
+                onClick={() => {
+                  console.log("hello" + id);
+                  const anchor = document.querySelector(String( id ));
+                  console.log(id);
+                  
+                  anchor.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
+                }}
+              >
+                {text}
+              </NavLink>
             ))}
           </NavbarLinksBox>
         </Box>

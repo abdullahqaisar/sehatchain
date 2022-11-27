@@ -10,6 +10,7 @@ import { data } from "./Features.data";
 const Features = () => {
   return (
     <Box
+      id="features"
       sx={{
         pt: 6,
         pb: { xs: 12, md: 6 },

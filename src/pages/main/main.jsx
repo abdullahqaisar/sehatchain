@@ -1,8 +1,15 @@
-import React from "react";
-import { Navbar } from "../../components/navbar";
-import { Hero, AboutUs, Features, OurGoal } from "../../components/main";
+import { React } from "react";
+
 import { Box } from "@mui/system";
 
+import { Navbar } from "../../components/navbar";
+import {
+  Hero,
+  AboutUs,
+  Features,
+  OurGoal,
+  ContactUs,
+} from "../../components/main";
 import Footer from "../../components/footer/Footer";
 
 export default function Main() {
@@ -13,6 +20,7 @@ export default function Main() {
       <AboutUs />
       <Features />
       <OurGoal />
+      <ContactUs />
       <Footer />
     </Box>
   );
