@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 
 import heroImage from "../../assets/images/hero.png";
@@ -10,51 +10,96 @@ import CustomButton from "../customButton/CustomButton";
 function login() {
   return (
     <Box>
-      <Grid container>
+      <Grid
+        container
+        sx={{
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Grid
           item
+          container
           md={6}
           sx={{
             backgroundColor: "#001E3C",
-            pt: 6,
-            pb: { xs: 12, md: 12 },
-            px: { xs: 3, sm: 6, md: 6 },
+            minHeight: { xs: "50vh", md: "100vh" },
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <Box>
-            <img
-              src={heroImage}
-              alt="hero"
-              style={{
-                maxWidth: "90%",
-                justifyContent: "center",
-              }}
-            />
-          </Box>
-        </Grid>
-        <Grid md={6} item>
-          {/* email and pass input with button */}
-          <Box
+          <Grid
+            item
             sx={{
-              width: "100%",
-              maxWidth: 400,
-              p: 3,
-              margin: "auto",
+              mb: 4,
             }}
           >
-            <Typography variant="h4" component="h1" gutterBottom>
-              Sign in
-            </Typography>
-            <input sx={{ mb: 2 }} placeholder="Email" type="email" />
-            <br/>
-            <input sx={{ mb: 2 }} placeholder="Password" type="password" />
-            <CustomButton
-              sx={{ mt: 2 }}
-              variant="contained"
-              backgroundColor="#001E3C"
-              color="primary"
-            />
-          </Box>
+            <Box>
+              <img
+                src={heroImage}
+                alt="main"
+                style={{
+                  maxWidth: "80%",
+                }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+        <Grid md={6} item>
+          <Typography
+            component="h3"
+            sx={{
+              fontSize: { xs: 30, md: 55 },
+              letterSpacing: 0,
+              fontWeight: "bold",
+              lineHeight: 2,
+              color: "#001E3C",
+            }}
+          >
+            Sign in
+          </Typography>
+
+          <Grid
+            container
+            md={12}
+            sx={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Grid
+              md={6}
+              item
+              sx={{
+                mx: { xs: 4, md: 0 },
+                mb: 4,
+              }}
+            >
+              <TextField
+                label="Email"
+                email
+                defaultValue=""
+                sx={{
+                  width: "100%",
+                  mb: 2,
+                }}
+              />
+              <TextField
+                label="Password"
+                password
+                defaultValue=""
+                sx={{
+                  width: "100%",
+                  mb: 2,
+                }}
+              />
+              <CustomButton
+                backgroundColor="#217BF4"
+                color="#fff"
+                buttonText="Sign In"
+              />
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Box>
