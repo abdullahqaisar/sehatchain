@@ -8,10 +8,12 @@ const CustomButton = ({
   heroBtn,
   guideBtn,
   getStartedBtn,
+  href,
 }) => {
   const CustomButton = styled(Button)(({ theme }) => ({
     backgroundColor: backgroundColor,
     color: color,
+    href: href,
     fontWeight: "700",
     fontSize: "14px",
     cursor: "pointer",

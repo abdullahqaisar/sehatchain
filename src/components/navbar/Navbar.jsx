@@ -11,6 +11,7 @@ import CustomButton from "../customButton/CustomButton";
 import { useState } from "react";
 
 import { NavbarItems } from "./Navbar.data";
+import { Button } from "@mui/material";
 
 import Logo from "../../assets/images/logos/logo.png";
 
@@ -183,7 +184,21 @@ export const Navbar = () => {
             backgroundColor="#217BF4"
             color="#fff"
             buttonText="Login"
+            href="/login"
           />
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#217BF4",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#217BF4",
+              },
+            }}
+            href="/sehatchain/login"
+          >
+            Sign Up
+          </Button>
         </Box>
       </NavbarContainer>
     </Box>
