@@ -7,13 +7,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import InfoIcon from "@mui/icons-material/Info";
 import { Container } from "@mui/system";
-import CustomButton from "../customButton/CustomButton";
+import Avatar from "@mui/material/Avatar";
 import { useState } from "react";
 
 import { NavbarItems } from "./Navbar.data";
-import { Button } from "@mui/material";
 
-import Logo from "../../assets/images/logos/logo.png";
+import Logo from "../../../assets/images/logos/logo.png";
 
 import {
   Drawer,
@@ -179,26 +178,10 @@ export const Navbar = () => {
             gap: "1rem",
           }}
         >
-          {/* <NavLink variant="body2">Sign Up</NavLink> */}
-          <CustomButton
-            backgroundColor="#217BF4"
-            color="#fff"
-            buttonText="Login"
-            href="/login"
-          />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#217BF4",
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: "#217BF4",
-              },
-            }}
-            href="/sehatchain/login"
-          >
-            Sign Up
-          </Button>
+          <Avatar sx={{ width: 34, height: 34 }}>A</Avatar>
+          <NavLink to="profile/abdullahqaisar" variant="body2">
+            Abdullah Qaisar
+          </NavLink>
         </Box>
       </NavbarContainer>
     </Box>

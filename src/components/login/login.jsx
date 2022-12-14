@@ -96,7 +96,7 @@ function login() {
               <CustomButton
                 backgroundColor="#217BF4"
                 color="#fff"
-                buttonText="Sign In"
+                
               />
             </Grid>
           </Grid>
