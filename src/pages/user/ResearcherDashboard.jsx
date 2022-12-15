@@ -11,16 +11,18 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 import { Container } from "@mui/system";
-import { DataGrid } from "@mui/x-data-grid";
 
-import requestData from "./requests.data";
+import { requests } from "./requests.data";
 
 const ResearcherDashboard = () => {
   const columns = [
     { name: "ID", options: { filter: false } },
     { name: "Name", options: { filter: false } },
-    { name: "Usuário", options: { filter: false } },
-    { name: "E-mail", options: { filter: false } },
+    { name: "Age Limit", options: { filter: false } },
+    { name: "Status", options: { filter: false } },
+    { name: "No of People", options: { filter: false } },
+    { name: "Price", options: { filter: false } },
+    { name: "Date", options: { filter: false } },
     // {
     //   name: "Ações",
     //   options: {
@@ -41,28 +43,46 @@ const ResearcherDashboard = () => {
     // },
   ];
   return (
-    <Box>
+    <Box
+      sx={{
+        pt: 6,
+        pb: { xs: 12, md: 6 },
+        px: { xs: 3, sm: 6, md: 6 },
+      }}
+    >
+      <Typography
+        component="h2"
+        sx={{
+          textAlign: "left",
+          fontSize: { xs: 20, md: 30 },
+          fontWeight: "700",
+          color: "#001E3C",
+          mb: 3,
+        }}
+      >
+        Past Requests
+      </Typography>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Usuário</TableCell>
-              <TableCell>E-mail</TableCell>
-              <TableCell>Ações</TableCell>
+              {columns.map((column) => (
+                <TableCell>{column.name}</TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-              <TableRow >
-                <TableCell>{"requestData.id"}</TableCell>
-                <TableCell>{"requestData.modelName"}</TableCell>
-                <TableCell>{"requestData.ageLimit"}</TableCell>
-                <TableCell>{"requestData.status"}</TableCell>
-                <TableCell>{"requestData.noOfPeople"}</TableCell>
-                {/* <TableCell>{request.price}</TableCell>
-                <TableCell>{request.date}</TableCell> */}
+            {requests.map((request) => (
+              <TableRow>
+                <TableCell>{request.id}</TableCell>
+                <TableCell>{request.modelName}</TableCell>
+                <TableCell>{request.ageLimit}</TableCell>
+                <TableCell>{request.status}</TableCell>
+                <TableCell>{request.noOfPeople}</TableCell>
+                <TableCell>{request.price}</TableCell>
+                <TableCell>{request.date}</TableCell>
               </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

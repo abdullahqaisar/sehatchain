@@ -7,7 +7,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import InfoIcon from "@mui/icons-material/Info";
 import { Container } from "@mui/system";
-import CustomButton from "../customButton/CustomButton";
+import CustomButton from "../elements/customButton/CustomButton";
 import { useState } from "react";
 
 import { NavbarItems } from "./Navbar.data";

@@ -5,7 +5,7 @@ import { Container } from "@mui/system";
 
 import heroImage from "../../assets/images/hero.png";
 
-import CustomButton from "../customButton/CustomButton";
+import CustomButton from "../elements/customButton/CustomButton";
 
 function login() {
   return (
