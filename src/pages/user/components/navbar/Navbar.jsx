@@ -12,7 +12,7 @@ import { useState } from "react";
 
 import { NavbarItems } from "./Navbar.data";
 
-import Logo from "../../../assets/images/logos/logo.png";
+import Logo from "../../../../assets/images/logos/logo.png";
 
 import {
   Drawer,

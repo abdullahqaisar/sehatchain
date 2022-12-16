@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import Researcher from "./pages/user/ResearcherPage";
 
-import UserNavbar from "./components/user/navbar/Navbar";
+import UserNavbar from "./pages/user/components/navbar/Navbar"
 import Footer from "./components/footer/Footer";
 
 function App() {
