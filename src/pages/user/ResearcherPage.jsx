@@ -12,7 +12,6 @@ const ResearcherPage = () => {
     <Box>
       {/* <Navbar /> */}
       <Dashboard />
-      {/* <Route path="" element={<ResearcherDashboard />} /> */}
       <Footer />
     </Box>
   );
