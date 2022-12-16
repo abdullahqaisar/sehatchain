@@ -3,7 +3,7 @@ import * as React from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import { Container } from "@mui/system";
 
-import heroImage from "../../assets/images/hero.png";
+import heroImage from "../../../assets/images/hero.png";
 
 const Hero = () => {
   return (

@@ -5,7 +5,7 @@ import InputBase from "@mui/material/InputBase";
 import { Box, Grid, Typography, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 
-import { CustomButton } from "../elements/customButton";
+import { CustomButton } from "../../../components/elements/customButton";
 import SectionText from "./SectionText";
 
 const AboutUs = () => {

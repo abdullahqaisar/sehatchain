@@ -3,7 +3,7 @@ import * as React from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import { Container } from "@mui/system";
 
-import goalImage from "../../assets/images/goal.png";
+import goalImage from "../../../assets/images/goal.png";
 
 import SectionText from "./SectionText";
 

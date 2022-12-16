@@ -9,7 +9,7 @@ import {
   Features,
   OurGoal,
   ContactUs,
-} from "../../components/main";
+} from "./components";
 import Footer from "../../components/footer/Footer";
 
 export default function Main() {
