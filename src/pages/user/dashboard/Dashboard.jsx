@@ -9,7 +9,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { requests } from "./requests.data";
+import { PastRequestsList } from "./PastRequestsList";
+
 
 const Dashboard = () => {
   const columns = [
@@ -69,17 +70,8 @@ const Dashboard = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {requests.map((request) => (
-              <TableRow>
-                <TableCell>{request.id}</TableCell>
-                <TableCell>{request.modelName}</TableCell>
-                <TableCell>{request.ageLimit}</TableCell>
-                <TableCell>{request.status}</TableCell>
-                <TableCell>{request.noOfPeople}</TableCell>
-                <TableCell>{request.price}</TableCell>
-                <TableCell>{request.date}</TableCell>
-              </TableRow>
-            ))}
+            {/* Map all the past requests in tablecells */}
+            <PastRequestsList />
           </TableBody>
         </Table>
       </TableContainer>

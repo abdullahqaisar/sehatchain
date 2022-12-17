@@ -96,6 +96,7 @@ function login() {
                 backgroundColor="#217BF4"
                 color="#fff"
                 buttonText="Sign In"
+                href="/sehatchain/user/dashboard"
               />
             </Grid>
           </Grid>
