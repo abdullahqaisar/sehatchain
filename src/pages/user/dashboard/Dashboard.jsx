@@ -1,45 +1,14 @@
 import * as React from "react";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-
-import { PastRequestsList } from "./PastRequestsList";
-
+import PastRequests from "./PastRequests";
+import { CustomIconButton } from "../components/CustomIconButton/CustomIconButton";
+import { SectionHeading } from "../components/sectionHeading/SectionHeading";
 
 const Dashboard = () => {
-  const columns = [
-    { name: "ID", options: { filter: false } },
-    { name: "Name", options: { filter: false } },
-    { name: "Age Limit", options: { filter: false } },
-    { name: "Status", options: { filter: false } },
-    { name: "No of People", options: { filter: false } },
-    { name: "Price", options: { filter: false } },
-    { name: "Date", options: { filter: false } },
-    // {
-    //   name: "Ações",
-    //   options: {
-    //     filter: true,
-    //     customBodyRender: (value, tableMeta, updateValue) => {
-    //       return (
-    //         <button
-    //           onClick={() => {
-    //             editButton(tableMeta.rowData);
-    //           }}
-    //           className="button muted-button"
-    //         >
-    //           Editar
-    //         </button>
-    //       );
-    //     },
-    //   },
-    // },
-  ];
   return (
     <Box
       sx={{
@@ -48,33 +17,34 @@ const Dashboard = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <Typography
-        component="h2"
+      <SectionHeading title="Welcome Back" align="left" />
+      <Grid
+        container
+        justifyContent="center"
         sx={{
-          textAlign: "left",
-          fontSize: { xs: 20, md: 30 },
-          fontWeight: "700",
-          color: "#001E3C",
-          mb: 3,
+          pb: { xs: 12, md: 6 },
         }}
       >
-        Past Requests
-      </Typography>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell>{column.name}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {/* Map all the past requests in tablecells */}
-            <PastRequestsList />
-          </TableBody>
-        </Table>
-      </TableContainer>
+        <Grid item md={6} xs={12}>
+          <CustomIconButton
+            Icon={AddCircleIcon}
+            text="Request New Model"
+            bgColor="#EAEAEA"
+            mr={6}
+          />
+        </Grid>
+
+        <Grid item md={6} xs={12}>
+          <CustomIconButton
+            Icon={CheckCircleIcon}
+            text="Completed Requests"
+            bgColor="#DBEAFF"
+            ml={6}
+            href="/sehatchain/login"
+          />
+        </Grid>
+      </Grid>
+      <PastRequests />
     </Box>
   );
 };
