@@ -9,6 +9,6 @@ export const NavbarItems = [
   },
   {
     text: "View Trained Models",
-    id: "#features",
+    id: "#trainedModels",
   },
 ];

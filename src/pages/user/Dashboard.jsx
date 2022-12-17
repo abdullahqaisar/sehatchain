@@ -1,20 +1,17 @@
 import * as React from "react";
 
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-
-import { Container } from "@mui/system";
 
 import { requests } from "./requests.data";
 
-const ResearcherDashboard = () => {
+const Dashboard = () => {
   const columns = [
     { name: "ID", options: { filter: false } },
     { name: "Name", options: { filter: false } },
@@ -90,4 +87,4 @@ const ResearcherDashboard = () => {
   );
 };
 
-export default ResearcherDashboard;
+export default Dashboard;

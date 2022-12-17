@@ -2,9 +2,9 @@ import React from "react";
 
 import { Box, Typography, Grid, TextField } from "@mui/material";
 
-import heroImage from "../assets/images/hero.png";
+import heroImage from "../../assets/images/hero.png";
 
-import CustomButton from "../components/elements/customButton/CustomButton";
+import CustomButton from "../../components/elements/customButton/CustomButton";
 
 function login() {
   return (
