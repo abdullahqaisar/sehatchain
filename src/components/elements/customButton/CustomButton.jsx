@@ -13,7 +13,6 @@ const CustomButton = ({
   const CustomButton = styled(Button)(({ theme }) => ({
     backgroundColor: backgroundColor,
     color: color,
-    href: href,
     fontWeight: "700",
     fontSize: "14px",
     cursor: "pointer",
@@ -38,7 +37,7 @@ const CustomButton = ({
     },
   }));
 
-  return <CustomButton>{buttonText}</CustomButton>;
+  return <CustomButton href={href}>{buttonText}</CustomButton>;
 };
 
 export default CustomButton;

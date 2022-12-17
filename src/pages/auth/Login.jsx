@@ -92,7 +92,11 @@ function login() {
                   mb: 2,
                 }}
               />
-              <CustomButton backgroundColor="#217BF4" color="#fff" />
+              <CustomButton
+                backgroundColor="#217BF4"
+                color="#fff"
+                buttonText="Sign In"
+              />
             </Grid>
           </Grid>
         </Grid>

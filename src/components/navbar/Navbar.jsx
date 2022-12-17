@@ -1,4 +1,10 @@
 import * as React from "react";
+import { useState } from "react";
+
+import CustomButton from "../elements/customButton/CustomButton";
+import { NavbarItems } from "./Navbar.data";
+import Logo from "../../assets/images/logos/logo.png";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -7,14 +13,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import InfoIcon from "@mui/icons-material/Info";
 import { Container } from "@mui/system";
-import CustomButton from "../elements/customButton/CustomButton";
-import { useState } from "react";
-
-import { NavbarItems } from "./Navbar.data";
-import { Button } from "@mui/material";
-
-import Logo from "../../assets/images/logos/logo.png";
-
 import {
   Drawer,
   List,
@@ -24,6 +22,7 @@ import {
   ListItemText,
   styled,
 } from "@mui/material";
+
 
 export const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState({
@@ -184,21 +183,8 @@ export const Navbar = () => {
             backgroundColor="#217BF4"
             color="#fff"
             buttonText="Login"
-            href="/login"
-          />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#217BF4",
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: "#217BF4",
-              },
-            }}
             href="/sehatchain/login"
-          >
-            Sign Up
-          </Button>
+          />
         </Box>
       </NavbarContainer>
     </Box>
