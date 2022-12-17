@@ -1,14 +1,17 @@
 export const NavbarItems = [
   {
     text: "Home",
-    id: "#home",
+    link: "dashboard",
+    key: "1",
   },
   {
     text: "Request New Model",
-    id: "#new",
+    link: "newrequest",
+    key: "2",
   },
   {
     text: "View Trained Models",
-    id: "#trainedModels",
+    link: "viewmodels",
+    key: "3",
   },
 ];

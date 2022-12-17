@@ -31,6 +31,7 @@ const Dashboard = () => {
             text="Request New Model"
             bgColor="#EAEAEA"
             mr={6}
+            href="../newrequest"
           />
         </Grid>
 
@@ -40,7 +41,7 @@ const Dashboard = () => {
             text="Completed Requests"
             bgColor="#DBEAFF"
             ml={6}
-            href="/sehatchain/login"
+            href="../viewmodels"
           />
         </Grid>
       </Grid>

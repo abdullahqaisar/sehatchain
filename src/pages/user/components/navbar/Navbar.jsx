@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -39,6 +41,9 @@ export const Navbar = () => {
 
     setMobileMenu({ ...mobileMenu, [anchor]: open });
   };
+
+  const navigate = useNavigate();
+  const handleClick = (link) => navigate(link);
 
   const list = (anchor) => (
     <Box
@@ -143,25 +148,17 @@ export const Navbar = () => {
               src={Logo}
               alt="logo"
               onClick={() => {
-                const anchor = document.querySelector("#hero");
-                console.log("hi");
-                anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+                handleClick("../user/dashboard");
               }}
             />
           </Box>
 
           <NavbarLinksBox>
-            {NavbarItems.map(({ text, id }, index) => (
+            {NavbarItems.map(({ text, key, link }, index) => (
               <NavLink
+                key={key}
                 onClick={() => {
-                  console.log("hello" + id);
-                  const anchor = document.querySelector(String(id));
-                  console.log(id);
-
-                  anchor.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                  });
+                  handleClick("../user/" + link);
                 }}
               >
                 {text}
