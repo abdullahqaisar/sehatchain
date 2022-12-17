@@ -13,7 +13,7 @@ const Dashboard = () => {
     <Box
       sx={{
         pt: 6,
-        pb: { xs: 12, md: 6 },
+        pb: { xs: 6, md: 6 },
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
@@ -22,7 +22,7 @@ const Dashboard = () => {
         container
         justifyContent="center"
         sx={{
-          pb: { xs: 12, md: 6 },
+          pb: 6,
         }}
       >
         <Grid item md={6} xs={12}>
