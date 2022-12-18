@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 
-import CustomTextField from "../../../components/elements/customTextField/CustomTextField";
+import CustomTextField from "../../../../components/elements/customTextField/CustomTextField";
 
 function TextFieldGrid(props) {
   return (

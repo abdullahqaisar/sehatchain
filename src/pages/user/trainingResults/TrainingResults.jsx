@@ -5,7 +5,7 @@ import CustomDropdown from "../../../components/elements/customDropdown/CustomDr
 import { SectionHeading } from "../components/sectionHeading/SectionHeading";
 import TextFieldGrid from "../components/textFieldGrid/TextFieldGrid";
 
-const NewRequest = () => {
+const TrainingResults = () => {
   return (
     <Box
       sx={{
@@ -29,11 +29,8 @@ const NewRequest = () => {
           <CustomDropdown label="Gender" />
         </Grid>
         <TextFieldGrid label="Age Limit" />
-        <TextFieldGrid label="Price" />
-        <TextFieldGrid label="Disease Category" />
-        <TextFieldGrid label="Disease Name" />
-        <TextFieldGrid label="Patient's City" />
-        <TextFieldGrid label="Resting ECS" />
+        <TextFieldGrid label="Resting ECG" />
+        <TextFieldGrid label="Max. Heart Rate" />
         <TextFieldGrid label="Cholestrol" />
         <TextFieldGrid label="Fasting Blood Sugar" />
         <Grid item xs={12} md={11} m={2}>
@@ -49,4 +46,4 @@ const NewRequest = () => {
   );
 };
 
-export default NewRequest;
+export default TrainingResults;

@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 
 import { PastRequestsList } from "./PastRequestsList";
 import { SectionHeading } from "../sectionHeading/SectionHeading";
+import { useNavigate } from "react-router-dom";
 
 const PastRequests = () => {
   const columns = [
@@ -38,10 +39,17 @@ const PastRequests = () => {
     //   },
     // },
   ];
+  const navigate = useNavigate();
+  const handleClick = (link) => navigate(link);
+
   return (
     <>
       <SectionHeading title="Past Requests" align="left" />
-      <TableContainer>
+      <TableContainer
+        onClick={() => {
+          handleClick("../results");
+        }}
+      >
         <Table>
           <TableHead>
             <TableRow>

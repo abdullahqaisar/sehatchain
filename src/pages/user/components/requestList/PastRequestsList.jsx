@@ -4,10 +4,14 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
 export function PastRequestsList() {
+  function onClickPage() {
+    console.log("Hi");
+  }
+
   return (
     <>
       {requests.map((request) => (
-        <TableRow>
+        <TableRow onclick={() => onClickPage()}>
           <TableCell>{request.id}</TableCell>
           <TableCell>{request.modelName}</TableCell>
           <TableCell>{request.ageLimit}</TableCell>
