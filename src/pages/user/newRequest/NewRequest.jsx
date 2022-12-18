@@ -36,12 +36,14 @@ const NewRequest = () => {
         <TextFieldGrid label="Resting ECS" />
         <TextFieldGrid label="Cholestrol" />
         <TextFieldGrid label="Fasting Blood Sugar" />
-        <CustomButton
+        <Grid item xs={12} md={11} m={2}>
+          <CustomButton
             backgroundColor="#217BF4"
             color="#fff"
-            buttonText="Login"
+            buttonText="Make Request"
             href="/sehatchain/login"
           />
+        </Grid>
       </Grid>
     </Box>
   );

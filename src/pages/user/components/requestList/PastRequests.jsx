@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 import { PastRequestsList } from "./PastRequestsList";
-import { SectionHeading } from "../components/sectionHeading/SectionHeading";
+import { SectionHeading } from "../sectionHeading/SectionHeading";
 
 const PastRequests = () => {
   const columns = [
