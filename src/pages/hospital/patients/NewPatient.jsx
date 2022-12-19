@@ -1,9 +1,10 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+
 import { CustomButton } from "../../../components/elements/customButton";
 import CustomDropdown from "../../../components/elements/customDropdown/CustomDropdown";
-import { SectionHeading } from "../components/sectionHeading/SectionHeading";
-import TextFieldGrid from "../components/textFieldGrid/TextFieldGrid";
+import { SectionHeading } from "../../user/components/sectionHeading/SectionHeading";
+import TextFieldGrid from "../../user/components/textFieldGrid/TextFieldGrid";
 
 const TrainingResults = () => {
   return (
@@ -14,14 +15,16 @@ const TrainingResults = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <SectionHeading title="Request a model" align="center" />
+      <SectionHeading title="Add a patient" align="center" />
       <Typography
-        variant="p"
+        mt={2}
+        variant="h6"
         sx={{
-          color: "#656464",
+          fontWeight: "bold",
+          color: "#217BF4",
         }}
       >
-        Please provide all the specs to start the training of new model
+        Personal Information
       </Typography>
 
       <Grid container alignItems="center" justifyContent="center" mt={2}>
@@ -33,6 +36,27 @@ const TrainingResults = () => {
         <TextFieldGrid label="Max. Heart Rate" />
         <TextFieldGrid label="Cholestrol" />
         <TextFieldGrid label="Fasting Blood Sugar" />
+      </Grid>
+      <Typography
+        mt={2}
+        variant="h6"
+        sx={{
+          fontWeight: "bold",
+          color: "#217BF4",
+        }}
+      >
+        Medical Information
+      </Typography>
+      <Grid container alignItems="center" justifyContent="center" mt={2}>
+        <Grid item xs={12} md={3.5} m={1}>
+          <CustomDropdown label="Gender" />
+        </Grid>
+        <TextFieldGrid label="Age Limit" />
+        <TextFieldGrid label="Resting ECG" />
+        <TextFieldGrid label="Max. Heart Rate" />
+        <TextFieldGrid label="Cholestrol" />
+        <TextFieldGrid label="Fasting Blood Sugar" />
+
         <Grid item xs={12} md={11} m={2}>
           <CustomButton
             backgroundColor="#217BF4"
@@ -41,25 +65,6 @@ const TrainingResults = () => {
           />
         </Grid>
       </Grid>
-      <Box mt={2}>
-        <Typography
-          variant="h5"
-          sx={{
-            fontWeight: "bold",
-            color: "#217BF4",
-          }}
-        >
-          Results
-        </Typography>
-        <Typography
-          variant="p"
-          sx={{
-            color: "#656464",
-          }}
-        >
-          The user has a 10% chance of having a heart disease.
-        </Typography>
-      </Box>
     </Box>
   );
 };
