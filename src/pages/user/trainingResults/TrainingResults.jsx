@@ -1,11 +1,13 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { useState } from "react";
 import { CustomButton } from "../../../components/elements/customButton";
 import CustomDropdown from "../../../components/elements/customDropdown/CustomDropdown";
 import { SectionHeading } from "../components/sectionHeading/SectionHeading";
 import TextFieldGrid from "../components/textFieldGrid/TextFieldGrid";
 
 const TrainingResults = () => {
+  const [showResults, setShowResults] = useState(false);
   return (
     <Box
       sx={{
@@ -37,11 +39,30 @@ const TrainingResults = () => {
           <CustomButton
             backgroundColor="#217BF4"
             color="#fff"
-            buttonText="Make Request"
-            href="/sehatchain/login"
+            buttonText="Predict"
+            onClick={() => setShowResults(true)}
           />
         </Grid>
       </Grid>
+      <Box mt={2}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: "bold",
+            color: "#217BF4",
+          }}
+        >
+          Results
+        </Typography>
+        <Typography
+          variant="p"
+          sx={{
+            color: "#656464",
+          }}
+        >
+          The user has a 10% chance of having a heart disease.
+        </Typography>
+      </Box>
     </Box>
   );
 };
