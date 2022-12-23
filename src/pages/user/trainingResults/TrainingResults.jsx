@@ -14,14 +14,14 @@ const TrainingResults = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <SectionHeading title="Request a model" align="center" />
+      <SectionHeading title="Model Result" align="center" />
       <Typography
         variant="p"
         sx={{
           color: "#656464",
         }}
       >
-        Please provide all the specs to start the training of new model
+        Please provide the all the parameters to make prediction by the model
       </Typography>
 
       <Grid container alignItems="center" justifyContent="center" mt={2}>

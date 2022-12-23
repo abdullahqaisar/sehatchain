@@ -38,7 +38,7 @@ const Dashboard = () => {
         <Grid item md={6} xs={12}>
           <CustomIconButton
             Icon={CheckCircleIcon}
-            text="Completed Requests"
+            text="Received Models"
             bgColor="#DBEAFF"
             ml={6}
             href="../viewmodels"
