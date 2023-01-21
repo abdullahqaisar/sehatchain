@@ -1,50 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { Box, Typography, Grid, TextField, Link } from "@mui/material";
+import { Box, Typography, Grid, TextField, Button, Link } from "@mui/material";
 
 import heroImage from "../../assets/images/hero.png";
 
 import CustomButton from "../../components/elements/customButton/CustomButton";
 
-import Web3 from "web3";
-
-function Login() {
-  const [isConnected, setIsConnected] = useState(false);
-  const [ethBalance, setEthBalance] = useState("");
-
-  const detectCurrentProvider = () => {
-    let provider;
-    if (window.ethereum) {
-      provider = window.ethereum;
-    } else if (window.web3) {
-      provider = window.web3.currentProvider;
-    } else {
-      console.log("Non-ethereum browser detected. You should install Metamask");
-    }
-    return provider;
-  };
-
-  const onConnect = async () => {
-    try {
-      const currentProvider = detectCurrentProvider();
-      if (currentProvider) {
-        await currentProvider.request({ method: "eth_requestAccounts" });
-        const web3 = new Web3(currentProvider);
-        const userAccount = await web3.eth.getAccounts();
-        const account = userAccount[0];
-        let ethBalance = await web3.eth.getBalance(account);
-        setEthBalance(ethBalance);
-        setIsConnected(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const onDisconnect = () => {
-    setIsConnected(false);
-  };
-
+function login() {
   return (
     <Box>
       <Grid
@@ -93,7 +55,7 @@ function Login() {
               color: "#001E3C",
             }}
           >
-            Sign in
+            Register
           </Typography>
 
           <Grid
@@ -130,13 +92,13 @@ function Login() {
                   mb: 2,
                 }}
               />
+
               <CustomButton
                 backgroundColor="#217BF4"
                 color="#fff"
-                buttonText="Sign In"
-                href="/sehatchain/user/dashboard"
+                buttonText="Register"
+                href="/sehatchain/login"
               />
-              {/* Register here */}
               <Typography
                 component="p"
                 sx={{
@@ -146,7 +108,7 @@ function Login() {
                   color: "#001E3C",
                 }}
               >
-                Don't have an account?{" "}
+                Already have an account?{" "}
                 <Link
                   style={{
                     cursor: "pointer",
@@ -154,9 +116,9 @@ function Login() {
                     border: 0,
                     textDecoration: "none",
                   }}
-                  href="/sehatchain/register"
+                  href="/sehatchain/login"
                 >
-                  Register Now!
+                  Login instead
                 </Link>
               </Typography>
             </Grid>
@@ -167,4 +129,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default login;
