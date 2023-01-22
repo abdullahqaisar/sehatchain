@@ -34,6 +34,7 @@ function Login() {
         const account = userAccount[0];
         let ethBalance = await web3.eth.getBalance(account);
         setEthBalance(ethBalance);
+        console.log("ethBalance", ethBalance);
         setIsConnected(true);
       }
     } catch (err) {
@@ -95,72 +96,52 @@ function Login() {
           >
             Sign in
           </Typography>
-
-          <Grid
-            container
-            md={12}
-            sx={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          {!isConnected && (
             <Grid
-              md={6}
-              item
+              container
+              md={12}
               sx={{
-                mx: { xs: 4, md: 0 },
-                mb: 4,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <TextField
-                label="Email"
-                email
-                defaultValue=""
+              <Grid
+                md={6}
+                item
                 sx={{
-                  width: "100%",
-                  mb: 2,
-                }}
-              />
-              <TextField
-                label="Password"
-                password
-                defaultValue=""
-                sx={{
-                  width: "100%",
-                  mb: 2,
-                }}
-              />
-              <CustomButton
-                backgroundColor="#217BF4"
-                color="#fff"
-                buttonText="Sign In"
-                href="/sehatchain/user/dashboard"
-              />
-              {/* Register here */}
-              <Typography
-                component="p"
-                sx={{
-                  mt: 1,
-                  fontSize: 16,
-                  lineHeight: 2,
-                  color: "#001E3C",
+                  mx: { xs: 4, md: 0 },
+                  mb: 4,
                 }}
               >
-                Don't have an account?{" "}
-                <Link
-                  style={{
-                    cursor: "pointer",
-                    textTransform: "none",
-                    border: 0,
-                    textDecoration: "none",
+                <TextField
+                  label="Email"
+                  email
+                  defaultValue=""
+                  sx={{
+                    width: "100%",
+                    mb: 2,
                   }}
-                  href="/sehatchain/register"
-                >
-                  Register Now!
-                </Link>
-              </Typography>
+                />
+                <TextField
+                  label="Password"
+                  password
+                  defaultValue=""
+                  sx={{
+                    width: "100%",
+                    mb: 2,
+                  }}
+                />
+                <CustomButton
+                  backgroundColor="#217BF4"
+                  color="#fff"
+                  buttonText="Sign In"
+                  // href="/sehatchain/user/dashboard"
+                  onClick={onConnect}
+                />
+              </Grid>
             </Grid>
-          </Grid>
+          )}
+          {isConnected && <div> Dashboard Components </div>}
         </Grid>
       </Grid>
     </Box>

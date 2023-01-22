@@ -1,6 +1,7 @@
 import { Button, styled } from "@mui/material";
 import React from "react";
 
+
 const CustomButton = ({
   backgroundColor,
   color,
@@ -9,6 +10,7 @@ const CustomButton = ({
   guideBtn,
   getStartedBtn,
   href,
+  onClick,
 }) => {
   const CustomButton = styled(Button)(({ theme }) => ({
     backgroundColor: backgroundColor,
@@ -37,7 +39,9 @@ const CustomButton = ({
     },
   }));
 
-  return <CustomButton href={href}>{buttonText}</CustomButton>;
+
+
+  return <CustomButton href={href} onClick={onClick}>{buttonText}</CustomButton>;
 };
 
 export default CustomButton;
