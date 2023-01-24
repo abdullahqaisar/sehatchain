@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Box, Typography, Grid, TextField, Link } from "@mui/material";
 
@@ -10,7 +11,11 @@ import Web3 from "web3";
 
 function Login() {
   const [isConnected, setIsConnected] = useState(false);
+  const [ethAddress, setEthAddress] = useState("");
+  const [account, setAccount] = useState("");
   const [ethBalance, setEthBalance] = useState("");
+
+  const navigate = useNavigate();
 
   const detectCurrentProvider = () => {
     let provider;
@@ -31,11 +36,37 @@ function Login() {
         await currentProvider.request({ method: "eth_requestAccounts" });
         const web3 = new Web3(currentProvider);
         const userAccount = await web3.eth.getAccounts();
-        const account = userAccount[0];
+        await setAccount(userAccount[0])
+        console.log("account", account);
         let ethBalance = await web3.eth.getBalance(account);
         setEthBalance(ethBalance);
-        console.log("ethBalance", ethBalance);
         setIsConnected(true);
+        checkAccount();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const checkAccount = async () => {
+    try {
+      console.log("My account is", account)
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        
+        body: JSON.stringify({
+          ethAddress: account,
+        }),
+      });
+      const responseData = await response.json();
+      console.log(responseData);
+      if (response.status === 200) {
+        navigate("/sehatchain/user/dashboard", { replace: false });
+      } else {
+        navigate("/sehatchain/register", { replace: false });
       }
     } catch (err) {
       console.log(err);
@@ -96,52 +127,62 @@ function Login() {
           >
             Sign in
           </Typography>
-          {!isConnected && (
+          {/* <Typography
+            component="p"
+            sx={{
+              letterSpacing: 0,
+              lineHeight: 2,
+              color: "#001E3C",
+            }}
+          >
+            Connect your MetaMask wallet to continue, you will require a MetaMask wallet to Sign In
+          </Typography> */}
+
+          <Grid
+            container
+            md={12}
+            sx={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Grid
-              container
-              md={12}
+              md={6}
+              item
               sx={{
-                alignItems: "center",
-                justifyContent: "center",
+                mx: { xs: 4, md: 0 },
+                mb: 2,
               }}
             >
-              <Grid
-                md={6}
-                item
-                sx={{
-                  mx: { xs: 4, md: 0 },
-                  mb: 4,
-                }}
-              >
-                <TextField
-                  label="Email"
-                  email
-                  defaultValue=""
-                  sx={{
-                    width: "100%",
-                    mb: 2,
-                  }}
-                />
-                <TextField
-                  label="Password"
-                  password
-                  defaultValue=""
-                  sx={{
-                    width: "100%",
-                    mb: 2,
-                  }}
-                />
-                <CustomButton
-                  backgroundColor="#217BF4"
-                  color="#fff"
-                  buttonText="Sign In"
-                  // href="/sehatchain/user/dashboard"
-                  onClick={onConnect}
-                />
-              </Grid>
+              <CustomButton
+                backgroundColor="#217BF4"
+                color="#fff"
+                buttonText="Sign in With Metamask"
+                onClick={onConnect}
+              />
             </Grid>
-          )}
-          {isConnected && <div> Dashboard Components </div>}
+          </Grid>
+
+          <Typography
+            component="p"
+            sx={{
+              fontSize: 16,
+              color: "#001E3C",
+            }}
+          >
+            Don't have an account?{" "}
+            <Link
+              style={{
+                cursor: "pointer",
+                textTransform: "none",
+                border: 0,
+                textDecoration: "none",
+              }}
+              href="/sehatchain/register"
+            >
+              Register Here!
+            </Link>
+          </Typography>
         </Grid>
       </Grid>
     </Box>

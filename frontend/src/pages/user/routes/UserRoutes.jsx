@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import { UserLayout } from "../../../layouts/UserLayout";
 import PageNotFound from "../../error/PageNotFound";
-import { Dashboard, NewRequest, ViewTrainedModels } from "../";
+import { Dashboard, NewRequest, ViewTrainedModels } from "..";
 import TrainingResults from "../trainingResults/TrainingResults";
 
 export function UserRoutes() {

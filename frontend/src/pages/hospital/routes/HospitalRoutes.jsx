@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 
-import { HospitalLayout } from "../../../layouts/";
+import { HospitalLayout } from "../../../layouts";
 import PageNotFound from "../../error/PageNotFound";
-import { Dashboard, Patients, Requests, NewPatient } from "../";
+import { Dashboard, Patients, Requests, NewPatient } from "..";
 
 export function HospitalRoutes() {
   return (
