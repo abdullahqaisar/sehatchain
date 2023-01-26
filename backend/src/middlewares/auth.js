@@ -5,14 +5,16 @@ const auth = async (req, res, next) => {
     console.log("auth");
     const token = req.headers.authorization.split(" ")[1];
     if (!token)
-      return res.status(401).json({ msg: "No auth token, access denied" });
+      return res.status(401).json({
+        msg: "Authorization header not found, please provide a token.",
+      });
 
     const verified = jwt.verify(token, process.env.JWT_KEY);
     console.log(verified);
     if (!verified)
-      return res
-        .status(401)
-        .json({ msg: "Token verification failed, authorization denied." });
+      return res.status(401).json({
+        msg: "Invalid or expired token, please provide a valid token.",
+      });
 
     req.ethAddress = verified.ethAddress;
     req.token = token;

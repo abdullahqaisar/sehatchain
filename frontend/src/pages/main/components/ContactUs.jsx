@@ -9,6 +9,38 @@ import { CustomButton } from "../../../components/elements/customButton";
 import SectionText from "./SectionText";
 
 const AboutUs = () => {
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [message, setMessage] = React.useState("");
+
+  const sendEmail = async () => {
+    try {
+      console.log("Name: ", name);
+      console.log("Question: ", message);
+      const response = await fetch("http://localhost:5000/api/user/contactus", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+        }),
+      });
+      const responseData = await response.json();
+      console.log(responseData);
+      if (response.status === 200) {
+        window.alert("Message sent, we will reply in 24 hrs");
+      } else {
+        window.alert("Error sending mail, please try again");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Box
       id="contact-us"
@@ -17,8 +49,10 @@ const AboutUs = () => {
         pb: { xs: 12, md: 6 },
         px: { xs: 3, sm: 6, md: 6 },
       }}
-      style={{background: 'linear-gradient(0deg, rgba(241, 246, 253, 0) 1.63%, #F1F6FD 20.5%, #F1F6FD 58.57%, #FFFFFF 100%)'}}
-      
+      style={{
+        background:
+          "linear-gradient(0deg, rgba(241, 246, 253, 0) 1.63%, #F1F6FD 20.5%, #F1F6FD 58.57%, #FFFFFF 100%)",
+      }}
     >
       <Container maxWidth={false}>
         <Grid container sx={{ alignItems: "center", justifyContent: "center" }}>
@@ -50,6 +84,7 @@ const AboutUs = () => {
                   mr: { xs: 0, md: 3 },
                   mb: { xs: 2, md: 2 },
                 }}
+                onChange={(e) => setName(e.target.value)}
               />
               <TextField
                 label="Email"
@@ -59,6 +94,9 @@ const AboutUs = () => {
                   width: "100%",
                   mr: { xs: 0, md: 3 },
                   mb: { xs: 2, md: 2 },
+                }}
+                onChange={(e) => {
+                  setEmail(e.target.value);
                 }}
               />
               <TextField
@@ -70,6 +108,9 @@ const AboutUs = () => {
                   width: "100%",
                   mr: { xs: 0, md: 3 },
                   mb: { xs: 2, md: 2 },
+                }}
+                onChange={(e) => {
+                  setMessage(e.target.value);
                 }}
               />
               <Box
@@ -84,6 +125,7 @@ const AboutUs = () => {
                   backgroundColor="#217BF4"
                   color="#fff"
                   buttonText="Submit"
+                  onClick={sendEmail}
                 />
               </Box>
             </Grid>

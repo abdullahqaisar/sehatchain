@@ -24,6 +24,7 @@ function Login() {
     } else if (window.web3) {
       provider = window.web3.currentProvider;
     } else {
+      window.alert("Please install MetaMask wallet first");
       console.log("Non-ethereum browser detected. You should install Metamask");
     }
     return provider;
@@ -51,7 +52,7 @@ function Login() {
   const checkAccount = async () => {
     try {
       console.log("My account is", account)
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch("http://localhost:5000/api/auth/sendcode", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,6 +67,7 @@ function Login() {
       if (response.status === 200) {
         navigate("/sehatchain/user/dashboard", { replace: false });
       } else {
+        window.alert("You don't have an account, please register first");
         navigate("/sehatchain/register", { replace: false });
       }
     } catch (err) {

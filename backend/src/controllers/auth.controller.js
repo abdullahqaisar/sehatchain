@@ -1,5 +1,3 @@
-const moongose = require("mongoose");
-
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user.model");
@@ -14,6 +12,10 @@ exports.register = async (req, res) => {
       email,
       ethAddress,
     });
+    const oldUser = await User.findOne({ ethAddress });
+    if (oldUser) {
+      return res.status(401).json({ msg: "User already exists!" });
+    }
     user = await user.save();
     if (!user) {
       return res.status(500).json({ msg: "User not saved!" });
@@ -25,7 +27,7 @@ exports.register = async (req, res) => {
       },
       process.env.JWT_KEY
     );
-    return res.status(201).json({
+    return res.status(200).json({
       message: "Account successfully created!",
       token: token,
     });

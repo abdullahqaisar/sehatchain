@@ -25,6 +25,7 @@ function Register() {
     } else if (window.web3) {
       provider = window.web3.currentProvider;
     } else {
+      window.alert("Please install MetaMask wallet first");
       console.log("Non-ethereum browser detected. You should install Metamask");
     }
     return provider;
@@ -68,9 +69,13 @@ function Register() {
       const responseData = await response.json();
       console.log(responseData);
       if (response.status === 200) {
-        navigate("/sehatchain/dashboard", { replace: false });
+        window.alert("Account created Successfully");
+        navigate("/sehatchain/user/dashboard", { replace: false });
+      } else if (response.status === 401) {
+        window.alert("You already have an account, Please proceed to Login ");
+        navigate("/sehatchain/login", { replace: false });
       } else {
-        navigate("/sehatchain/register", { replace: false });
+        window.alert("There was an error, please try again");
       }
     } catch (err) {
       console.log(err);
