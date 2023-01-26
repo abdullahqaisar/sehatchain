@@ -6,6 +6,18 @@ var nodemailer = require("nodemailer");
 
 require("dotenv").config();
 
+exports.validate = (method) => {
+  switch (method) {
+    case "contactus": {
+      return [
+        check("name", "Name is required").not().isEmpty(),
+        check("email", "Please include a valid email").isEmail(),
+        check("message", "Message is required").not().isEmpty(),
+      ];
+    }
+  }
+};
+
 exports.contactus = async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -48,17 +60,5 @@ exports.contactus = async (req, res) => {
     });
   } catch (e) {
     res.status(500).json({ error: e.message });
-  }
-};
-
-exports.validate = (method) => {
-  switch (method) {
-    case "contactus": {
-      return [
-        check("name", "Name is required").not().isEmpty(),
-        check("email", "Please include a valid email").isEmail(),
-        check("message", "Message is required").not().isEmpty(),
-      ];
-    }
   }
 };
