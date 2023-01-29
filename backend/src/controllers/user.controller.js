@@ -1,7 +1,7 @@
 // const jwt = require("jsonwebtoken");
 
 // const User = require("../models/user.model");
-
+const Request = require("../models/request.model");
 var nodemailer = require("nodemailer");
 
 require("dotenv").config();
@@ -57,6 +57,24 @@ exports.contactus = async (req, res) => {
     }
     return res.status(200).json({
       message: "Email successfully sent!",
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
+
+exports.request = async (req, res) => {
+  try {
+    const data = req.body;
+    console.log(data);
+
+    const request = new Request(data);
+    const save = await request.save();
+    if (!save) {
+      return res.status(500).json({ msg: "Request not saved!" });
+    }
+    return res.status(200).json({
+      message: "Request successfully sent!",
     });
   } catch (e) {
     res.status(500).json({ error: e.message });

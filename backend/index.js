@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 const authRoutes = require("./src/routes/auth.routes");
 const userRoutes = require("./src/routes/user.routes");
+const hospitalRoutes = require("./src/routes/hospital.routes");
 
 require("dotenv").config();
 
@@ -23,3 +24,4 @@ app.use(express.json());
 
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/hospital", hospitalRoutes);

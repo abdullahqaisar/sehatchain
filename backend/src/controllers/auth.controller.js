@@ -7,15 +7,16 @@ require("dotenv").config();
 exports.register = async (req, res) => {
   try {
     let { name, email, ethAddress } = req.body;
+    const oldUser = await User.findOne({ ethAddress });
+    if (oldUser) {
+      return res.status(401).json({ msg: "User already exists!" });
+    }
     let user = await new User({
       name,
       email,
       ethAddress,
     });
-    const oldUser = await User.findOne({ ethAddress });
-    if (oldUser) {
-      return res.status(401).json({ msg: "User already exists!" });
-    }
+
     user = await user.save();
     if (!user) {
       return res.status(500).json({ msg: "User not saved!" });
@@ -47,7 +48,7 @@ exports.login = async (req, res) => {
         .status(401)
         .json({ message: "Account does not exist! Please proceed to signup" });
     }
-    
+
     const token = await jwt.sign(
       {
         ethAddress: ethAddress,
