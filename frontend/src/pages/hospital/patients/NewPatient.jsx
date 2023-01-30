@@ -1,12 +1,37 @@
+import { useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { CustomButton } from "../../../components/elements/customButton";
 import CustomDropdown from "../../../components/elements/customDropdown/CustomDropdown";
 import { SectionHeading } from "../../user/components/sectionHeading/SectionHeading";
-import TextFieldGrid from "../../user/components/textFieldGrid/TextFieldGrid";
+import TextFieldGrid from "../../../components/elements/textFieldGrid/TextFieldGrid";
 
-const TrainingResults = () => {
+const NewPatient = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    age: "",
+    email: "",
+    address: "",
+    contact: "",
+    gender: "",
+    diseaseName: "",
+    diseaseCategory: "",
+    restingECG: "",
+    maxHeartRate: "",
+    cholesterol: "",
+    fastingBloodSugar: "",
+  });
+
+  const handleInputChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+  };
+
   return (
     <Box
       sx={{
@@ -28,11 +53,36 @@ const TrainingResults = () => {
       </Typography>
 
       <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <TextFieldGrid label="Name" />
-        <TextFieldGrid label="Age" />
-        <TextFieldGrid label="Email" />
-        <TextFieldGrid label="Address" />
-        <TextFieldGrid label="Contact No." />
+        <TextFieldGrid
+          label="Name"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+        />
+        <TextFieldGrid
+          label="Age"
+          name="age"
+          value={formData.age}
+          onChange={handleInputChange}
+        />
+        <TextFieldGrid
+          label="Email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+        />
+        <TextFieldGrid
+          label="Address"
+          name="address"
+          value={formData.address}
+          onChange={handleInputChange}
+        />
+        <TextFieldGrid
+          label="Contact No."
+          name="contact"
+          value={formData.contact}
+          onChange={handleInputChange}
+        />
         <Grid item xs={12} md={3.5} m={1}>
           <CustomDropdown label="Gender" />
         </Grid>
@@ -48,18 +98,52 @@ const TrainingResults = () => {
         Medical Information
       </Typography>
       <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <TextFieldGrid label="Disease Name" />
-        <TextFieldGrid label="Disease Category" />
-        <TextFieldGrid label="Resting ECG" />
-        <TextFieldGrid label="Max. Heart Rate" />
-        <TextFieldGrid label="Cholestrol" />
-        <TextFieldGrid label="Fasting Blood Sugar" />
+        <TextFieldGrid
+          label="Disease Name"
+          name="diseaseName"
+          value={formData.diseaseName}
+          onChange={handleInputChange}
+        />
+
+        <TextFieldGrid
+          label="Disease Category"
+          name="diseaseCategory"
+          value={formData.diseaseCategory}
+          onChange={handleInputChange}
+        />
+
+        <TextFieldGrid
+          label="Resting ECG"
+          name="restingECG"
+          value={formData.restingECG}
+          onChange={handleInputChange}
+        />
+
+        <TextFieldGrid
+          label="Max. Heart Rate"
+          name="maxHeartRate"
+          value={formData.maxHeartRate}
+          onChange={handleInputChange}
+        />
+        <TextFieldGrid
+          label="Cholestrol"
+          name="cholesterol"
+          value={formData.cholesterol}
+          onChange={handleInputChange}
+        />
+        <TextFieldGrid
+          label="Fasting Blood Sugar"
+          name="fastingBloodSugar"
+          value={formData.fastingBloodSugar}
+          onChange={handleInputChange}
+        />
 
         <Grid item xs={12} md={11} m={2}>
           <CustomButton
             backgroundColor="#217BF4"
             color="#fff"
-            buttonText="Predict"
+            buttonText="Add Patient"
+            onClick={handleSubmit}
           />
         </Grid>
       </Grid>
@@ -67,4 +151,4 @@ const TrainingResults = () => {
   );
 };
 
-export default TrainingResults;
+export default NewPatient;

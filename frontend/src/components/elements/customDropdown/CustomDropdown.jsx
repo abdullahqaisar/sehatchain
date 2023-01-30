@@ -25,7 +25,6 @@ function CustomDropdown(props) {
       }}
     >
       <MenuItem value={0}>Gender</MenuItem>
-      <MenuItem value={1}>Any</MenuItem>
       <MenuItem value={2}>Male</MenuItem>
       <MenuItem value={3}>Female</MenuItem>
     </Select>

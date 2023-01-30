@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { CustomButton } from "../../../components/elements/customButton";
 import CustomDropdown from "../../../components/elements/customDropdown/CustomDropdown";
 import { SectionHeading } from "../components/sectionHeading/SectionHeading";
-import TextFieldGrid from "../components/textFieldGrid/TextFieldGrid";
+import TextFieldGrid from "../../../components/elements/textFieldGrid/TextFieldGrid";
 
 const NewRequest = () => {
   return (

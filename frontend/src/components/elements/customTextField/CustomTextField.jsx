@@ -14,6 +14,9 @@ function CustomTextField(props) {
         borderRadius: 1,
         backgroundColor: "#DBEAFF",
       }}
+      name={props.name}
+      value={props.value}
+      onChange={props.onChange}
     />
   );
 }
