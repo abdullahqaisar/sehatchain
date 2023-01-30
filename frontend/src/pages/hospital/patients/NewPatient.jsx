@@ -27,9 +27,21 @@ const NewPatient = () => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    console.log("submit");
+    const response = await fetch(
+      "http://localhost:5000/api/hospital/addpatient",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
     console.log(formData);
+    const data = await response.json();
+    console.log(data);
   };
 
   return (
