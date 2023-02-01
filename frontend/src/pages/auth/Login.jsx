@@ -37,7 +37,7 @@ function Login() {
         await currentProvider.request({ method: "eth_requestAccounts" });
         const web3 = new Web3(currentProvider);
         const userAccount = await web3.eth.getAccounts();
-        await setAccount(userAccount[0])
+        await setAccount(userAccount[0]);
         console.log("account", account);
         let ethBalance = await web3.eth.getBalance(account);
         setEthBalance(ethBalance);
@@ -51,13 +51,13 @@ function Login() {
 
   const checkAccount = async () => {
     try {
-      console.log("My account is", account)
+      console.log("My account is", account);
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        
+
         body: JSON.stringify({
           ethAddress: account,
         }),
@@ -65,6 +65,8 @@ function Login() {
       const responseData = await response.json();
       console.log(responseData);
       if (response.status === 200) {
+        localStorage.setItem("token", responseData.token);
+        console.log(localStorage.getItem("token"));
         navigate("/sehatchain/user/dashboard", { replace: false });
       } else {
         window.alert("You don't have an account, please register first");

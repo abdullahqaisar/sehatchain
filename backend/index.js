@@ -10,7 +10,11 @@ const hospitalRoutes = require("./src/routes/hospital.routes");
 require("dotenv").config();
 
 mongoose
-  .connect(process.env.DATABASE_CONNECTION)
+  .connect("mongodb://127.0.0.1/sehatchain", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+
   .then(() => {
     console.log("Server is running on port " + process.env.PORT);
     app.listen(process.env.PORT);

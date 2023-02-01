@@ -1,40 +1,44 @@
 const jwt = require("jsonwebtoken");
-
 const User = require("../models/user.model");
-
 require("dotenv").config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
+
+const createToken = (ethAddress, userId) => {
+  return jwt.sign({ ethAddress, userId }, JWT_SECRET);
+};
+
+const handleError = (err) => {
+  console.error(error);
+  return res.status(500).json({ error: err.message });
+};
 
 exports.register = async (req, res) => {
   try {
     let { name, email, ethAddress } = req.body;
-    const oldUser = await User.findOne({ ethAddress });
-    if (oldUser) {
-      return res.status(401).json({ msg: "User already exists!" });
+    const existingUser = await User.findOne({ ethAddress });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ msg: "User with this address already exists!" });
     }
-    let user = await new User({
+    let newUser = await new User({
       name,
       email,
       ethAddress,
     });
 
-    user = await user.save();
-    if (!user) {
-      return res.status(500).json({ msg: "User not saved!" });
+    savedUser = await newUser.save();
+    if (!savedUser) {
+      return res.status(500).json({ error: "Failed to save user" });
     }
-    const token = await jwt.sign(
-      {
-        ethAddress: ethAddress,
-        userId: user._id,
-      },
-      process.env.JWT_KEY
-    );
+    const token = createToken(user.ethAddress, user._id);
     return res.status(200).json({
-      message: "Account successfully created!",
-      token: token,
+      message: "User successfully registered",
+      token,
     });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ error: e.message });
+  } catch (error) {
+    handleError(error);
   }
 };
 
@@ -49,18 +53,12 @@ exports.login = async (req, res) => {
         .json({ message: "Account does not exist! Please proceed to signup" });
     }
 
-    const token = await jwt.sign(
-      {
-        ethAddress: ethAddress,
-        userId: user._id,
-      },
-      process.env.JWT_KEY
-    );
+    const token = createToken(user.ethAddress, user._id);
     return res.status(200).json({
       message: "Login successful!",
       token: token,
     });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+  } catch (error) {
+    handleError(error);
   }
 };

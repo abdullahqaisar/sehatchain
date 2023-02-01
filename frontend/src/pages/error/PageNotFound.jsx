@@ -1,34 +1,40 @@
 import { Box, Typography } from "@mui/material";
+import { makeStyles  } from "@mui/styles";
 
-function login() {
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+  },
+  errorNumber: {
+    fontSize: "10rem",
+    fontWeight: "bold",
+    color: "#001E3C",
+  },
+  errorText: {
+    fontSize: "2rem",
+    fontWeight: "bold",
+    color: "#001E3C",
+    marginTop: "1rem",
+  },
+});
+
+function PageNotFound() {
+  const classes = useStyles();
+
   return (
-    <Box>
-      <Typography
-        component="h3"
-        sx={{
-          fontSize: { xs: 30, md: 55 },
-          letterSpacing: 0,
-          fontWeight: "bold",
-          lineHeight: 2,
-          color: "#001E3C",
-        }}
-      >
+    <Box className={classes.root}>
+      <Typography variant="h3" className={classes.errorNumber}>
         404
       </Typography>
-      <Typography
-        component="h3"
-        sx={{
-          fontSize: { xs: 30, md: 55 },
-          letterSpacing: 0,
-          fontWeight: "bold",
-          lineHeight: 2,
-          color: "#001E3C",
-        }}
-      >
+      <Typography variant="h3" className={classes.errorText}>
         Page Not Found
       </Typography>
     </Box>
   );
 }
 
-export default login;
+export default PageNotFound;
