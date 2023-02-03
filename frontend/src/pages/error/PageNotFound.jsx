@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import { makeStyles  } from "@mui/styles";
+import styled from '@emotion/styled'
 
-const useStyles = makeStyles({
+const useStyles = styled({
   root: {
     display: "flex",
     flexDirection: "column",
