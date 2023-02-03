@@ -62,3 +62,28 @@ exports.login = async (req, res) => {
     handleError(error);
   }
 };
+
+exports.protectedRoute = async (req, res) => {
+  const authorizationHeader = req.header("Authorization");
+  if (!authorizationHeader) {
+    return res.status(401).json({ message: "Missing authorization header" });
+  }
+
+  // Extract the JWT from the authorization header
+  const [, token] = authorizationHeader.split(" ");
+  console.log(token);
+  if (!token) {
+    return res.status(401).json({ message: "Missing token" });
+  }
+
+  // Verify the JWT
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.userId = decoded.userId;
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({ message: "Invalid token" });
+  }
+
+  return res.status(200).json({ message: "Login Successful" });
+};

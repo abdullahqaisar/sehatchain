@@ -1,12 +1,9 @@
-// const jwt = require("jsonwebtoken");
-
-// const User = require("../models/user.model");
-const Request = require("../models/request.model");
+/* eslint-disable linebreak-style */
 var nodemailer = require("nodemailer");
-
+const Request = require("../models/request.model");
 require("dotenv").config();
 
-exports.validate = (method) => {
+const validate = (method) => {
   switch (method) {
     case "contactus": {
       return [
@@ -15,26 +12,30 @@ exports.validate = (method) => {
         check("message", "Message is required").not().isEmpty(),
       ];
     }
+    default:
+      return [];
   }
 };
 
 exports.contactus = async (req, res) => {
+  var mailOptions;
   try {
-    const errors = validationResult(req);
+    const errors = validate(req);
     if (!errors.isEmpty()) {
+      console.log(errors);
       return res.status(400).json({ errors: errors.array() });
     }
 
     const { name, email, message } = req.body;
     console.log(req.body);
-    let transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-    var mailOptions = {
+    mailOptions = {
       from: email,
       to: "abdullahqaisarr@gmail.com",
       subject: "Contact Us",
