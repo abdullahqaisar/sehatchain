@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
+import PatientFields from "./PatientFields";
+import DiseaseFields from "./DiseaseFIelds";
+
 import { CustomButton } from "../../../components/elements/customButton";
 import CustomDropdown from "../../../components/elements/customDropdown/CustomDropdown";
 import { SectionHeading } from "../../user/components/sectionHeading/SectionHeading";
@@ -65,39 +68,10 @@ const NewPatient = () => {
       </Typography>
 
       <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <TextFieldGrid
-          label="Name"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
+        <PatientFields
+          formData={formData}
+          handleInputChange={handleInputChange}
         />
-        <TextFieldGrid
-          label="Age"
-          name="age"
-          value={formData.age}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Address"
-          name="address"
-          value={formData.address}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Contact No."
-          name="contact"
-          value={formData.contact}
-          onChange={handleInputChange}
-        />
-        <Grid item xs={12} md={3.5} m={1}>
-          <CustomDropdown label="Gender" />
-        </Grid>
       </Grid>
       <Typography
         mt={2}
@@ -110,44 +84,9 @@ const NewPatient = () => {
         Medical Information
       </Typography>
       <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <TextFieldGrid
-          label="Disease Name"
-          name="diseaseName"
-          value={formData.diseaseName}
-          onChange={handleInputChange}
-        />
-
-        <TextFieldGrid
-          label="Disease Category"
-          name="diseaseCategory"
-          value={formData.diseaseCategory}
-          onChange={handleInputChange}
-        />
-
-        <TextFieldGrid
-          label="Resting ECG"
-          name="restingECG"
-          value={formData.restingECG}
-          onChange={handleInputChange}
-        />
-
-        <TextFieldGrid
-          label="Max. Heart Rate"
-          name="maxHeartRate"
-          value={formData.maxHeartRate}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Cholestrol"
-          name="cholesterol"
-          value={formData.cholesterol}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Fasting Blood Sugar"
-          name="fastingBloodSugar"
-          value={formData.fastingBloodSugar}
-          onChange={handleInputChange}
+        <DiseaseFields
+          formData={formData}
+          handleInputChange={handleInputChange}
         />
 
         <Grid item xs={12} md={11} m={2}>

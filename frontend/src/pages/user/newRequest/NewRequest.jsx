@@ -20,6 +20,49 @@ const NewRequest = () => {
     fastingBloodSugar: "",
   });
 
+  const fields = [
+    {
+      label: "Age Limit",
+      name: "ageLimit",
+      value: formData.ageLimit,
+    },
+    {
+      label: "Price",
+      name: "price",
+      value: formData.price,
+    },
+    {
+      label: "Disease Category",
+      name: "diseaseCategory",
+      value: formData.diseaseCategory,
+    },
+    {
+      label: "Disease Name",
+      name: "diseaseName",
+      value: formData.diseaseName,
+    },
+    {
+      label: "Patient's City",
+      name: "patientCity",
+      value: formData.patientCity,
+    },
+    {
+      label: "Resting ECG",
+      name: "restingECG",
+      value: formData.restingECG,
+    },
+    {
+      label: "Cholestrol",
+      name: "cholesterol",
+      value: formData.cholesterol,
+    },
+    {
+      label: "Fasting Blood Sugar",
+      name: "fastingBloodSugar",
+      value: formData.fastingBloodSugar,
+    },
+  ];
+
   const handleInputChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
@@ -61,54 +104,16 @@ const NewRequest = () => {
         <Grid item xs={12} md={3.5} m={1}>
           <CustomDropdown label="Gender" />
         </Grid>
-        <TextFieldGrid
-          label="Age Limit"
-          name="ageLimit"
-          value={formData.ageLimit}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Price"
-          name="price"
-          value={formData.price}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Disease Category"
-          name="diseaseCategory"
-          value={formData.diseaseCategory}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Disease Name"
-          name="diseaseName"
-          value={formData.diseaseName}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Patient's City"
-          name="patientCity"
-          value={formData.patientCity}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Resting ECG"
-          name="restingECG"
-          value={formData.restingECG}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Cholestrol"
-          name="cholesterol"
-          value={formData.cholesterol}
-          onChange={handleInputChange}
-        />
-        <TextFieldGrid
-          label="Fasting Blood Sugar"
-          name="fastingBloodSugar"
-          value={formData.fastingBloodSugar}
-          onChange={handleInputChange}
-        />
+
+        {fields.map((field) => (
+          <TextFieldGrid
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            value={field.value}
+            onChange={handleInputChange}
+          />
+        ))}
         <Grid item xs={12} md={11} m={2}>
           <CustomButton
             backgroundColor="#217BF4"

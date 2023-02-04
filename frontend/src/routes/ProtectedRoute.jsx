@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "../util/axios";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
-export const ProtectedRoute = ({ component: Component, ...rest }) => {
+export const ProtectedRoute = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -23,8 +23,10 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
           Authorization: `Bearer ${userToken}`,
         },
       });
-      console.log("Protected Route: ", response.data);
-      if (response.data.status === "success") {
+      console.log("Protected Route: ", response.status);
+      if (response.status === 200) {
+        console.log("Hii ", response.data);
+        setIsLoading(false);
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
@@ -41,9 +43,13 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Routes>
       <Route
-        {...rest}
-        render={(props) =>
-          isLoggedIn ? <Component {...props} /> : navigate("/sehatchain/login")
+        path="*"
+        element={
+          isLoggedIn ? (
+            props.children
+          ) : (
+            <div>Not Logged In. Please Login to continue.</div>
+          )
         }
       />
     </Routes>

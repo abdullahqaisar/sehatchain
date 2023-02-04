@@ -148,7 +148,7 @@ export const Navbar = () => {
               src={Logo}
               alt="logo"
               onClick={() => {
-                handleClick("../user/dashboard");
+                handleClick("../dashboard");
               }}
             />
           </Box>
@@ -158,7 +158,7 @@ export const Navbar = () => {
               <NavLink
                 key={key}
                 onClick={() => {
-                  handleClick("../user/" + link);
+                  handleClick("../" + link);
                 }}
               >
                 {text}

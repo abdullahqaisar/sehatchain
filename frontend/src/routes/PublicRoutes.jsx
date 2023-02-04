@@ -13,7 +13,9 @@ export function PublicRoutes() {
     <Routes>
       <Route path="sehatchain">
         <Route index element={<Main />} />
-        <Route path="user/*" element={<ProtectedRoute element={<UserRoutes />} />} />
+        <Route path="user/*" element={<ProtectedRoute > 
+          <UserRoutes />
+        </ProtectedRoute>} />
         <Route path="hospital/*" element={<HospitalRoutes />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />

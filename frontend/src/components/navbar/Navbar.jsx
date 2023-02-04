@@ -23,7 +23,6 @@ import {
   styled,
 } from "@mui/material";
 
-
 export const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState({
     left: false,
@@ -143,9 +142,11 @@ export const Navbar = () => {
               src={Logo}
               alt="logo"
               onClick={() => {
-                const anchor = document.querySelector("#hero");
-                console.log("hi");
-                anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+                const anchor = document.querySelector("#home");
+                anchor.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
               }}
             />
           </Box>
