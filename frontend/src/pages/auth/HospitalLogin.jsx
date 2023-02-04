@@ -131,16 +131,6 @@ function Login() {
           >
             Sign in
           </Typography>
-          {/* <Typography
-            component="p"
-            sx={{
-              letterSpacing: 0,
-              lineHeight: 2,
-              color: "#001E3C",
-            }}
-          >
-            Connect your MetaMask wallet to continue, you will require a MetaMask wallet to Sign In
-          </Typography> */}
 
           <Grid
             container
@@ -174,7 +164,7 @@ function Login() {
               color: "#001E3C",
             }}
           >
-            Don't have an account?{" "}
+            Want to register?{" "}
             <Link
               style={{
                 cursor: "pointer",
@@ -184,29 +174,10 @@ function Login() {
               }}
               href="/sehatchain/register"
             >
-              Register Here!
+              s
             </Link>
           </Typography>
-          <Typography
-            component="p"
-            sx={{
-              letterSpacing: 0,
-              color: "#001E3C",
-            }}
-          >
-            Are you a hospital?{" "}
-            <Link
-              style={{
-                cursor: "pointer",
-                textTransform: "none",
-                border: 0,
-                textDecoration: "none",
-              }}
-              href="/sehatchain/hospital/login"
-            >
-              Login Here!
-            </Link>
-          </Typography>
+
         </Grid>
       </Grid>
     </Box>
