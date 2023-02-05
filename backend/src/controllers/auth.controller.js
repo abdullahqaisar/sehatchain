@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
+const Hospital = require("../models/hospital.model");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -42,9 +44,57 @@ exports.register = async (req, res) => {
   }
 };
 
+exports.registerHospital = async (req, res) => {
+  const { hospitalName, hospitalAddress, hospitalEmail, hospitalEthAddress } =
+    req.body;
+  const existingHospital = await Hospital.findOne({ hospitalEthAddress });
+  if (existingHospital) {
+    return res
+      .status(400)
+      .json({ msg: "Hospital with this address already exists!" });
+  }
+  let newHospital = await new Hospital({
+    hospitalName,
+    hospitalAddress,
+    hospitalEmail,
+    hospitalPassword,
+    hospitalEthAddress,
+  });
+
+  const salt = await bcrypt.genSalt(10);
+  newHospital.hospitalPassword = await bcrypt.hash(hospitalPassword, salt);
+
+  savedHospital = await newHospital.save();
+  if (!savedHospital) {
+    return res.status(500).json({ error: "Failed to save hospital" });
+  }
+  return res.status(200).json({
+    message: "Registeration successful!, Please wait for 24 hours for approval",
+  });
+};
+
+exports.hospitalLogin = async (req, res) => {
+  try {
+    const { hospitalEthAddress } = req.body;
+    const hospital = await Hospital.findOne({ hospitalEthAddress });
+    if (!hospital) {
+      return res
+        .status(401)
+        .json({ message: "Account does not exist! Please proceed to signup" });
+    }
+
+    const token = createToken(hospital.hospitalEthAddress, hospital._id);
+    return res.status(200).json({
+      message: "Login successful!",
+      token: token,
+    });
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 exports.login = async (req, res) => {
   try {
-    console.log(req.body);
     const { ethAddress } = req.body;
     const user = await User.findOne({ ethAddress });
     if (!user) {
@@ -71,7 +121,6 @@ exports.protectedRoute = async (req, res) => {
 
   // Extract the JWT from the authorization header
   const [, token] = authorizationHeader.split(" ");
-  console.log(token);
   if (!token) {
     return res.status(401).json({ message: "Missing token" });
   }
