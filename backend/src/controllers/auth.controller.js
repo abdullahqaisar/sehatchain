@@ -47,6 +47,7 @@ exports.register = async (req, res) => {
 exports.registerHospital = async (req, res) => {
   const { hospitalName, hospitalAddress, hospitalEmail, hospitalEthAddress } =
     req.body;
+  console.log(req.body);
   const existingHospital = await Hospital.findOne({ hospitalEthAddress });
   if (existingHospital) {
     return res
@@ -57,12 +58,8 @@ exports.registerHospital = async (req, res) => {
     hospitalName,
     hospitalAddress,
     hospitalEmail,
-    hospitalPassword,
     hospitalEthAddress,
   });
-
-  const salt = await bcrypt.genSalt(10);
-  newHospital.hospitalPassword = await bcrypt.hash(hospitalPassword, salt);
 
   savedHospital = await newHospital.save();
   if (!savedHospital) {
@@ -73,10 +70,17 @@ exports.registerHospital = async (req, res) => {
   });
 };
 
-exports.hospitalLogin = async (req, res) => {
+exports.loginHospital = async (req, res) => {
   try {
-    const { hospitalEthAddress } = req.body;
-    const hospital = await Hospital.findOne({ hospitalEthAddress });
+    const { hospitalEthAddress, hospitalEmail } = req.body;
+    console.log(req.body);
+    console.log(hospitalEthAddress);
+    console.log(hospitalEmail);
+    const hospital = await Hospital.findOne({
+      hospitalEthAddress,
+      hospitalEmail,
+    });
+    console.log(hospital);
     if (!hospital) {
       return res
         .status(401)
@@ -99,10 +103,16 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ ethAddress });
     if (!user) {
       return res
-        .status(401)
+        .status(404)
         .json({ message: "Account does not exist! Please proceed to signup" });
     }
 
+    if (!user.isApproved) {
+      return res.status(401).json({
+        message:
+          "Account not approved yet! Please wait until your account is approved",
+      });
+    }
     const token = createToken(user.ethAddress, user._id);
     return res.status(200).json({
       message: "Login successful!",
@@ -113,7 +123,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.protectedRoute = async (req, res) => {
+exports.userRoute = async (req, res) => {
   const authorizationHeader = req.header("Authorization");
   if (!authorizationHeader) {
     return res.status(401).json({ message: "Missing authorization header" });
@@ -135,4 +145,28 @@ exports.protectedRoute = async (req, res) => {
   }
 
   return res.status(200).json({ message: "Login Successful" });
+};
+
+exports.hospitalRoute = async (req, res) => {
+  const authorizationHeader = req.header("Authorization");
+  if (!authorizationHeader) {
+    return res.status(401).json({ message: "Missing authorization header" });
+  }
+
+  // Extract the JWT from the authorization header
+  const [, token] = authorizationHeader.split(" ");
+  if (!token) {
+    return res.status(401).json({ message: "Missing token" });
+  }
+
+  // Verify the JWT
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log("HIi", decoded);
+    req.hospitalId = decoded.hospitalId;
+    return res.status(200).json({ message: "Login Successful" });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({ message: "Invalid token" });
+  }
 };

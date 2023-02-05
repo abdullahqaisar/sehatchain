@@ -26,10 +26,7 @@ const HospitalSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  hospitalPassword: {
-    type: String,
-    required: true,
-  },
+
   approved: {
     type: Boolean,
     default: false,
