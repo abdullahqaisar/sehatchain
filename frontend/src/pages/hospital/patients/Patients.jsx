@@ -30,7 +30,7 @@ const Patients = () => {
             text="Add Patient"
             bgColor="#DBEAFF"
             ml={6}
-            href="../newpatient"
+            href="../patients/add"
           />
         </Grid>
       </Grid>

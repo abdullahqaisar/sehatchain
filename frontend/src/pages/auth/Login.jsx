@@ -151,8 +151,6 @@ function Login() {
               type="submit"
               onClick={() => console.log("Sign in button clicked")}
             />
-
-            {/* add a line and add OR in center */}
             <Box
               sx={{
                 display: "flex",
