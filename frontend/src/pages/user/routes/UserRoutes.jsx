@@ -20,7 +20,7 @@ export function UserRoutes() {
         />
         {/* <Route path="models/*"> */}
           <Route
-            path="newrequest"
+            path="dashboard/newrequest"
             element={
               <ProtectedRoute>
                 <NewRequest />
@@ -28,7 +28,7 @@ export function UserRoutes() {
             }
           />
           <Route
-            path="completed"
+            path="dashboard/viewmodels"
             element={
               <ProtectedRoute>
                 <TrainingResults />
@@ -36,7 +36,7 @@ export function UserRoutes() {
             }
           />
           <Route
-            index
+          path="dashboard/completed"
             element={
               <ProtectedRoute>
                 <ViewTrainedModels />

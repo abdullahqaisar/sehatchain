@@ -1,4 +1,4 @@
-import { requests } from "./requests.data";
+import { requests } from "../../requests/requests.data";
 
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";

@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { SectionHeading } from "../../user/components/sectionHeading/SectionHeading";
 
-import { RequestList } from "../components/requestList/RequestList";
+import { RequestTable } from "./RequestTable";
 
 const Requests = () => {
   return (
@@ -13,16 +13,17 @@ const Requests = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <SectionHeading title="Completed Requests" align="center" />
+      <SectionHeading title="Received Requests" align="center" />
       <Typography
         variant="p"
         sx={{
           color: "#656464",
         }}
       >
-        All your completed model requests can be found here
+        Recent requests from users can be found here. You can accept or reject a
+        request by opening a request.
       </Typography>
-      <RequestList />
+      <RequestTable />
     </Box>
   );
 };
