@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { Box, Typography, Grid, TextField, Link } from "@mui/material";
-
-import heroImage from "../../assets/images/hero.png";
-
+import icon from "../../assets/images/logos/icon.png";
 import CustomButton from "../../components/elements/customButton/CustomButton";
-
+import { Box, Typography, TextField, Card, Link } from "@mui/material";
+import styled from "@emotion/styled";
 import Web3 from "web3";
 
+const Logo = styled("img")`
+  width: 4rem;
+  height: 4rem;
+  padding: 1rem;
+`;
+
+const Form = styled("form")``;
+
+const Submit = styled("div")`
+  margin: 1rem 0 2rem;
+`;
+
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [ethAddress, setEthAddress] = useState("");
   const [account, setAccount] = useState("");
@@ -82,104 +93,127 @@ function Login() {
   };
 
   return (
-    <Box>
-      <Grid
-        container
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      sx={{
+        backgroundColor: "#F1F6FD",
+        p: 0.5,
+      }}
+    >
+      <Card
         sx={{
-          alignItems: "center",
-          justifyContent: "center",
+          py: 2,
+          px: 4,
         }}
       >
-        <Grid
-          item
-          container
-          md={6}
+        <Logo src={icon} alt="icon" />
+        <Typography
+          component="h4"
+          variant="h4"
           sx={{
-            backgroundColor: "#001E3C",
-            minHeight: { xs: "50vh", md: "100vh" },
-            alignItems: "center",
-            justifyContent: "center",
+            textAlign: "center",
+            fontSize: { xs: 20, md: 30 },
+            fontWeight: "700",
+            color: "#001E3C",
           }}
         >
-          <Grid
-            item
-            sx={{
-              mb: 4,
-            }}
-          >
-            <Box>
-              <img
-                src={heroImage}
-                alt="main"
-                style={{
-                  maxWidth: "80%",
-                }}
-              />
-            </Box>
-          </Grid>
-        </Grid>
-        <Grid md={6} item>
-          <Typography
-            component="h3"
-            sx={{
-              fontSize: { xs: 30, md: 55 },
-              letterSpacing: 0,
-              fontWeight: "bold",
-              lineHeight: 2,
-              color: "#001E3C",
-            }}
-          >
-            Sign in
-          </Typography>
+          Sign In
+        </Typography>
+        <Form>
+          <TextField
+            label="Email"
+            variant="outlined"
+            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            sx={{ mt: 2 }}
+          />
+          <TextField
+            label="Password"
+            variant="outlined"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            required
+            sx={{ mt: 2 }}
+          />
+          <Submit>
+            <CustomButton
+              backgroundColor="#217BF4"
+              color="#fff"
+              sx={{ m: 2 }}
+              buttonText="Sign in"
+              type="submit"
+              onClick={() => console.log("Sign in button clicked")}
+            />
 
-          <Grid
-            container
-            md={12}
-            sx={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Grid
-              md={6}
-              item
+            {/* add a line and add OR in center */}
+            <Box
               sx={{
-                mx: { xs: 4, md: 0 },
-                mb: 2,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                my: 2,
               }}
             >
-              <CustomButton
-                backgroundColor="#217BF4"
-                color="#fff"
-                buttonText="Sign in With Metamask"
-                onClick={onConnect}
-              />
-            </Grid>
-          </Grid>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: 1.5,
+                  backgroundColor: "#D9D9D9",
+                  color: "#adadad",
+                }}
+              ></Box>
+              <Box
+                sx={{
+                  width: "auto",
+                  height: "auto",
+                  backgroundColor: "#fff",
+                  px: 2,
+                  color: "#adadad",
+                }}
+              >
+                OR
+              </Box>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: 1.5,
+                  backgroundColor: "#D9D9D9",
+                }}
+              ></Box>
+            </Box>
 
-          <Typography
-            component="p"
-            sx={{
-              fontSize: 16,
-              color: "#001E3C",
+            <CustomButton
+              backgroundColor="#217BF4"
+              sx={{ mt: 2 }}
+              color="#fff"
+              buttonText="Sign in with Metamask"
+              type="submit"
+              onClick={onConnect}
+            />
+          </Submit>
+        </Form>
+        <Typography component="p">
+          Want to register?{" "}
+          <Link
+            style={{
+              cursor: "pointer",
+              textTransform: "none",
+              border: 0,
+              textDecoration: "none",
             }}
+            href="/sehatchain/register"
           >
-            Want to register?{" "}
-            <Link
-              style={{
-                cursor: "pointer",
-                textTransform: "none",
-                border: 0,
-                textDecoration: "none",
-              }}
-              href="/sehatchain/register"
-            >
-              s
-            </Link>
-          </Typography>
-
-        </Grid>
-      </Grid>
+            Register Here!
+          </Link>
+        </Typography>
+      </Card>
     </Box>
   );
 }

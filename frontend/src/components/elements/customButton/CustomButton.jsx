@@ -11,6 +11,7 @@ const CustomButton = ({
   getStartedBtn,
   href,
   onClick,
+  sx,
 }) => {
   const CustomButton = styled(Button)(({ theme }) => ({
     backgroundColor: backgroundColor,
@@ -24,6 +25,7 @@ const CustomButton = ({
     textTransform: "none",
     display: "block",
     border: "2px solid transparent",
+ 
     "&:hover": {
       backgroundColor: "transparent",
       color: backgroundColor,
