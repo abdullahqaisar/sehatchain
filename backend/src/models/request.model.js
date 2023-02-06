@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const RequestSchema = new mongoose.Schema({
   gender: {
     type: String,
-    required: true,
   },
   ageLimit: {
     type: String,
