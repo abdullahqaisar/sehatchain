@@ -68,7 +68,6 @@ exports.request = async (req, res) => {
   try {
     const data = req.body;
     console.log(data);
-
     const request = new Request(data);
     const save = await request.save();
     if (!save) {
