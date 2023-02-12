@@ -9,14 +9,29 @@ import PageNotFound from "../pages/error/PageNotFound";
 import { UserRoutes } from "../pages/user/routes/UserRoutes";
 import { HospitalRoutes } from "../pages/hospital/routes/HospitalRoutes";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { HospitalProtectedRoute } from "./HospitalProtectedRoute";
 
 export function PublicRoutes() {
   return (
     <Routes>
       <Route path="sehatchain">
         <Route index element={<Main />} />
-        <Route path="user/*" element={<UserRoutes />} />
-        <Route path="hospital/*" element={<HospitalRoutes />} />
+        <Route
+          path="user/*"
+          element={
+            <ProtectedRoute>
+              <UserRoutes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="hospital/*"
+          element={
+            <HospitalProtectedRoute>
+              <HospitalRoutes />
+            </HospitalProtectedRoute>
+          }
+        />
         <Route path="hospital/login" element={<HospitalLogin />} />
         <Route path="hospital/register" element={<HospitalRegister />} />
         <Route path="login" element={<Login />} />

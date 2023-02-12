@@ -23,11 +23,9 @@ export function RequestTable() {
   }
 
   const columns = [
-    { name: "Patient ID", options: { filter: false } },
     { name: "Disease Name", options: { filter: false } },
     { name: "Disease Category", options: { filter: false } },
     { name: "Age Limit", options: { filter: false } },
-    { name: "Gender", options: { filter: false } },
     { name: "Patient City", options: { filter: false } },
     { name: "Price", options: { filter: false } },
   ];
@@ -57,11 +55,9 @@ export function RequestTable() {
           <TableBody>
             {requests.map((request) => (
               <TableRow>
-                <TableCell>{request._id}</TableCell>
                 <TableCell>{request.diseaseName}</TableCell>
                 <TableCell>{request.diseaseCategory}</TableCell>
                 <TableCell>{request.ageLimit}</TableCell>
-                <TableCell>{request.gender}</TableCell>
                 <TableCell>{request.patientCity}</TableCell>
                 <TableCell>{request.price}</TableCell>
               </TableRow>

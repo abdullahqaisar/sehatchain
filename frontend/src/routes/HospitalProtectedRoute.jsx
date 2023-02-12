@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "../util/axios";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
-export const ProtectedRoute = (props) => {
+export const HospitalProtectedRoute = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -13,14 +13,14 @@ export const ProtectedRoute = (props) => {
   });
 
   const checkLogin = async () => {
-    const userToken = localStorage.getItem("token");
-    if (!userToken || userToken === "undefined") {
-      return navigate("/sehatchain/login");
+    const token = localStorage.getItem("hospitalToken");
+    if (!token || token === "undefined") {
+      return navigate("/sehatchain/hospital/login");
     }
     try {
-      const response = await axios.get("/auth/user/protected", {
+      const response = await axios.get("/auth/hospital/protected", {
         headers: {
-          Authorization: `Bearer ${userToken}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       console.log("Protected Route: ", response.status);
