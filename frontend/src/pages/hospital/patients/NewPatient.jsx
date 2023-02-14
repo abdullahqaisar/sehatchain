@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 import PatientFields from "./PatientFields";
@@ -56,6 +56,32 @@ const NewPatient = () => {
       }}
     >
       <SectionHeading title="Add a patient" align="center" />
+      <Typography
+        mt={2}
+        variant="h6"
+        sx={{
+          fontWeight: "bold",
+          color: "#217BF4",
+        }}
+      >
+        Add Multiple patients by uploading a CSV file
+      </Typography>
+      <Grid container alignItems="center" justifyContent="center" mt={2}>
+        <Grid item xs={12} md={11} m={2}>
+          <Button variant="contained" component="label">
+            <input  accept="csv/*" multiple type="file" />
+          </Button>
+        </Grid>
+        <Grid item xs={12} md={11} m={2}>
+          <CustomButton
+            backgroundColor="#217BF4"
+            color="#fff"
+            buttonText="Upload"
+            onClick={handleSubmit}
+          />
+        </Grid>
+      </Grid>
+
       <Typography
         mt={2}
         variant="h6"

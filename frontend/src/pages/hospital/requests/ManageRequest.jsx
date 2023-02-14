@@ -15,6 +15,30 @@ const ManageRequest = () => {
   return (
     <div>
       <h2>Request Data</h2>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ width: "50%" }}>
+          <h3>Patient Details</h3>
+
+          <p>
+            <b>Patient Name:</b> {request.patientName}
+          </p>
+          <p>
+            <b>Patient Age:</b> {request.patientAge}
+          </p>
+        </div>
+        <div style={{ width: "50%" }}>
+          <h3>Request Details</h3>
+          <p>
+            <b>Request ID:</b> {request.id}
+          </p>
+          <p>
+            <b>Request Date:</b> {request.date}
+          </p>
+          <p>
+            <b>Request Status:</b> {request.status}
+          </p>
+        </div>
+      </div>
 
       <div style={{ textAlign: "right" }}>
         <Button variant="contained" color="primary">
