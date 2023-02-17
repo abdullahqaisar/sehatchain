@@ -9,6 +9,6 @@ router.post("/login", AuthController.login);
 router.get("/user/protected", AuthController.userRoute);
 router.post("/hospital/register", AuthController.registerHospital);
 router.post("/hospital/login", AuthController.loginHospital);
-router.post("/hospital/protected", AuthController.hospitalRoute);
+router.get("/hospital/protected", AuthController.hospitalRoute);
 
 module.exports = router;

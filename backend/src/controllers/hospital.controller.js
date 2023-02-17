@@ -1,3 +1,4 @@
+const fs = require("fs");
 const Hospital = require("../models/hospital.model");
 const Request = require("../models/request.model");
 
@@ -10,6 +11,35 @@ exports.addPatient = async (req, res) => {
   console.log(data);
   res.status(200).json({
     message: "Patient Added Successfully",
+  });
+};
+
+exports.addCSV = async (req, res) => {
+  console.log(req.files);
+  console.log(req.body);
+  if (!req.files || !req.files.csv) {
+    return res.status(400).json({ error: "CSV file not provided" });
+  }
+
+  const csvFile = req.files.csv;
+  const csvFilePath = `/path/to/save/csv/file/${csvFile.name}`;
+
+  csvFile.mv(csvFilePath, (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Failed to save CSV file" });
+    }
+
+    const columnTitles = [];
+
+    fs.createReadStream(csvFilePath)
+      .pipe(csv())
+      .on("headers", (headers) => {
+        columnTitles.push(...headers);
+      })
+      .on("end", () => {
+        res.json({ columnTitles });
+      });
   });
 };
 

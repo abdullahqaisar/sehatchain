@@ -11,7 +11,8 @@ const createToken = (ethAddress, userId) => {
 };
 
 const handleError = (err) => {
-  console.error(error);
+  console.error(err);
+  console.log(err);
   return res.status(500).json({ error: err.message });
 };
 
@@ -40,6 +41,7 @@ exports.register = async (req, res) => {
       token,
     });
   } catch (error) {
+    console.log(error);
     handleError(error);
   }
 };
@@ -87,6 +89,14 @@ exports.loginHospital = async (req, res) => {
         .json({ message: "Account does not exist! Please proceed to signup" });
     }
 
+    // if (!hospital.approved) {
+    //   console.log("Not approved");
+    //   return res.status(401).json({
+    //     message:
+    //       "Account not approved yet! Please wait until your account is approved",
+    //   });
+    // }
+
     const token = createToken(hospital.hospitalEthAddress, hospital._id);
     return res.status(200).json({
       message: "Login successful!",
@@ -107,12 +117,6 @@ exports.login = async (req, res) => {
         .json({ message: "Account does not exist! Please proceed to signup" });
     }
 
-    if (!user.isApproved) {
-      return res.status(401).json({
-        message:
-          "Account not approved yet! Please wait until your account is approved",
-      });
-    }
     const token = createToken(user.ethAddress, user._id);
     return res.status(200).json({
       message: "Login successful!",
@@ -149,6 +153,7 @@ exports.userRoute = async (req, res) => {
 
 exports.hospitalRoute = async (req, res) => {
   const authorizationHeader = req.header("Authorization");
+  console.log(authorizationHeader);
   if (!authorizationHeader) {
     return res.status(401).json({ message: "Missing authorization header" });
   }

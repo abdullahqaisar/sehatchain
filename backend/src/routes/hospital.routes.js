@@ -5,5 +5,6 @@ const HospitalController = require("../controllers/hospital.controller");
 
 router.post("/addpatient", HospitalController.addPatient);
 router.get("/getrequests", HospitalController.getRequests);
+router.post("/uploadcsv", HospitalController.addCSV);
 
 module.exports = router;
