@@ -26,8 +26,35 @@ const NewPatient = () => {
     fastingBloodSugar: "",
   });
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const handleInputChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleUpload = async (event) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+  
+    const formData = new FormData();
+    formData.append('csv', file);
+  
+    try {
+      const response = await fetch('http://localhost:5000/api/hospital/uploadcsv', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const { columnTitles } = await response.json();
+  
+      console.log(columnTitles); // Log column titles to the console
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSubmit = async () => {
@@ -67,17 +94,22 @@ const NewPatient = () => {
         Add Multiple patients by uploading a CSV file
       </Typography>
       <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <Grid item xs={12} md={11} m={2}>
+        <Grid item xs={6} md={2}>
           <Button variant="contained" component="label">
-            <input  accept="csv/*" multiple type="file" />
+            <input
+              accept="csv/*"
+              multiple
+              type="file"
+              onChange={handleFileChange}
+            />
           </Button>
         </Grid>
-        <Grid item xs={12} md={11} m={2}>
+        <Grid item xs={12} md={2}>
           <CustomButton
             backgroundColor="#217BF4"
             color="#fff"
             buttonText="Upload"
-            onClick={handleSubmit}
+            onClick={handleUpload}
           />
         </Grid>
       </Grid>
