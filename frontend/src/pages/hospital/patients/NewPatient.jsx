@@ -1,77 +1,44 @@
 import { useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-
-import PatientFields from "./PatientFields";
-import DiseaseFields from "./DiseaseFIelds";
+import axios from "../../../util/axios";
 
 import { CustomButton } from "../../../components/elements/customButton";
-import CustomDropdown from "../../../components/elements/customDropdown/CustomDropdown";
 import { SectionHeading } from "../../user/components/sectionHeading/SectionHeading";
-import TextFieldGrid from "../../../components/elements/textFieldGrid/TextFieldGrid";
 
 const NewPatient = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    age: "",
-    email: "",
-    address: "",
-    contact: "",
-    gender: "",
-    diseaseName: "",
-    diseaseCategory: "",
-    restingECG: "",
-    maxHeartRate: "",
-    cholesterol: "",
-    fastingBloodSugar: "",
-  });
+  const [file, setFile] = useState(null);
 
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleInputChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+    console.log(e.target.files[0]);
   };
 
   const handleUpload = async (event) => {
     event.preventDefault();
-    const file = event.target.files[0];
-  
-    const formData = new FormData();
-    formData.append('csv', file);
-  
-    try {
-      const response = await fetch('http://localhost:5000/api/hospital/uploadcsv', {
-        method: 'POST',
-        body: formData,
-      });
-  
-      const { columnTitles } = await response.json();
-  
-      console.log(columnTitles); // Log column titles to the console
-    } catch (error) {
-      console.error(error);
+    console.log("hospital id:", localStorage.getItem("hospitalToken"));
+    if (!file) {
+      console.log("No file selected");
     }
-  };
 
-  const handleSubmit = async () => {
-    console.log("submit");
-    const response = await fetch(
-      "http://localhost:5000/api/hospital/addpatient",
-      {
-        method: "POST",
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios({
+        method: "post",
+        url: "/hospital/uploadcsv",
+        data: formData,
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${localStorage.getItem("hospitalToken")}`,
         },
-        body: JSON.stringify(formData),
-      }
-    );
-    console.log(formData);
-    const data = await response.json();
-    console.log(data);
+      });
+
+      console.log("response:", response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -94,65 +61,20 @@ const NewPatient = () => {
         Add Multiple patients by uploading a CSV file
       </Typography>
       <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <Grid item xs={6} md={2}>
-          <Button variant="contained" component="label">
-            <input
-              accept="csv/*"
-              multiple
-              type="file"
-              onChange={handleFileChange}
-            />
-          </Button>
+        <Grid item xs={6} md={2} mx={4}>
+          {/* <Button variant="outline" component="label" py={12}> */}
+          <form onSubmit={handleUpload}>
+            <input type={"file"} accept={".csv"} onChange={handleFileChange} />
+            <input type="submit" value="Upload File" />
+          </form>
+          {/* </Button> */}
         </Grid>
-        <Grid item xs={12} md={2}>
+        <Grid item xs={6} md={2} mx={4} my={2}>
           <CustomButton
             backgroundColor="#217BF4"
             color="#fff"
             buttonText="Upload"
             onClick={handleUpload}
-          />
-        </Grid>
-      </Grid>
-
-      <Typography
-        mt={2}
-        variant="h6"
-        sx={{
-          fontWeight: "bold",
-          color: "#217BF4",
-        }}
-      >
-        Personal Information
-      </Typography>
-
-      <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <PatientFields
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
-      </Grid>
-      <Typography
-        mt={2}
-        variant="h6"
-        sx={{
-          fontWeight: "bold",
-          color: "#217BF4",
-        }}
-      >
-        Medical Information
-      </Typography>
-      <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <DiseaseFields
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
-
-        <Grid item xs={12} md={11} m={2}>
-          <CustomButton
-            backgroundColor="#217BF4"
-            color="#fff"
-            buttonText="Add Patient"
-            onClick={handleSubmit}
           />
         </Grid>
       </Grid>
