@@ -31,6 +31,11 @@ const HospitalSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  csvPath: {
+    type: String,
+    default: "",
+  },
 });
 
 const Hospital = mongoose.model("Hospital", HospitalSchema);

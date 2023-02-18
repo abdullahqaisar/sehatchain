@@ -15,32 +15,32 @@ exports.addPatient = async (req, res) => {
 };
 
 exports.addCSV = async (req, res) => {
-  console.log(req.files);
-  console.log(req.body);
-  if (!req.files || !req.files.csv) {
-    return res.status(400).json({ error: "CSV file not provided" });
+  const file = req.file;
+  console.log(file);
+  if (!file) {
+    return res.status(400).json({
+      message: "No file uploaded",
+    });
   }
 
-  const csvFile = req.files.csv;
-  const csvFilePath = `/path/to/save/csv/file/${csvFile.name}`;
-
-  csvFile.mv(csvFilePath, (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Failed to save CSV file" });
+  const hospitalId = req.ethAddress;
+  try {
+    const hospital = await Hospital.findOne({ hospitalEthAddress: hospitalId });
+    if (!hospital) {
+      return res.status(404).json({ message: "No hospital found!" });
     }
 
-    const columnTitles = [];
-
-    fs.createReadStream(csvFilePath)
-      .pipe(csv())
-      .on("headers", (headers) => {
-        columnTitles.push(...headers);
-      })
-      .on("end", () => {
-        res.json({ columnTitles });
-      });
-  });
+    hospital.csvPath = file.path;
+    await hospital.save();
+    res.status(200).json({
+      message: "File uploaded successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
 };
 
 exports.getRequests = async (req, res) => {
