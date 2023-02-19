@@ -63,10 +63,7 @@ const NewPatient = () => {
       <Grid container alignItems="center" justifyContent="center" mt={2}>
         <Grid item xs={6} md={2} mx={4}>
           {/* <Button variant="outline" component="label" py={12}> */}
-          <form onSubmit={handleUpload}>
-            <input type={"file"} accept={".csv"} onChange={handleFileChange} />
-            <input type="submit" value="Upload File" />
-          </form>
+          <input type={"file"} accept={".csv"} onChange={handleFileChange} />
           {/* </Button> */}
         </Grid>
         <Grid item xs={6} md={2} mx={4} my={2}>

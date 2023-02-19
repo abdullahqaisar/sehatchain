@@ -14,6 +14,7 @@ export const ProtectedRoute = (props) => {
 
   const checkLogin = async () => {
     const userToken = localStorage.getItem("token");
+    console.log("User Token: ", userToken);
     if (!userToken || userToken === "undefined") {
       return navigate("/sehatchain/login");
     }

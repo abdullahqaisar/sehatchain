@@ -1,74 +1,28 @@
-import React, { useState } from "react";
-
-import { Grid, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
-import { CustomButton } from "../../../components/elements/customButton";
-import CustomDropdown from "../../../components/elements/customDropdown/CustomDropdown";
 import { SectionHeading } from "../components/sectionHeading/SectionHeading";
-import TextFieldGrid from "../../../components/elements/textFieldGrid/TextFieldGrid";
+import { CustomButton } from "../../../components/elements/customButton";
+
+import {
+  Typography,
+  Grid,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
+
+import { styled } from "@mui/material/styles";
 
 const NewRequest = () => {
-  const [formData, setFormData] = useState({
-    gender: "",
-    ageLimit: "",
-    price: "",
-    diseaseCategory: "",
-    diseaseName: "",
-    patientCity: "",
-    restingECG: "",
-    cholesterol: "",
-    fastingBloodSugar: "",
-  });
-
-  const fields = [
-    {
-      label: "Age Limit",
-      name: "ageLimit",
-      value: formData.ageLimit,
-    },
-    {
-      label: "Price",
-      name: "price",
-      value: formData.price,
-    },
-    {
-      label: "Disease Category",
-      name: "diseaseCategory",
-      value: formData.diseaseCategory,
-    },
-    {
-      label: "Disease Name",
-      name: "diseaseName",
-      value: formData.diseaseName,
-    },
-    {
-      label: "Patient's City",
-      name: "patientCity",
-      value: formData.patientCity,
-    },
-    {
-      label: "Resting ECG",
-      name: "restingECG",
-      value: formData.restingECG,
-    },
-    {
-      label: "Cholestrol",
-      name: "cholesterol",
-      value: formData.cholesterol,
-    },
-    {
-      label: "Fasting Blood Sugar",
-      name: "fastingBloodSugar",
-      value: formData.fastingBloodSugar,
-    },
-  ];
-
-  const handleInputChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
   const handleSubmit = async () => {
-    console.log("submit");
+    console.log(selectedHospitals);
+    console.log(selectedSpec);
+
+    const formData = {
+      hospitals: selectedHospitals,
+      spec: selectedSpec,
+    };
     const response = await fetch("http://localhost:5000/api/user/request", {
       method: "POST",
       headers: {
@@ -76,10 +30,36 @@ const NewRequest = () => {
       },
       body: JSON.stringify(formData),
     });
-    console.log(formData);
     const data = await response.json();
     window.alert("Request Submitted");
     console.log(data);
+  };
+  const [selectedHospitals, setSelectedHospitals] = useState([]);
+  const [selectedHospitalsField, setSelectedHospitalsField] = useState("");
+  const [selectedSpec, setSelectedSpec] = useState("");
+
+  const [hospitalNames, setHospitalNames] = useState([]);
+  const [specs, setSpecs] = useState([]);
+
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      const response = await fetch("http://localhost:5000/api/user/hospitals");
+      const data = await response.json();
+      setHospitalNames(data.hospitalNames);
+      setSpecs(data.specs);
+    };
+
+    fetchMenuItems();
+  }, []);
+
+  const handleSelectChange = (event) => {
+    setSelectedHospitals(event.target.value);
+    setSelectedHospitalsField(event.target.value.join(", "));
+  };
+
+  const handleSpecSelectChange = (event) => {
+    setSelectedSpec(event.target.value);
+    console.log(selectedSpec);
   };
 
   return (
@@ -92,7 +72,7 @@ const NewRequest = () => {
     >
       <SectionHeading title="Request a model" align="center" />
       <Typography
-        variant="p"
+        variant="body1"
         sx={{
           color: "#656464",
         }}
@@ -100,29 +80,59 @@ const NewRequest = () => {
         Please provide all the specs to start the training of new model
       </Typography>
 
-      <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <Grid item xs={12} md={3.5} m={1}>
-          <CustomDropdown label="Gender" />
+      <Box sx={{ mx: 6, my: 2, backgroundColor: "#F1F6FD" }}>
+        <Grid container alignItems="left" justifyContent="left" mt={2}>
+          <Grid item xs={12} md={12} m={2} p={2}>
+            <div>
+              <FormControl sx={{ mt: 2, minWidth: 300, mx: 6 }}>
+                <InputLabel id="hospitals-select-label">Hospitals</InputLabel>
+                <Select
+                  labelId="hospitals-select"
+                  id="multi-select"
+                  multiple
+                  variant="standard"
+                  value={selectedHospitals}
+                  onChange={handleSelectChange}
+                  renderValue={(selected) => selected.join(", ")}
+                >
+                  {hospitalNames.map((hospital) => (
+                    <MenuItem key={hospital} value={hospital}>
+                      {hospital}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl sx={{ mt: 2, minWidth: 300, mx: 6 }}>
+                <InputLabel id="spec-select">Label you want prediction on</InputLabel>
+                <Select
+                  labelId="spec-select"
+                  id="spec-select"
+                  variant="standard"
+                  value={selectedSpec}
+                  onChange={handleSpecSelectChange}
+                >
+                  {specs.map((spec) => (
+                    <MenuItem key={spec} value={spec}>
+                      {spec}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+          </Grid>
         </Grid>
 
-        {fields.map((field) => (
-          <TextFieldGrid
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            value={field.value}
-            onChange={handleInputChange}
-          />
-        ))}
-        <Grid item xs={12} md={11} m={2}>
-          <CustomButton
-            backgroundColor="#217BF4"
-            color="#fff"
-            buttonText="Make Request"
-            onClick={handleSubmit}
-          />
+        <Grid container alignItems="left" justifyContent="left" mt={2}>
+          <Grid item xs={12} md={12} m={2} p={2}>
+            <CustomButton
+              backgroundColor="#217BF4"
+              color="#fff"
+              buttonText="Make Request"
+              onClick={handleSubmit}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 };
