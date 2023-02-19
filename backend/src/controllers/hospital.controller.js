@@ -1,6 +1,7 @@
 const fs = require("fs");
 const Hospital = require("../models/hospital.model");
 const Request = require("../models/request.model");
+const csv = require("csv-parser");
 
 exports.addPatient = async (req, res) => {
   const data = req.body;
@@ -31,9 +32,21 @@ exports.addCSV = async (req, res) => {
     }
 
     hospital.csvPath = file.path;
-    await hospital.save();
-    res.status(200).json({
-      message: "File uploaded successfully",
+    const columnNames = [];
+    fs.createReadStream(file.path)
+      .pipe(csv())
+      .on("headers", (headers) => {
+        columnNames.push(...headers);
+        console.log(columnNames);
+      })
+      .on("end", () => {
+        console.log("CSV file successfully processed");
+        hospital.patientsSpecs = columnNames;
+        hospital.save();
+      });
+    return res.status(200).json({
+      message: "CSV file uploaded successfully",
+      hospital,
     });
   } catch (error) {
     console.log(error);

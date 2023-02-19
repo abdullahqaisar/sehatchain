@@ -110,6 +110,7 @@ exports.loginHospital = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { ethAddress } = req.body;
+    console.log(req.body);
     const user = await User.findOne({ ethAddress });
     if (!user) {
       return res
@@ -133,13 +134,11 @@ exports.userRoute = async (req, res) => {
     return res.status(401).json({ message: "Missing authorization header" });
   }
 
-  // Extract the JWT from the authorization header
   const [, token] = authorizationHeader.split(" ");
   if (!token) {
     return res.status(401).json({ message: "Missing token" });
   }
 
-  // Verify the JWT
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.userId = decoded.userId;
@@ -158,13 +157,11 @@ exports.hospitalRoute = async (req, res) => {
     return res.status(401).json({ message: "Missing authorization header" });
   }
 
-  // Extract the JWT from the authorization header
   const [, token] = authorizationHeader.split(" ");
   if (!token) {
     return res.status(401).json({ message: "Missing token" });
   }
 
-  // Verify the JWT
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     console.log("HIi", decoded);

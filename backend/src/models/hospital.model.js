@@ -36,6 +36,10 @@ const HospitalSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  patientsSpecs: {
+    type: Array,
+    default: [],
+  },
 });
 
 const Hospital = mongoose.model("Hospital", HospitalSchema);

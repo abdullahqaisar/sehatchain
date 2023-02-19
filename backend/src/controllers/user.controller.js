@@ -1,6 +1,7 @@
 /* eslint-disable linebreak-style */
 var nodemailer = require("nodemailer");
 const Request = require("../models/request.model");
+const Hospital = require("../models/hospital.model");
 require("dotenv").config();
 
 const validate = (method) => {
@@ -78,5 +79,30 @@ exports.request = async (req, res) => {
     });
   } catch (e) {
     res.status(500).json({ error: e.message });
+  }
+};
+
+exports.getHospitalData = async (req, res) => {
+  try {
+    console.log("here");
+    const data = await Hospital.find();
+    if (!data) {
+      console.log("No data found!");
+      return res.status(500).json({ msg: "No data found!" });
+    }
+    let hospitalNames = [];
+    let specs = data[0].patientsSpecs;
+    data.forEach((hospital) => {
+      hospitalNames.push(hospital.hospitalName);
+    });
+
+    console.log(hospitalNames);
+    return res.status(200).json({
+      hospitalNames,
+      specs,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({ error: e.message });
   }
 };
