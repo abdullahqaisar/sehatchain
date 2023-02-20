@@ -1,41 +1,22 @@
 const mongoose = require("mongoose");
 
 const RequestSchema = new mongoose.Schema({
-  gender: {
-    type: String,
+  hospitals: {
+    type: Array,
+    required: true,
   },
-  ageLimit: {
+  spec: {
     type: String,
     required: true,
   },
-  price: {
-    type: String,
-    required: true,
+  approved: {
+    type: Boolean,
+    default: false,
   },
-  diseaseCategory: {
+  status: {
     type: String,
-    required: true,
-  },
-  diseaseName: {
-    type: String,
-    required: true,
-  },
-  patientCity: {
-    type: String,
-    required: true,
-  },
-  restingECG: {
-    type: String,
-    required: true,
-  },
-  cholesterol: {
-    type: String,
-    required: true,
-  },
-  fastingBloodSugar: {
-    type: String,
-    required: true,
+    default: "pending",
   },
 });
 
-module.exports = mongoose.model("Request", RequestSchema);
+module.exports = Request = mongoose.model("request", RequestSchema);

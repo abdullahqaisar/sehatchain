@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const authRoutes = require("./src/routes/auth.routes");
 const userRoutes = require("./src/routes/user.routes");
 const hospitalRoutes = require("./src/routes/hospital.routes");
+const { PythonShell } = require("python-shell");
 
 require("dotenv").config();
 
@@ -25,6 +26,23 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
+
+app.post("/api/predict", (req, res) => {
+  const toPredict = req.body.toPredict;
+  const csvPath = req.body.csvPath;
+
+  let options = {
+    mode: "text",
+    args: [toPredict, csvPath],
+    pythonOptions: ["-u"],
+    scriptPath: "src/script/",
+  };
+
+  PythonShell.run("predictionModel.py", options).then((messages) => {
+    console.log(messages);
+    res.send(messages);
+  });
+});
 
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);

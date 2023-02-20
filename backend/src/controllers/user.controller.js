@@ -67,9 +67,13 @@ exports.contactus = async (req, res) => {
 
 exports.request = async (req, res) => {
   try {
-    const data = req.body;
-    console.log(data);
-    const request = new Request(data);
+    const { hospitals, spec } = req.body;
+    console.log(spec);
+    const request = new Request({
+      hospitals,
+      spec,
+    });
+
     const save = await request.save();
     if (!save) {
       return res.status(500).json({ msg: "Request not saved!" });
@@ -78,6 +82,7 @@ exports.request = async (req, res) => {
       message: "Request successfully sent!",
     });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 };
@@ -93,7 +98,7 @@ exports.getHospitalData = async (req, res) => {
     let hospitalNames = [];
     let specs = data[0].patientsSpecs;
     data.forEach((hospital) => {
-      hospitalNames.push(hospital.hospitalName);
+      hospitalNames.push(hospital.hospitalName + ", " + hospital._id);
     });
 
     console.log(hospitalNames);
