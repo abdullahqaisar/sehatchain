@@ -20,7 +20,7 @@ const NewRequest = () => {
     console.log(selectedSpec);
 
     const formData = {
-      hospitals: selectedHospitals,
+      hospitals: selectedHospitalsId,
       spec: selectedSpec,
     };
     const response = await fetch("http://localhost:5000/api/user/request", {
@@ -35,17 +35,34 @@ const NewRequest = () => {
     console.log(data);
   };
   const [selectedHospitals, setSelectedHospitals] = useState([]);
+  const [selectedHospitalsId, setSelectedHospitalsId] = useState([]);
   const [selectedHospitalsField, setSelectedHospitalsField] = useState("");
   const [selectedSpec, setSelectedSpec] = useState("");
 
-  const [hospitalNames, setHospitalNames] = useState([]);
+  const [hospitalMap, setHospitalMap] = useState({});
+  const [hospitals, setHospitals] = useState([]);
   const [specs, setSpecs] = useState([]);
 
   useEffect(() => {
     const fetchMenuItems = async () => {
       const response = await fetch("http://localhost:5000/api/user/hospitals");
       const data = await response.json();
-      setHospitalNames(data.hospitalNames);
+      console.log(data);
+      // 'PIMS, 63dfac3735dfd628903862f8' hospital names are in this format
+      // so we need to split them to get the hospital names
+      const hospitals = data.hospitalNames.map((hospital) => {
+        return hospital.split(",")[0];
+      });
+
+      data.hospitalNames.forEach((hospital) => {
+        // 'PIMS, 63dfac3735dfd628903862f8' hospital names are in this format
+        // so we need to split them to get the hospital names and id
+        // remove the space after the comma
+        const [name, id] = hospital.split(", ");
+        hospitalMap[name] = id;
+      });
+
+      setHospitals(data.hospitalNames);
       setSpecs(data.specs);
     };
 
@@ -54,7 +71,14 @@ const NewRequest = () => {
 
   const handleSelectChange = (event) => {
     setSelectedHospitals(event.target.value);
-    setSelectedHospitalsField(event.target.value.join(", "));
+    console.log(event.target.value);
+    setSelectedHospitalsField(
+      event.target.value.map((hospital) => hospitalMap[hospital])
+    );
+    setSelectedHospitalsId(
+      event.target.value.map((hospital) => hospitalMap[hospital])
+    );
+    console.log("selected", selectedHospitalsField);
   };
 
   const handleSpecSelectChange = (event) => {
@@ -95,15 +119,20 @@ const NewRequest = () => {
                   onChange={handleSelectChange}
                   renderValue={(selected) => selected.join(", ")}
                 >
-                  {hospitalNames.map((hospital) => (
-                    <MenuItem key={hospital} value={hospital}>
-                      {hospital}
+                  {hospitals.map((hospital) => (
+                    <MenuItem
+                      key={hospital.split(",")[1]}
+                      value={hospital.split(",")[0]}
+                    >
+                      {hospital.split(",")[0]}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
               <FormControl sx={{ mt: 2, minWidth: 300, mx: 6 }}>
-                <InputLabel id="spec-select">Label you want prediction on</InputLabel>
+                <InputLabel id="spec-select">
+                  Label you want prediction on
+                </InputLabel>
                 <Select
                   labelId="spec-select"
                   id="spec-select"

@@ -24,7 +24,7 @@ const NewPatient = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-
+      console.log('form',formData);
       const response = await axios({
         method: "post",
         url: "/hospital/uploadcsv",
