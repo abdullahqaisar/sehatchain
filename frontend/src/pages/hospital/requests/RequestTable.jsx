@@ -9,11 +9,11 @@ import {
   TableRow,
   Button,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import axios from "../../../util/axios";
 
 export function RequestTable() {
   const [requests, setRequests] = useState([]);
+  const [approveRequestId, setApproveRequestId] = useState("");
 
   async function fetchData() {
     const response = await axios({
@@ -25,7 +25,6 @@ export function RequestTable() {
       },
     });
     setRequests(response.data.requests);
-    console.log(requests);
   }
 
   const columns = [
@@ -66,6 +65,7 @@ export function RequestTable() {
   const handleApprove = async (index) => {
     const requestId = requests[index]._id;
     console.log(requestId);
+    setApproveRequestId(requestId);
     const formData = new FormData();
     formData.append("requestId", requestId);
     const response = await axios({
@@ -77,7 +77,22 @@ export function RequestTable() {
         authorization: `Bearer ${localStorage.getItem("hospitalToken")}`,
       },
     });
-    console.log(response);
+    if (response.status === 200) {
+      console.log("Hii ", response.data);
+      // start model training
+      const formData = new FormData();
+      formData.append("requestId", approveRequestId);
+      const trainingResponse = await axios({
+        method: "post",
+        url: "/hospital/trainmodel",
+        data: formData,
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("hospitalToken")}`,
+        },
+      });
+      console.log(trainingResponse);
+    }
   };
 
   const handleReject = (index) => {

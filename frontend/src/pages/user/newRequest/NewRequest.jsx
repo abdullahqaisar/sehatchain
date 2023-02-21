@@ -47,17 +47,12 @@ const NewRequest = () => {
     const fetchMenuItems = async () => {
       const response = await fetch("http://localhost:5000/api/user/hospitals");
       const data = await response.json();
-      console.log(data);
-      // 'PIMS, 63dfac3735dfd628903862f8' hospital names are in this format
-      // so we need to split them to get the hospital names
+
       const hospitals = data.hospitalNames.map((hospital) => {
         return hospital.split(",")[0];
       });
 
       data.hospitalNames.forEach((hospital) => {
-        // 'PIMS, 63dfac3735dfd628903862f8' hospital names are in this format
-        // so we need to split them to get the hospital names and id
-        // remove the space after the comma
         const [name, id] = hospital.split(", ");
         hospitalMap[name] = id;
       });
