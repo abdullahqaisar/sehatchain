@@ -59,8 +59,6 @@ exports.addCSV = async (req, res) => {
 
 exports.getRequests = async (req, res) => {
   const hospitalId = req.userId;
-  // find all requests where hospitalId is in hospitals array
-  // 63dfac3735dfd628903862f8 is the hospital id
   console.log(hospitalId);
   const requests = await Request.find({
     hospitals: { $in: [hospitalId] },
@@ -76,22 +74,16 @@ exports.getRequests = async (req, res) => {
 };
 
 exports.approveRequest = async (req, res) => {
+  console.log("approve");
   const reqId = req.body.requestId;
-  const hospitalId = req.ethAddress;
+  const hospitalId = req.userId;
   const request = await Request.findById(reqId);
   if (!request) {
     return res.status(404).json({ message: "No request found!" });
   }
-  request.approved = true;
+  request.hospitals = request.hospitals.filter((id) => id !== hospitalId);
+  request.approved.push(hospitalId);
   await request.save();
-  const hospital = await Hospital.findOne({
-    hospitalEthAddress: hospitalId,
-  });
-  if (!hospital) {
-    return res.status(404).json({ message: "No hospital found!" });
-  }
-  hospital.patientsSpecs = request.spec;
-  await hospital.save();
   return res.status(200).json({
     message: "Request Approved!",
     request,
@@ -109,4 +101,37 @@ exports.rejectRequest = async (req, res) => {
     message: "Request Rejected!",
     request,
   });
+};
+
+exports.trainModel = async (req, res) => {
+  try {
+    const reqId = req.body.requestId;
+    console.log("Request Id: ", reqId);
+    const request = await Request.findById(reqId);
+    if (!request) {
+      return res.status(404).json({ message: "No request found!" });
+    }
+
+    const spec = request.spec;
+
+    //return the output of the python script to a const model variable
+
+    let options = {
+      mode: "text",
+      args: [spec],
+      pythonOptions: ["-u"],
+    };
+
+    PythonShell.run("src/script/predictionModel.py", options).then(
+      (messages) => {
+        console.log(messages);
+        res.send(messages);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
 };

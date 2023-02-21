@@ -8,7 +8,7 @@ const uploadFile = require("../middlewares/uploadFile");
 const HospitalController = require("../controllers/hospital.controller");
 
 router.post("/addpatient", HospitalController.addPatient);
-router.get("/getrequests", auth,HospitalController.getRequests);
+router.get("/getrequests", auth, HospitalController.getRequests);
 router.post(
   "/uploadcsv",
   auth,
@@ -17,5 +17,7 @@ router.post(
 );
 
 router.post("/approverequest", auth, HospitalController.approveRequest);
+router.post("/rejectrequest", auth, HospitalController.rejectRequest);
+router.post("/trainmodel", auth, HospitalController.trainModel);
 
 module.exports = router;

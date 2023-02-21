@@ -10,8 +10,7 @@ const RequestSchema = new mongoose.Schema({
     required: true,
   },
   approved: {
-    type: Boolean,
-    default: false,
+    type: Array,
   },
   status: {
     type: String,

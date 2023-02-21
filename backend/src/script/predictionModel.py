@@ -12,9 +12,8 @@ from sklearn.linear_model import LogisticRegression
 import sys
 
 arg1 = sys.argv[1]
-arg2 = sys.argv[2]
-print("arg1:", arg2)
-to_predict = 'age'
+print("arg1:", arg1)
+to_predict = arg1
 data = pd.read_csv('src\script\clevelandfinal.csv')
 df1 = pd.DataFrame(data)
 
@@ -22,6 +21,7 @@ df1 = pd.DataFrame(data)
 # cols=['age','gender','chest_pain_type','resting_BP','serum_cholestoral','fasting_BP','resting_electrocardiographic','maximum_heartRate','exercise_induced_angina','oldpeak','slope_peak_ex','no_of_major_vessels','thal','num']
 linearfeatures = ['age', 'resting_BP',
                   'serum_cholestoral', 'maximum_heartRate', 'oldpeak']
+
 logisticfeatures = ['gender', 'chest_pain_type', 'fasting_BP', 'resting_electrocardiographic',
                     'exercise_induced_angina', 'slope_peak_ex', 'no_of_major_vessels', 'thal', 'num']
 dflinear = df1[linearfeatures]
@@ -37,16 +37,17 @@ X_newTest = test_set.drop(to_predict, axis='columns')
 Y_newTest = test_set[to_predict]
 
 
-if (to_predict in linearfeatures):
+if(to_predict in linearfeatures):
+    logreg = LogisticRegression()
+    logreg.fit(X_newTrain, Y_newTrain)
+
+    # Extract the model parameters as a dictionary
+    model_params = logreg.get_params()
+    print(model_params)
+else :
     regr = LinearRegression()
     regr.fit(X_newTrain, Y_newTrain)
-    print(
-        f"Liner regression score of predict attribute {to_predict} is {regr.score(X_newTest, Y_newTest)}")
-    prediction = regr.predict(X_newTest)
-    print("Prediction:", prediction)
-else:
-    regressor = DecisionTreeRegressor()
-    regressor.fit(X_newTrain, Y_newTrain)
-    Y_pred = regressor.predict(X_newTest)
-    r2_score(Y_newTest, Y_pred)
-    print("Prediction:", Y_pred)
+    # Extract the model parameters as a dictionary
+    model_params = regr.get_params()
+    #Print the model parameters
+    print(model_params)
