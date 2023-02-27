@@ -45,6 +45,21 @@ export function RequestTable() {
         ),
       },
     },
+    {
+      name: "Reject",
+      options: {
+        filter: false,
+        customBodyRenderLite: (index) => (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleReject(index)}
+          >
+            Reject
+          </Button>
+        ),
+      },
+    },
   ];
 
   const handleApprove = async (index) => {
@@ -80,6 +95,10 @@ export function RequestTable() {
     }
   };
 
+  const handleReject = (index) => {
+    const requestId = requests[index].id;
+  };
+
   useEffect(() => {
     console.log("Hii");
     fetchData();
@@ -110,6 +129,15 @@ export function RequestTable() {
                     onClick={() => handleApprove(index)}
                   >
                     Approve
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleReject(index)}
+                  >
+                    Reject
                   </Button>
                 </TableCell>
               </TableRow>
