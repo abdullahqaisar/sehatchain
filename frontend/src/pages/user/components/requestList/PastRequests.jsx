@@ -20,24 +20,7 @@ const PastRequests = () => {
     { name: "No of People", options: { filter: false } },
     { name: "Price", options: { filter: false } },
     { name: "Date", options: { filter: false } },
-    // {
-    //   name: "Ações",
-    //   options: {
-    //     filter: true,
-    //     customBodyRender: (value, tableMeta, updateValue) => {
-    //       return (
-    //         <button
-    //           onClick={() => {
-    //             console.log("Hi")
-    //           }}
-    //           className="button muted-button"
-    //         >
-    //           Editar
-    //         </button>
-    //       );
-    //     },
-    //   },
-    // },
+
   ];
   const navigate = useNavigate();
   const handleClick = (link) => navigate(link);

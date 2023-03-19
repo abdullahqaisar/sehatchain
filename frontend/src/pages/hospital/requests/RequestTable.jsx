@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -10,10 +9,12 @@ import {
   Button,
 } from "@mui/material";
 import axios from "../../../util/axios";
+import { RequestModal } from "./RequestDetailsModal";
 
 export function RequestTable() {
   const [requests, setRequests] = useState([]);
-  const [approveRequestId, setApproveRequestId] = useState("");
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [open, setOpen] = useState(false);
 
   async function fetchData() {
     const response = await axios({
@@ -31,57 +32,45 @@ export function RequestTable() {
     { name: "Hospitals", options: { filter: false } },
     { name: "Label", options: { filter: false } },
     {
-      name: "Approve",
+      name: "View",
       options: {
         filter: false,
         customBodyRenderLite: (index) => (
           <Button
             variant="contained"
             color="primary"
-            onClick={() => handleApprove(index)}
+            onClick={() => setSelectedRequest(requests[index])}
           >
-            Approve
+            View
           </Button>
         ),
       },
     },
   ];
 
-  const handleApprove = async (index) => {
-    const requestId = requests[index]._id;
-    console.log(requestId);
-    setApproveRequestId(requestId);
+  const handleAcceptRequest = async () => {
+    if (!selectedRequest) return;
+
     const formData = new FormData();
-    formData.append("requestId", requestId);
-    const response = await axios({
+    formData.append("requestId", selectedRequest._id);
+    const trainingResponse = await axios({
       method: "post",
-      url: "/hospital/approverequest",
+      url: "/hospital/trainmodel",
       data: formData,
       headers: {
         "Content-Type": "application/json",
         authorization: `Bearer ${localStorage.getItem("hospitalToken")}`,
       },
     });
-    if (response.status === 200) {
-      console.log("Hii ", response.data);
-      // start model training
-      const formData = new FormData();
-      formData.append("requestId", approveRequestId);
-      const trainingResponse = await axios({
-        method: "post",
-        url: "/hospital/trainmodel",
-        data: formData,
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("hospitalToken")}`,
-        },
-      });
-      console.log(trainingResponse);
+    console.log(trainingResponse);
+    if (trainingResponse.status === 200) {
+      console.log(trainingResponse.status);
+      setOpen(false); // Close the modal here
+      fetchData();
     }
   };
 
   useEffect(() => {
-    console.log("Hii");
     fetchData();
   }, []);
 
@@ -107,9 +96,9 @@ export function RequestTable() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => handleApprove(index)}
+                    onClick={() => setSelectedRequest(requests[index])}
                   >
-                    Approve
+                    View
                   </Button>
                 </TableCell>
               </TableRow>
@@ -117,6 +106,14 @@ export function RequestTable() {
           </TableBody>
         </Table>
       </TableContainer>
+      {selectedRequest && (
+        <RequestModal
+          open={!!selectedRequest}
+          onClose={() => setOpen(false)}
+          onAccept={handleAcceptRequest}
+          selectedRequest={selectedRequest}
+        />
+      )}
     </>
   );
 }

@@ -23,10 +23,12 @@ const NewRequest = () => {
       hospitals: selectedHospitalsId,
       spec: selectedSpec,
     };
+    // send token in header
     const response = await fetch("http://localhost:5000/api/user/request", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(formData),
     });

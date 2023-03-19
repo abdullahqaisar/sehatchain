@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { SectionHeading } from "../components/sectionHeading/SectionHeading";
 
-import PastRequests from "../components/requestList/PastRequests";
+import { CompletedRequests } from "./CompletedRequests";
 
 const ViewTrainedModels = () => {
   return (
@@ -22,7 +22,7 @@ const ViewTrainedModels = () => {
       >
         All your completed model requests can be found here
       </Typography>
-      <PastRequests />
+      <CompletedRequests />
     </Box>
   );
 };

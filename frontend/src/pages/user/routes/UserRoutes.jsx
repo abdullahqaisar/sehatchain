@@ -4,6 +4,7 @@ import { UserLayout } from "../../../layouts/UserLayout";
 import PageNotFound from "../../error/PageNotFound";
 import { Dashboard, NewRequest, ViewTrainedModels } from "..";
 import TrainingResults from "../trainingResults/TrainingResults";
+import ViewCompleted from "../ViewTrainedModels/ViewCompleted";
 
 export function UserRoutes() {
   return (
@@ -13,6 +14,7 @@ export function UserRoutes() {
         <Route path="newrequest" element={<NewRequest />} />
         <Route path="viewmodels" element={<ViewTrainedModels />} />
         <Route path="results" element={<TrainingResults />} />
+        <Route path="viewmodels/:req_id" element={<ViewCompleted />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

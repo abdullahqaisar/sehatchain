@@ -4,7 +4,7 @@ import { Box, Grid } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-import PastRequests from "../components/requestList/PastRequests";
+import {AllRequests} from "./AllRequests";
 import { CustomIconButton } from "../components/CustomIconButton/CustomIconButton";
 import { SectionHeading } from "../components/sectionHeading/SectionHeading";
 
@@ -45,7 +45,7 @@ const Dashboard = () => {
           />
         </Grid>
       </Grid>
-      <PastRequests />
+      <AllRequests />
     </Box>
   );
 };
