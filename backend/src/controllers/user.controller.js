@@ -67,13 +67,18 @@ exports.contactus = async (req, res) => {
 
 exports.request = async (req, res) => {
   try {
-    const { hospitals, spec } = req.body;
-    console.log(spec);
+    const { hospitals, spec, totalHospitals } = req.body;
+    console.log(req.body);
+    const user = req.ethAddress;
+    console.log(user);
     const request = new Request({
+      user,
       hospitals,
       spec,
+      totalHospitals,
     });
 
+    console.log(totalHospitals)
     const save = await request.save();
     if (!save) {
       return res.status(500).json({ msg: "Request not saved!" });
@@ -84,6 +89,42 @@ exports.request = async (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(500).json({ error: e.message });
+  }
+};
+
+exports.getAllRequests = async (req, res) => {
+  try {
+    console.log("here");
+    const user = req.ethAddress;
+    const requests = await Request.find({ user: user });
+    if (!requests) {
+      console.log("No data found!");
+      return res.status(500).json({ msg: "No data found!" });
+    }
+    return res.status(200).json({
+      requests,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({ error: e.message });
+  }
+};
+
+exports.getCompletedRequests = async (req, res) => {
+  try {
+    console.log("completed");
+    const user = req.ethAddress;
+    const requests = await Request.find({ user: user, status: "completed" });
+    if (!requests) {
+      console.log("No data found!");
+      return res.status(500).json({ msg: "No data found!" });
+    }
+    return res.status(200).json({
+      requests,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({ error: e.message });
   }
 };
 
@@ -111,3 +152,24 @@ exports.getHospitalData = async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 };
+
+exports.getRequestById = async (req, res) => {
+  try {
+    console.log("here");
+    const id = req.params.id;
+    const request = await Request.findById(id);
+    if (!request) {
+      console.log("No data found!");
+      return res.status(500).json({ msg: "No data found!" });
+    }
+    console.log(request);
+    return res.status(200).json({
+      request,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({ error: e.message });
+  }
+};
+
+

@@ -73,23 +73,6 @@ exports.getRequests = async (req, res) => {
   });
 };
 
-exports.approveRequest = async (req, res) => {
-  console.log("approve");
-  const reqId = req.body.requestId;
-  const hospitalId = req.userId;
-  const request = await Request.findById(reqId);
-  if (!request) {
-    return res.status(404).json({ message: "No request found!" });
-  }
-  request.hospitals = request.hospitals.filter((id) => id !== hospitalId);
-  request.approved.push(hospitalId);
-  await request.save();
-  return res.status(200).json({
-    message: "Request Approved!",
-    request,
-  });
-};
-
 exports.rejectRequest = async (req, res) => {
   const request = await Request.findById(req.params.id);
   if (!request) {
@@ -103,35 +86,106 @@ exports.rejectRequest = async (req, res) => {
   });
 };
 
-exports.trainModel = async (req, res) => {
+exports.trainModel = async (req, res, next) => {
   try {
     const reqId = req.body.requestId;
-    console.log("Request Id: ", reqId);
-    const request = await Request.findById(reqId);
-    if (!request) {
-      return res.status(404).json({ message: "No request found!" });
+    const hospitalId = req.userId;
+
+    const request = await getRequest(reqId);
+    const model = await runPredictionModel(request.spec);
+    const trainedRequest = await updateRequest(request, hospitalId, model);
+
+    if (trainedRequest.approvedHospitals.length === trainedRequest.totalHospitals) {
+      await runAggregationModel(trainedRequest.model);
     }
 
-    const spec = request.spec;
-
-    //return the output of the python script to a const model variable
-
-    let options = {
-      mode: "text",
-      args: [spec],
-      pythonOptions: ["-u"],
-    };
-
-    PythonShell.run("src/script/predictionModel.py", options).then(
-      (messages) => {
-        console.log(messages);
-        res.send(messages);
-      }
-    );
+    return res.status(200).json({
+      message: "Request Accepted!",
+      request: trainedRequest,
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({
-      message: "Internal Server Error",
-    });
+    error.statusCode = error.statusCode || 500;
+    return next(error);
   }
 };
+
+async function getRequest(reqId) {
+  const request = await Request.findById(reqId);
+  if (!request) {
+    const error = new Error("No request found!");
+    error.statusCode = 404;
+    throw error;
+  }
+  return request;
+}
+
+async function runPredictionModel(spec) {
+  const predictionOptions = {
+    mode: "text",
+    args: [spec],
+    pythonOptions: ["-u"],
+  };
+
+  let predictionMessages;
+  try {
+    predictionMessages = await PythonShell.run(
+      "src/script/predictionModel.py",
+      predictionOptions
+    );
+    console.log(predictionMessages);
+  } catch (error) {
+    console.log(error);
+    throw new Error("Prediction model failed");
+  }
+
+  let length = predictionMessages.pop();
+  let intercept = predictionMessages.pop();
+  let coefficients = predictionMessages;
+
+  for (let i = 0; i < coefficients.length; i++) {
+    coefficients[i] = coefficients[i].split(",").map((x) => +x);
+  }
+
+  for (let i = 0; i < intercept.length; i++) {
+    if (intercept[i] === "[") {
+      intercept = intercept.slice(i + 1, intercept.length - 1);
+    }
+  }
+  intercept = parseFloat(intercept);
+
+  length = parseFloat(length);
+  coefficients = coefficients[0];
+  console.log(length);
+
+  return { coefficients, intercept, length };
+}
+
+async function updateRequest(request, hospitalId, model) {
+  request.model.push(model);
+  request.hospitals = request.hospitals.filter((id) => id !== hospitalId);
+  request.approvedHospitals.push(hospitalId);
+  const trainedRequest = await request.save();
+  console.log("Approve: ", trainedRequest.approvedHospitals.length);
+  return trainedRequest;
+}
+
+async function runAggregationModel(modelList) {
+  const aggregationOptions = {
+    mode: "text",
+    args: [],
+    pythonOptions: ["-u"],
+  };
+
+  for (let i = 0; i < modelList.length; i++) {
+    aggregationOptions.args.push(modelList[i].coefficients);
+    aggregationOptions.args.push(modelList[i].intercept);
+    aggregationOptions.args.push(modelList[i].length);
+  }
+
+  const aggregationMessages = await PythonShell.run(
+    "src/script/aggregationModel.py",
+    aggregationOptions
+  );
+  console.log(aggregationMessages);
+}

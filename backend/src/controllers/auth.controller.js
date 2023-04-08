@@ -11,16 +11,17 @@ const createToken = (ethAddress, userId) => {
 };
 
 const handleError = (err) => {
-  console.error(err);
   console.log(err);
-  return res.status(500).json({ error: err.message });
+  return err;
 };
 
 exports.register = async (req, res) => {
   try {
     let { name, email, ethAddress } = req.body;
+    console.log(req.body);
     const existingUser = await User.findOne({ ethAddress });
     if (existingUser) {
+      console.log("User with this address already exists!");
       return res
         .status(400)
         .json({ msg: "User with this address already exists!" });
@@ -31,18 +32,19 @@ exports.register = async (req, res) => {
       ethAddress,
     });
 
+    console.log(newUser);
     savedUser = await newUser.save();
     if (!savedUser) {
       return res.status(500).json({ error: "Failed to save user" });
     }
-    const token = createToken(user.ethAddress, user._id);
+    const token = createToken(savedUser.ethAddress, savedUser._id);
     return res.status(200).json({
       message: "User successfully registered",
       token,
     });
   } catch (error) {
     console.log(error);
-    handleError(error);
+    return res.status(500).json({ error: error.message });
   }
 };
 
@@ -103,7 +105,7 @@ exports.loginHospital = async (req, res) => {
       token: token,
     });
   } catch (error) {
-    handleError(error);
+    return res.status(500).json({ error: error.message });
   }
 };
 
@@ -124,7 +126,7 @@ exports.login = async (req, res) => {
       token: token,
     });
   } catch (error) {
-    handleError(error);
+    return res.status(500).json({ error: error.message });
   }
 };
 
