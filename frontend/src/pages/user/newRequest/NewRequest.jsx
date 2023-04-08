@@ -15,15 +15,44 @@ import {
 import { styled } from "@mui/material/styles";
 
 const NewRequest = () => {
+  const [selectedHospitals, setSelectedHospitals] = useState([]);
+  const [selectedHospitalsId, setSelectedHospitalsId] = useState([]);
+
+  const [selectedSpec, setSelectedSpec] = useState("");
+  const [hospitals, setHospitals] = useState([]);
+  const [specs, setSpecs] = useState([]);
+  const [hospitalMap, setHospitalMap] = useState({});
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      const response = await fetch("http://localhost:5000/api/user/hospitals");
+      const { hospitalNames, specs: fetchedSpecs } = await response.json();
+
+      const hospitals = hospitalNames.map((hospital) => {
+        return hospital.split(",")[0];
+      });
+
+      hospitalNames.forEach((hospital) => {
+        const [name, id] = hospital.split(", ");
+        setHospitalMap((prev) => ({ ...prev, [name]: id }));
+
+      });
+
+      setHospitals(hospitals);
+      setSpecs(fetchedSpecs);
+    };
+
+    fetchMenuItems();
+  }, []);
+
   const handleSubmit = async () => {
-    console.log(selectedHospitals);
-    console.log(selectedSpec);
+    const totalHospitals = selectedHospitals.length;
 
     const formData = {
       hospitals: selectedHospitalsId,
       spec: selectedSpec,
+      totalHospitals,
     };
-    // send token in header
+
     const response = await fetch("http://localhost:5000/api/user/request", {
       method: "POST",
       headers: {
@@ -32,55 +61,22 @@ const NewRequest = () => {
       },
       body: JSON.stringify(formData),
     });
+
     const data = await response.json();
     window.alert("Request Submitted");
     console.log(data);
   };
-  const [selectedHospitals, setSelectedHospitals] = useState([]);
-  const [selectedHospitalsId, setSelectedHospitalsId] = useState([]);
-  const [selectedHospitalsField, setSelectedHospitalsField] = useState("");
-  const [selectedSpec, setSelectedSpec] = useState("");
-
-  const [hospitalMap, setHospitalMap] = useState({});
-  const [hospitals, setHospitals] = useState([]);
-  const [specs, setSpecs] = useState([]);
-
-  useEffect(() => {
-    const fetchMenuItems = async () => {
-      const response = await fetch("http://localhost:5000/api/user/hospitals");
-      const data = await response.json();
-
-      const hospitals = data.hospitalNames.map((hospital) => {
-        return hospital.split(",")[0];
-      });
-
-      data.hospitalNames.forEach((hospital) => {
-        const [name, id] = hospital.split(", ");
-        hospitalMap[name] = id;
-      });
-
-      setHospitals(data.hospitalNames);
-      setSpecs(data.specs);
-    };
-
-    fetchMenuItems();
-  }, []);
 
   const handleSelectChange = (event) => {
-    setSelectedHospitals(event.target.value);
-    console.log(event.target.value);
-    setSelectedHospitalsField(
-      event.target.value.map((hospital) => hospitalMap[hospital])
-    );
-    setSelectedHospitalsId(
-      event.target.value.map((hospital) => hospitalMap[hospital])
-    );
-    console.log("selected", selectedHospitalsField);
+    const { value } = event.target;
+    setSelectedHospitals(value);
+    const hospitalIds = value.map((hospital) => hospitalMap[hospital]);
+    setSelectedHospitalsId(hospitalIds);
+    console.log(hospitalIds);
   };
 
   const handleSpecSelectChange = (event) => {
     setSelectedSpec(event.target.value);
-    console.log(selectedSpec);
   };
 
   return (

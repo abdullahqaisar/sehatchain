@@ -15,18 +15,23 @@ export function RequestTable() {
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [open, setOpen] = useState(false);
+  const [trainingResult, setTrainingResult] = useState(null);
 
-  async function fetchData() {
-    const response = await axios({
-      method: "get",
-      url: "/hospital/getrequests",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("hospitalToken")}`,
-      },
-    });
-    setRequests(response.data.requests);
-  }
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios({
+        method: "get",
+        url: "/hospital/getrequests",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("hospitalToken")}`,
+        },
+      });
+      setRequests(response.data.requests);
+    }
+
+    fetchData();
+  }, []);
 
   const columns = [
     { name: "Hospitals", options: { filter: false } },
@@ -50,6 +55,7 @@ export function RequestTable() {
 
   const handleAcceptRequest = async () => {
     if (!selectedRequest) return;
+    console.log("Accept Request button clicked");
 
     const formData = new FormData();
     formData.append("requestId", selectedRequest._id);
@@ -62,17 +68,19 @@ export function RequestTable() {
         authorization: `Bearer ${localStorage.getItem("hospitalToken")}`,
       },
     });
-    console.log(trainingResponse);
+
     if (trainingResponse.status === 200) {
-      console.log(trainingResponse.status);
-      setOpen(false); // Close the modal here
-      fetchData();
+      console.log("Model trained successfully");
+
+      const updatedRequests = requests.filter(
+        (request) => request._id !== selectedRequest._id
+      );
+      setRequests(updatedRequests);
+      setSelectedRequest(null);
+      setTrainingResult(trainingResponse);
+      setOpen(false);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <>
@@ -96,7 +104,10 @@ export function RequestTable() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => setSelectedRequest(requests[index])}
+                    onClick={() => {
+                      setSelectedRequest(requests[index]);
+                      setOpen(true);
+                    }}
                   >
                     View
                   </Button>
@@ -108,10 +119,11 @@ export function RequestTable() {
       </TableContainer>
       {selectedRequest && (
         <RequestModal
-          open={!!selectedRequest}
+          open={open}
           onClose={() => setOpen(false)}
           onAccept={handleAcceptRequest}
           selectedRequest={selectedRequest}
+          trainingResult={trainingResult}
         />
       )}
     </>
