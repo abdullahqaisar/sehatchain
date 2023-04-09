@@ -181,7 +181,7 @@ exports.makePrediction = async (req, res) => {
 
     const prediction = await runPrediction(
       request.ensambleModel,
-      req.body.spec
+      req.body.formData
     );
     console.log(prediction);
     if (!prediction) {
@@ -195,6 +195,7 @@ exports.makePrediction = async (req, res) => {
       prediction,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: "Internal Server Error",
       error: error,
@@ -204,6 +205,36 @@ exports.makePrediction = async (req, res) => {
 
 async function runPrediction(model, spec) {
   console.log("Running prediction");
+  // Spec are in this format.
+  // {
+  //   age: '',
+  //   gender: '1',
+  //   chestPainType: '1',
+  //   restingBP: '91',
+  //   serumCholestoral: '92',
+  //   fastingBP: '1',
+  //   restingElectrocardiographic: '2',
+  //   maximumHeartRate: '61',
+  //   exerciseInducedAngina: '1',
+  //   oldpeak: '3',
+  //   slopePeakEx: '2',
+  //   noOfMajorVessels: '3',
+  //   thal: '3',
+  //   num: ''
+  // }
+
+  // Make it just an array of number
+  // remove the empty elements
+
+  spec = Object.values(spec);
+  spec = spec.filter((value) => {
+    return value !== "";
+  });
+  spec = spec.map((value) => {
+    return parseInt(value);
+  });
+
+  console.log(spec);
   const predictionOptions = {
     mode: "text",
     args: [],
@@ -212,7 +243,6 @@ async function runPrediction(model, spec) {
   predictionOptions.args.push(model[0].coefficients);
   predictionOptions.args.push(model[0].intercept);
   predictionOptions.args.push(spec);
-  console.log(predictionOptions.args);
 
   const predictionMessages = await PythonShell.run(
     "src/script/prediction.py",
@@ -223,5 +253,6 @@ async function runPrediction(model, spec) {
     throw new Error("Prediction failed");
   }
 
+  console.log(predictionMessages);
   return predictionMessages;
 }
