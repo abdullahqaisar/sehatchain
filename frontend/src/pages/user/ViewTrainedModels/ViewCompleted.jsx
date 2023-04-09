@@ -31,7 +31,7 @@ const ViewCompleted = () => {
     oldpeak: "",
     slopePeakEx: "",
     noOfMajorVessels: "",
-    thal: "3",
+    thal: "",
     num: "",
   });
 
@@ -76,7 +76,11 @@ const ViewCompleted = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <FormFields formData={formData} setFormData={setFormData} spec={request.spec} />
+        <FormFields
+          formData={formData}
+          setFormData={setFormData}
+          spec={request.spec}
+        />
       </div>
       <FormControl component="fieldset">
         <FormLabel component="legend">Gender</FormLabel>
