@@ -1,5 +1,4 @@
-import { Grid, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Grid, Typography } from "@mui/material";
 import { CustomButton } from "../../../components/elements/customButton";
 import CustomDropdown from "../../../components/elements/customDropdown/CustomDropdown";
 import { SectionHeading } from "../components/sectionHeading/SectionHeading";
