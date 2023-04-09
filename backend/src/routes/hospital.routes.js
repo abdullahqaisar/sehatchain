@@ -1,8 +1,6 @@
 const express = require("express");
 var router = express.Router();
-const multer = require("multer");
 const auth = require("../middlewares/auth");
-const fs = require("fs");
 const uploadFile = require("../middlewares/uploadFile");
 
 const HospitalController = require("../controllers/hospital.controller");
@@ -15,9 +13,12 @@ router.post(
   uploadFile.single("file"),
   HospitalController.addCSV
 );
-
-router.post("/approverequest", auth, HospitalController.approveRequest);
 router.post("/rejectrequest", auth, HospitalController.rejectRequest);
-router.post("/trainmodel", auth, HospitalController.trainModel);
+router.post(
+  "/trainmodel",
+  auth,
+  HospitalController.trainModel,
+  HospitalController.aggregateModels
+);
 
 module.exports = router;

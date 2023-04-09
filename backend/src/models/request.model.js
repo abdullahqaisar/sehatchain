@@ -28,6 +28,9 @@ const RequestSchema = new mongoose.Schema({
   model: {
     type: Array,
   },
+  ensambleModel: {
+    type: Array,
+  },
 });
 
 module.exports = Request = mongoose.model("request", RequestSchema);

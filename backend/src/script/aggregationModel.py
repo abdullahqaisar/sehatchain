@@ -16,17 +16,22 @@ for i in range(num_hospitals):
 combined_coef = sum(coefficients) / sum(lengths)
 combined_intercept = sum(intercepts) / sum(lengths)
 
-ensemble = LinearRegression()
-ensemble.coef_ = np.array([combined_coef])
-ensemble.intercept_ = combined_intercept
+coef_str = ','.join(map(str, combined_coef))
 
-print(ensemble)
-print(ensemble.coef_)
-print(ensemble.intercept_)
+print(coef_str)
+print(combined_intercept)
 
-X_newTest = [0.0, 2.0, 112.0, 160.0, 0.0,
-             0.0, 138.0, 0.0, 0.0, 2.0, 0.0, 3.0, 0.0]
-X_newTest = np.array(X_newTest).reshape(1, -1)
+# ensemble = LinearRegression()
+# ensemble.coef_ = np.array([combined_coef])
+# ensemble.intercept_ = combined_intercept
 
-y_pred = ensemble.predict(X_newTest)
-print(y_pred)
+# print(ensemble)
+# print(ensemble.coef_)
+# print(ensemble.intercept_)
+
+# X_newTest = [0.0, 2.0, 112.0, 160.0, 0.0,
+#              0.0, 138.0, 0.0, 0.0, 2.0, 0.0, 3.0, 0.0]
+# X_newTest = np.array(X_newTest).reshape(1, -1)
+
+# y_pred = ensemble.predict(X_newTest)
+# print(y_pred)

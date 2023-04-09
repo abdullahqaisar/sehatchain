@@ -2,6 +2,7 @@
 var nodemailer = require("nodemailer");
 const Request = require("../models/request.model");
 const Hospital = require("../models/hospital.model");
+const { PythonShell } = require("python-shell");
 require("dotenv").config();
 
 const validate = (method) => {
@@ -78,7 +79,7 @@ exports.request = async (req, res) => {
       totalHospitals,
     });
 
-    console.log(totalHospitals)
+    console.log(totalHospitals);
     const save = await request.save();
     if (!save) {
       return res.status(500).json({ msg: "Request not saved!" });
@@ -112,9 +113,8 @@ exports.getAllRequests = async (req, res) => {
 
 exports.getCompletedRequests = async (req, res) => {
   try {
-    console.log("completed");
     const user = req.ethAddress;
-    const requests = await Request.find({ user: user, status: "completed" });
+    const requests = await Request.find({ user: user, status: "Completed" });
     if (!requests) {
       console.log("No data found!");
       return res.status(500).json({ msg: "No data found!" });
@@ -130,10 +130,8 @@ exports.getCompletedRequests = async (req, res) => {
 
 exports.getHospitalData = async (req, res) => {
   try {
-    console.log("here");
     const data = await Hospital.find();
-    if (!data) {
-      console.log("No data found!");
+    if (!data || data.length === 0) {
       return res.status(500).json({ msg: "No data found!" });
     }
     let hospitalNames = [];
@@ -141,14 +139,11 @@ exports.getHospitalData = async (req, res) => {
     data.forEach((hospital) => {
       hospitalNames.push(hospital.hospitalName + ", " + hospital._id);
     });
-
-    console.log(hospitalNames);
     return res.status(200).json({
       hospitalNames,
       specs,
     });
   } catch (e) {
-    console.log(e);
     return res.status(500).json({ error: e.message });
   }
 };
@@ -172,4 +167,61 @@ exports.getRequestById = async (req, res) => {
   }
 };
 
+exports.makePrediction = async (req, res) => {
+  try {
+    console.log(req.body);
+    const reqId = req.body.requestId;
+    const request = await Request.findById(reqId);
 
+    if (!request) {
+      return res.status(404).json({
+        message: "Request not found",
+      });
+    }
+
+    const prediction = await runPrediction(
+      request.ensambleModel,
+      req.body.spec
+    );
+    console.log(prediction);
+    if (!prediction) {
+      return res.status(500).json({
+        message: "Prediction failed",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Prediction made!",
+      prediction,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error,
+    });
+  }
+};
+
+async function runPrediction(model, spec) {
+  console.log("Running prediction");
+  const predictionOptions = {
+    mode: "text",
+    args: [],
+    pythonOptions: ["-u"],
+  };
+  predictionOptions.args.push(model[0].coefficients);
+  predictionOptions.args.push(model[0].intercept);
+  predictionOptions.args.push(spec);
+  console.log(predictionOptions.args);
+
+  const predictionMessages = await PythonShell.run(
+    "src/script/prediction.py",
+    predictionOptions
+  );
+  if (predictionMessages.length === 0) {
+    console.log("Prediction failed");
+    throw new Error("Prediction failed");
+  }
+
+  return predictionMessages;
+}

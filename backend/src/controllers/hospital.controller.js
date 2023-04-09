@@ -92,21 +92,42 @@ exports.trainModel = async (req, res, next) => {
     const hospitalId = req.userId;
 
     const request = await getRequest(reqId);
-    const model = await runPredictionModel(request.spec);
-    const trainedRequest = await updateRequest(request, hospitalId, model);
-
-    if (trainedRequest.approvedHospitals.length === trainedRequest.totalHospitals) {
-      await runAggregationModel(trainedRequest.model);
+    if (!request) {
+      return res.status(404).json({
+        message: "Request not found",
+      });
     }
 
-    return res.status(200).json({
-      message: "Request Accepted!",
-      request: trainedRequest,
-    });
+    const model = await runPredictionModel(request.spec);
+    if (!model) {
+      return res.status(404).json({
+        message: "Model not found",
+      });
+    }
+
+    const trainedRequest = await updateRequest(request, hospitalId, model);
+    if (!trainedRequest) {
+      return res.status(404).json({
+        message: "Request not found",
+      });
+    }
+
+    if (
+      trainedRequest.approvedHospitals.length === trainedRequest.totalHospitals
+    ) {
+      return next();
+    } else {
+      console.log("Request not yet approved by all hospitals");
+      return res.status(200).json({
+        message: "Request Accepted!",
+        request: trainedRequest,
+      });
+    }
   } catch (error) {
-    console.log(error);
-    error.statusCode = error.statusCode || 500;
-    return next(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error,
+    });
   }
 };
 
@@ -133,20 +154,21 @@ async function runPredictionModel(spec) {
       "src/script/predictionModel.py",
       predictionOptions
     );
-    console.log(predictionMessages);
   } catch (error) {
-    console.log(error);
     throw new Error("Prediction model failed");
   }
 
-  let length = predictionMessages.pop();
-  let intercept = predictionMessages.pop();
-  let coefficients = predictionMessages;
-
-  for (let i = 0; i < coefficients.length; i++) {
-    coefficients[i] = coefficients[i].split(",").map((x) => +x);
+  if (predictionMessages.length === 0) {
+    throw new Error("Prediction model failed");
   }
 
+  let length = parseFloat(predictionMessages.pop());
+
+  if (isNaN(length)) {
+    throw new Error("Prediction model failed");
+  }
+
+  let intercept = predictionMessages.pop();
   for (let i = 0; i < intercept.length; i++) {
     if (intercept[i] === "[") {
       intercept = intercept.slice(i + 1, intercept.length - 1);
@@ -154,10 +176,11 @@ async function runPredictionModel(spec) {
   }
   intercept = parseFloat(intercept);
 
-  length = parseFloat(length);
-  coefficients = coefficients[0];
-  console.log(length);
+  if (isNaN(intercept)) {
+    throw new Error("Prediction model failed");
+  }
 
+  const coefficients = predictionMessages[0].split(",").map((x) => +x);
   return { coefficients, intercept, length };
 }
 
@@ -169,6 +192,42 @@ async function updateRequest(request, hospitalId, model) {
   console.log("Approve: ", trainedRequest.approvedHospitals.length);
   return trainedRequest;
 }
+
+exports.aggregateModels = async (req, res) => {
+  try {
+    const request = await getRequest(req.body.requestId);
+    if (!request) {
+      return res.status(404).json({
+        message: "Request not found",
+      });
+    }
+    const aggregatedModel = await runAggregationModel(request.model);
+    if (!aggregatedModel) {
+      return res.status(500).json({
+        message: "Aggregation failed",
+      });
+    }
+    const ensambledModel = await updateRequestEnsamble(
+      request,
+      aggregatedModel
+    );
+    if (!ensambledModel) {
+      return res.status(500).json({
+        message: "Ensamble update failed",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Request Accepted!",
+      request: ensambledModel,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error,
+    });
+  }
+};
 
 async function runAggregationModel(modelList) {
   const aggregationOptions = {
@@ -187,5 +246,23 @@ async function runAggregationModel(modelList) {
     "src/script/aggregationModel.py",
     aggregationOptions
   );
-  console.log(aggregationMessages);
+
+  let intercept = aggregationMessages.pop();
+  let coefficients = aggregationMessages[0].split(",").map((x) => +x);
+
+  for (let i = 0; i < intercept.length; i++) {
+    if (intercept[i] === "[") {
+      intercept = intercept.slice(i + 1, intercept.length - 1);
+    }
+  }
+  console.log(coefficients);
+  console.log(intercept);
+  return { coefficients, intercept };
+}
+
+async function updateRequestEnsamble(request, model) {
+  request.ensambleModel = model;
+  request.status = "Completed";
+  const trainedRequest = await request.save();
+  return trainedRequest;
 }
