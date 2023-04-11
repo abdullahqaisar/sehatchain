@@ -1,3 +1,13 @@
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+} from "@mui/material";
 import { useEffect } from "react";
 import CustomTextField from "../components/customTextField/CustomTextField";
 
@@ -135,16 +145,7 @@ const FormFields = ({ formData, setFormData, spec }) => {
         setFormData({ ...formData, num: event.target.value }),
     },
   ];
-
-  useEffect(() => {
-    console.log("spec", spec);
-  }, [spec]);
-  let filteredFields;
-  if (spec !== undefined) {
-    filteredFields = fields.filter(
-      (field) => field.key.toLowerCase() !== spec.toLowerCase()
-    );
-  }
+  let filteredFields = fields.filter((field) => field.key !== spec);
 
   return (
     <div>
@@ -164,6 +165,50 @@ const FormFields = ({ formData, setFormData, spec }) => {
           onChange={field.onChange}
         />
       ))}
+
+      <FormControl sx={{ mt: 2, minWidth: 250, mx: 2 }}>
+        <InputLabel id="gender-select-label">Gender</InputLabel>
+        <Select
+          labelId="gender-select-label"
+          variant="standard"
+          value={formData.gender}
+          onChange={(event) =>
+            setFormData({ ...formData, gender: event.target.value })
+          }
+        >
+          <MenuItem key={1} value={1}>
+            Male
+          </MenuItem>
+          <MenuItem key={0} value={0}>
+            Female
+          </MenuItem>
+        </Select>
+      </FormControl>
+
+      <FormControl sx={{ mt: 2, minWidth: 250, mx: 2 }}>
+        <InputLabel id="chestpain-select-label">Chest Pain Type</InputLabel>
+        <Select
+          labelId="chestpain-select-label"
+          variant="standard"
+          value={formData.chestPainType}
+          onChange={(event) =>
+            setFormData({ ...formData, chestPainType: event.target.value })
+          }
+        >
+          <MenuItem key={1} value={1}>
+            Typical Angina
+          </MenuItem>
+          <MenuItem key={2} value={2}>
+            Atypical Angina
+          </MenuItem>
+          <MenuItem key={3} value={3}>
+            Non-Anginal Pain
+          </MenuItem>
+          <MenuItem key={4} value={4}>
+            Asymptomatic
+          </MenuItem>
+        </Select>
+      </FormControl>
     </div>
   );
 };

@@ -12,8 +12,6 @@ import {
   FormControl,
 } from "@mui/material";
 
-import { styled } from "@mui/material/styles";
-
 const NewRequest = () => {
   const [selectedHospitals, setSelectedHospitals] = useState([]);
   const [selectedHospitalsId, setSelectedHospitalsId] = useState([]);
@@ -34,7 +32,6 @@ const NewRequest = () => {
       hospitalNames.forEach((hospital) => {
         const [name, id] = hospital.split(", ");
         setHospitalMap((prev) => ({ ...prev, [name]: id }));
-
       });
 
       setHospitals(hospitals);

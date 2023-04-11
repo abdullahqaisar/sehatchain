@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import axios from "../../../util/axios";
 import { CustomButton } from "../../../components/elements/customButton";
-import CustomTextField from "../components/customTextField/CustomTextField";
 import FormFields from "./FormFields";
 
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  MenuItem,
-} from "@mui/material";
+import { SectionHeading } from "../components/sectionHeading/SectionHeading";
 
 const ViewCompleted = () => {
   const req = useParams();
@@ -34,6 +26,7 @@ const ViewCompleted = () => {
     thal: "",
     num: "",
   });
+  const [result, setResult] = useState([]);
 
   async function fetchData() {
     const response = await axios({
@@ -46,10 +39,6 @@ const ViewCompleted = () => {
     });
     setRequests(response.data.request);
   }
-
-  const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
 
   const handleSubmit = async () => {
     console.log(formData);
@@ -66,6 +55,10 @@ const ViewCompleted = () => {
       },
     });
     console.log(response.data);
+    if (response.data.status === 200) {
+      setResult(response.data.prediction);
+    }
+
     window.alert("Request Submitted");
   };
 
@@ -74,69 +67,64 @@ const ViewCompleted = () => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <FormFields
-          formData={formData}
-          setFormData={setFormData}
-          spec={request.spec}
-        />
-      </div>
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Gender</FormLabel>
-        <RadioGroup
-          aria-label="gender"
-          value={formData.gender}
-          onChange={(event) =>
-            setFormData({ ...formData, gender: event.target.value })
-          }
-        >
-          <FormControlLabel value="1" control={<Radio />} label="Male" />
-          <FormControlLabel value="0" control={<Radio />} label="Female" />
-        </RadioGroup>
-      </FormControl>
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Chest Pain Type</FormLabel>
-        <RadioGroup
-          aria-label="chest-pain-type"
-          value={formData.chestPainType}
-          onChange={(event) =>
-            setFormData({ ...formData, chestPainType: event.target.value })
-          }
-        >
-          <FormControlLabel
-            value="1"
-            control={<Radio />}
-            label="Typical Angina"
-          />
-          <FormControlLabel
-            value="2"
-            control={<Radio />}
-            label="Atypical Angina"
-          />
-          <FormControlLabel
-            value="3"
-            control={<Radio />}
-            label="Non-Anginal Pain"
-          />
-          <FormControlLabel
-            value="4"
-            control={<Radio />}
-            label="Asymptomatic"
-          />
-        </RadioGroup>
-      </FormControl>
-      <Grid container alignItems="left" justifyContent="left" mt={2}>
-        <Grid item xs={12} md={12} m={2} p={2}>
-          <CustomButton
-            backgroundColor="#217BF4"
-            color="#fff"
-            buttonText="Predict"
-            onClick={handleSubmit}
-          />
-        </Grid>
-      </Grid>
-    </form>
+    <Box
+      sx={{
+        pt: 6,
+        pb: { xs: 6, md: 6 },
+        px: { xs: 3, sm: 6, md: 6 },
+      }}
+    >
+      <SectionHeading title="Make a Prediction" align="center" />
+      <Typography
+        variant="body1"
+        sx={{
+          color: "#656464",
+        }}
+      >
+        Please provide all the give specs to predict your required value
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <Box sx={{ mx: 6, my: 2, backgroundColor: "#F1F6FD", py: 4 }}>
+          <div>
+            <FormFields
+              formData={formData}
+              setFormData={setFormData}
+              spec={request.spec}
+            />
+          </div>
+
+          <Grid container alignItems="center" justifyContent="center" px={10}>
+            <Grid item xs={12} md={12} m={2} p={2}>
+              <CustomButton
+                backgroundColor="#217BF4"
+                color="#fff"
+                buttonText="Predict"
+                onClick={handleSubmit}
+              />
+            </Grid>
+          </Grid>
+          <Box mt={2}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: "bold",
+                color: "#217BF4",
+              }}
+            >
+              Results
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#656464",
+              }}
+            >
+              The user has a 10% chance of having a heart disease.
+            </Typography>
+          </Box>
+        </Box>
+      </form>
+    </Box>
   );
 };
 

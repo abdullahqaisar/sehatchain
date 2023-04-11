@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 
 const CustomTextField = ({
   label,
@@ -11,6 +11,7 @@ const CustomTextField = ({
 }) => {
   return (
     <TextField
+      sx={{ mt: 2, minWidth: 250, mx: 2 }}
       label={label}
       type={type}
       InputLabelProps={InputLabelProps}
