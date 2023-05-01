@@ -68,6 +68,7 @@ exports.contactus = async (req, res) => {
 
 exports.request = async (req, res) => {
   try {
+    console.log(req.data);
     const { hospitals, spec, totalHospitals } = req.body;
     console.log(req.body);
     const user = req.ethAddress;
@@ -79,7 +80,14 @@ exports.request = async (req, res) => {
       totalHospitals,
     });
 
-    console.log(totalHospitals);
+    const date = new Date();
+    request.date = date;
+
+    const hospitalNames = [];
+    for (let i = 0; i < hospitals.length; i++) {
+      hospitalNames.push((await Hospital.findById(hospitals[i])).hospitalName);
+    }
+    request.hospitalNames = hospitalNames;
     const save = await request.save();
     if (!save) {
       return res.status(500).json({ msg: "Request not saved!" });
@@ -95,7 +103,6 @@ exports.request = async (req, res) => {
 
 exports.getAllRequests = async (req, res) => {
   try {
-    console.log("here");
     const user = req.ethAddress;
     const requests = await Request.find({ user: user });
     if (!requests) {
@@ -204,27 +211,7 @@ exports.makePrediction = async (req, res) => {
 };
 
 async function runPrediction(model, spec) {
-  console.log("Running prediction");
-  // Spec are in this format.
-  // {
-  //   age: '',
-  //   gender: '1',
-  //   chestPainType: '1',
-  //   restingBP: '91',
-  //   serumCholestoral: '92',
-  //   fastingBP: '1',
-  //   restingElectrocardiographic: '2',
-  //   maximumHeartRate: '61',
-  //   exerciseInducedAngina: '1',
-  //   oldpeak: '3',
-  //   slopePeakEx: '2',
-  //   noOfMajorVessels: '3',
-  //   thal: '3',
-  //   num: ''
-  // }
-
-  // Make it just an array of number
-  // remove the empty elements
+  console.log(spec);
 
   spec = Object.values(spec);
   spec = spec.filter((value) => {
@@ -234,7 +221,7 @@ async function runPrediction(model, spec) {
     return parseInt(value);
   });
 
-  console.log(spec);
+  console.log("Specs are: ", spec);
   const predictionOptions = {
     mode: "text",
     args: [],

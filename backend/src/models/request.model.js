@@ -10,6 +10,11 @@ const RequestSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
+  hospitalNames: {
+    type: Array,
+    required: true,
+  },
+  
   totalHospitals: {
     type: Number,
     required: true,
@@ -18,6 +23,10 @@ const RequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  date: {
+    type: Date,
+  },
+
   approvedHospitals: {
     type: Array,
   },

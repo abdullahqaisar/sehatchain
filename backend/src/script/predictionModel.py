@@ -43,7 +43,7 @@ coef1 = model.coef_ * length1
 X_zeros = np.zeros((1, X_newTest.shape[1]))
 intercept1 = model.predict(X_zeros) * length1
 
-# Convert the array of coefficients into a string with commas as separators
+
 coef_str = ','.join(map(str, coef1))
 
 print(coef_str)
