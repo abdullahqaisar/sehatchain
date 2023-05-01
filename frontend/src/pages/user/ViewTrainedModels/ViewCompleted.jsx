@@ -55,7 +55,8 @@ const ViewCompleted = () => {
       },
     });
     console.log(response.data);
-    if (response.data.status === 200) {
+    if (response.status === 200) {
+      console.log(response.data.prediction);
       setResult(response.data.prediction);
     }
 
@@ -65,6 +66,10 @@ const ViewCompleted = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log(result);
+  }, [result]);
 
   return (
     <Box
@@ -103,25 +108,28 @@ const ViewCompleted = () => {
               />
             </Grid>
           </Grid>
-          <Box mt={2}>
-            <Typography
-              variant="h5"
-              sx={{
-                fontWeight: "bold",
-                color: "#217BF4",
-              }}
-            >
-              Results
-            </Typography>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#656464",
-              }}
-            >
-              The user has a 10% chance of having a heart disease.
-            </Typography>
-          </Box>
+          {result.length !== 0 && (
+            <Box mt={2}>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: "bold",
+                  color: "#217BF4",
+                }}
+              >
+                Results
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "400",
+                  color: "#000",
+                }}
+              >
+                {request.spec}: {result} 
+              </Typography>
+            </Box>
+          )}
         </Box>
       </form>
     </Box>

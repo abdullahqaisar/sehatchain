@@ -51,7 +51,7 @@ const NewRequest = () => {
     };
 
     const response = await fetch("http://localhost:5000/api/user/request", {
-      method: "POST",
+      method: "post",
       headers: {
         "Content-Type": "application/json",
         authorization: `Bearer ${localStorage.getItem("token")}`,

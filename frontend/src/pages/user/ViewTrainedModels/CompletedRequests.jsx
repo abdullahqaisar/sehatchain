@@ -38,6 +38,7 @@ export function CompletedRequests() {
   const columns = [
     { name: "Hospitals", options: { filter: false } },
     { name: "Label", options: { filter: false } },
+    { name: "Date", options: { filter: false } },
     {
       name: "View",
       options: {
@@ -74,8 +75,9 @@ export function CompletedRequests() {
             <TableBody>
               {requests.map((request, index) => (
                 <TableRow key={request._id}>
-                  <TableCell>{request.hospitals}</TableCell>
+                  <TableCell>{request.hospitalNames}</TableCell>
                   <TableCell>{request.spec}</TableCell>
+                  <TableCell>{request.date}</TableCell>
                   <TableCell>
                     <Button
                       variant="contained"

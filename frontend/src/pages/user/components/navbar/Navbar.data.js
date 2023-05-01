@@ -6,12 +6,12 @@ export const NavbarItems = [
   },
   {
     text: "Request New Model",
-    link: "models/new",
+    link: "newrequest",
     key: "2",
   },
   {
     text: "View Trained Models",
-    link: "models/completed",
+    link: "viewmodels",
     key: "3",
   },
 ];

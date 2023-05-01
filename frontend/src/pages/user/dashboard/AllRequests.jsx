@@ -54,8 +54,9 @@ export function AllRequests() {
             <TableBody>
               {requests.map((request, index) => (
                 <TableRow key={request._id}>
-                  <TableCell>{request.hospitals}</TableCell>
+                  <TableCell>{request.hospitalNames}</TableCell>
                   <TableCell>{request.spec}</TableCell>
+                  <TableCell>{request.date}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
