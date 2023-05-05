@@ -5,7 +5,6 @@ import CustomButton from "../../components/elements/customButton/CustomButton";
 import { Box, Typography, TextField, Card, Link } from "@mui/material";
 import styled from "@emotion/styled";
 import Web3 from "web3";
-import { ethers } from "ethers";
 
 const Logo = styled("img")`
   width: 4rem;
@@ -19,27 +18,6 @@ const Submit = styled("div")`
   margin: 1rem 0 2rem;
 `;
 
-const startPayment = async ({ setError, setTxs, ether, addr }) => {
-  try {
-    if (!window.ethereum)
-      throw new Error("No crypto wallet found. Please install it.");
-
-    await window.ethereum.send("eth_requestAccounts");
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    ethers.utils.getAddress(addr);
-    const tx = await signer.sendTransaction({
-      to: addr,
-      value: ethers.utils.parseEther(ether),
-    });
-    console.log({ ether, addr });
-    console.log("tx", tx);
-    setTxs([tx]);
-  } catch (err) {
-    setError(err.message);
-  }
-};
-
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,8 +25,6 @@ function Login() {
   const [ethAddress, setEthAddress] = useState("");
   const [account, setAccount] = useState("");
   const [ethBalance, setEthBalance] = useState("");
-  const [error, setError] = useState();
-  const [txs, setTxs] = useState([]);
 
   const navigate = useNavigate();
 
@@ -63,14 +39,6 @@ function Login() {
       console.log("Non-ethereum browser detected. You should install Metamask");
     }
     return provider;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const ether = "0.002";
-    const addr = "0x3c78b2f1D6f180dce836Aba577B0ea243a0DaC7e";
-    setError();
-    await startPayment({ setError, setTxs, ether, addr });
   };
 
   const onConnect = async () => {
@@ -229,14 +197,6 @@ function Login() {
             />
           </Submit>
         </Form>
-        <CustomButton
-          backgroundColor="#217BF4"
-          sx={{ mt: 2 }}
-          color="#fff"
-          buttonText="Pay with Metamask"
-          type="submit"
-          onClick={handleSubmit}
-        />
         <Typography component="p">
           Want to register?{" "}
           <Link
