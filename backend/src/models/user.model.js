@@ -6,6 +6,7 @@ const ValidateEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 
+
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
