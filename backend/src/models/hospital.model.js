@@ -36,6 +36,17 @@ const HospitalSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+
+  price: {
+    type: Number,
+    default: 0,
+  },
+
+  totalPatients: {
+    type: Number,
+    default: 0,
+  },
+
   patientsSpecs: {
     type: Array,
     default: [],

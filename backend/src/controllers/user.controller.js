@@ -143,8 +143,18 @@ exports.getHospitalData = async (req, res) => {
     }
     let hospitalNames = [];
     let specs = data[0].patientsSpecs;
+    const price = data.price;
+
     data.forEach((hospital) => {
-      hospitalNames.push(hospital.hospitalName + ", " + hospital._id);
+      hospitalNames.push(
+        hospital.hospitalName +
+          ", " +
+          hospital._id +
+          ", " +
+          hospital.price +
+          ", " +
+          hospital.totalPatients
+      );
     });
     return res.status(200).json({
       hospitalNames,

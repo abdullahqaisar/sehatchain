@@ -18,7 +18,8 @@ exports.addPatient = async (req, res) => {
 
 exports.addCSV = async (req, res) => {
   const file = req.file;
-  console.log(file);
+  const price = req.body.price;
+  const totalPatients = req.body.totalPatients;
   if (!file) {
     return res.status(400).json({
       message: "No file uploaded",
@@ -32,6 +33,8 @@ exports.addCSV = async (req, res) => {
       return res.status(404).json({ message: "No hospital found!" });
     }
     hospital.csvPath = file.path;
+    hospital.price = price;
+    hospital.totalPatients = totalPatients;
     const columnNames = [];
     fs.createReadStream(file.path)
       .pipe(csv())

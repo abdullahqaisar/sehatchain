@@ -14,7 +14,7 @@ const RequestSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  
+
   totalHospitals: {
     type: Number,
     required: true,
@@ -32,7 +32,7 @@ const RequestSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: "pending",
+    default: "unapproved",
   },
   model: {
     type: Array,
