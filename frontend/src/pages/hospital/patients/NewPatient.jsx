@@ -10,7 +10,10 @@ const NewPatient = () => {
   const [file, setFile] = useState(null);
   const [price, setPrice] = useState(null);
   const [patients, setPatients] = useState(null);
-
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+    console.log(e.target.files[0]);
+  };
   const handleUpload = async (event) => {
     event.preventDefault();
     console.log("hospital id:", localStorage.getItem("hospitalToken"));
@@ -22,6 +25,7 @@ const NewPatient = () => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("price", price);
+      console.log("form", formData);
       formData.append("totalPatients", patients);
       const response = await axios({
         method: "post",
@@ -64,7 +68,7 @@ const NewPatient = () => {
             <input
               type={"file"}
               accept={".csv"}
-              onClick={(e) => setFile(e.target.files[0])}
+              onChange={(e) => setFile(e.target.files[0])}
             />
             <TextField
               sx={{ minWidth: 250 }}
