@@ -15,11 +15,10 @@ export function RequestTable() {
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [open, setOpen] = useState(false);
-  const [trainingResult, setTrainingResult] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-        console.log("Hi")
+      console.log("Hi");
       const response = await axios({
         method: "get",
         url: "/admin/requests",
@@ -62,20 +61,27 @@ export function RequestTable() {
     let formData = new FormData();
     formData.append("id", selectedRequest._id);
     console.log(formData);
-    const trainingResponse = await fetch("/localhost:5000/api/admin/approve", {
-      method: "POST",
-      body: selectedRequest._id,
-    });
 
-    if (trainingResponse.status === 200) {
-      console.log("Model trained successfully");
+    // send an axios request to the backend to approve the request
+    const response = await axios({
+      method: "post",
+      url: "/admin/approve",
+      data: formData,
+      headers: {
+        "Content-Type": "application/json",
+        // authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+      },
+    });
+    console.log(response);
+
+    if (response.status === 200) {
+      window.alert("Request Approved successfully")
 
       const updatedRequests = requests.filter(
         (request) => request._id !== selectedRequest._id
       );
       setRequests(updatedRequests);
       setSelectedRequest(null);
-      setTrainingResult(trainingResponse);
       setOpen(false);
     }
   };
@@ -121,7 +127,6 @@ export function RequestTable() {
           onClose={() => setOpen(false)}
           onAccept={handleAcceptRequest}
           selectedRequest={selectedRequest}
-          trainingResult={trainingResult}
         />
       )}
     </>
