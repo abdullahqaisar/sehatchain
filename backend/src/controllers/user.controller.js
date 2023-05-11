@@ -2,6 +2,8 @@
 var nodemailer = require("nodemailer");
 const Request = require("../models/request.model");
 const Hospital = require("../models/hospital.model");
+const Admin = require("../models/admin.model");
+
 const { PythonShell } = require("python-shell");
 require("dotenv").config();
 
@@ -68,16 +70,18 @@ exports.contactus = async (req, res) => {
 
 exports.request = async (req, res) => {
   try {
-    console.log(req.data);
-    const { hospitals, spec, totalHospitals } = req.body;
-    console.log(req.body);
+    const { hospitals, spec, totalHospitals, totalPrice, totalPatients } =
+      req.body;
     const user = req.ethAddress;
-    console.log(user);
     const request = new Request({
       user,
       hospitals,
       spec,
+      iterations,
+      usedSpecs,
       totalHospitals,
+      totalPrice,
+      totalPatients,
     });
 
     const date = new Date();
@@ -142,8 +146,15 @@ exports.getHospitalData = async (req, res) => {
       return res.status(500).json({ msg: "No data found!" });
     }
     let hospitalNames = [];
+
+    // Fix this
     let specs = data[0].patientsSpecs;
-    const price = data.price;
+
+    const admin = await Admin.findOne({ email: "abdullahqaisarr@gmail.com" });
+    if (!admin) {
+      console.log("No admin found!");
+      return res.status(500).json({ msg: "No admin found!" });
+    }
 
     data.forEach((hospital) => {
       hospitalNames.push(
@@ -159,8 +170,10 @@ exports.getHospitalData = async (req, res) => {
     return res.status(200).json({
       hospitalNames,
       specs,
+      adminAddress: admin.adminEthAddress,
     });
   } catch (e) {
+    console.log(e);
     return res.status(500).json({ error: e.message });
   }
 };

@@ -81,9 +81,8 @@ exports.getRequests = async (req, res) => {
 };
 
 exports.approveRequest = async (req, res) => {
-  console.log("hi",req.body.id);
   try {
-    const request = await Request.findById(req.body.requestId);
+    const request = await Request.findById(req.body.id);
     if (!request) {
       return res.status(404).json({ message: "No request found!" });
     }

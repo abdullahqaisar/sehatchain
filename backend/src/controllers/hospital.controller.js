@@ -62,9 +62,12 @@ exports.addCSV = async (req, res) => {
 
 exports.getRequests = async (req, res) => {
   const hospitalId = req.userId;
-  console.log(hospitalId);
+
+  // get the requests where the status is pending and the hospitalId is in the hospitals array
+
   const requests = await Request.find({
     hospitals: { $in: [hospitalId] },
+    status: "pending",
   });
 
   if (!requests) {
@@ -100,6 +103,7 @@ exports.trainModel = async (req, res, next) => {
         message: "Request not found",
       });
     }
+    console.log("Request Spec", request.spec)
 
     const model = await runPredictionModel(request.spec);
     if (!model) {
@@ -154,7 +158,7 @@ async function runPredictionModel(spec) {
   let predictionMessages;
   try {
     predictionMessages = await PythonShell.run(
-      "src/script/predictionModel.py",
+      "src/script/heartPrediction/predictionModel.py",
       predictionOptions
     );
   } catch (error) {

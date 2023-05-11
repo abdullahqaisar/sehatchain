@@ -5,7 +5,6 @@ const RequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   hospitals: {
     type: Array,
     required: true,
@@ -14,19 +13,30 @@ const RequestSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-
   totalHospitals: {
     type: Number,
     required: true,
+  },
+  totalPrice: {
+    type: Number,
+  },
+  totalPatients: {
+    type: Number,
   },
   spec: {
     type: String,
     required: true,
   },
+  iterations: {
+    type: Number,
+    default: 1,
+  },
+  specsUsed: {
+    type: Array,
+  },
   date: {
     type: Date,
   },
-
   approvedHospitals: {
     type: Array,
   },
