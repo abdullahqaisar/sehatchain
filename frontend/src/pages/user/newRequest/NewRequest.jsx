@@ -95,6 +95,8 @@ const NewRequest = () => {
         totalHospitals,
         totalPrice,
         totalPatients,
+        specsUsed: otherSelectedSpecs,
+        iterations,
       };
 
       const response = await fetch("http://localhost:5000/api/user/request", {
@@ -118,6 +120,7 @@ const NewRequest = () => {
     setSelectedHospitals(value);
     const hospitalIds = value.map((hospital) => hospitalMap[hospital].name);
     setSelectedHospitalsNames(hospitalIds);
+    console.log(selectedHospitalsNames);
     const price = value.reduce(
       (total, hospital) => total + hospitalMap[hospital].price,
       0
@@ -204,8 +207,8 @@ const NewRequest = () => {
             <TextField
               label="Iterations"
               type="number"
-              // value={value}
-              // onChange={onChange}
+              value={iterations}
+              onChange={(e) => setIterations(e.target.value)}
             />
           </div>
         </Grid>
