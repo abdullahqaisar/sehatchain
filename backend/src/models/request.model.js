@@ -27,10 +27,7 @@ const RequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  iterations: {
-    type: Number,
-    default: 1,
-  },
+
   specsUsed: {
     type: Array,
   },

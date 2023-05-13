@@ -70,20 +70,29 @@ exports.contactus = async (req, res) => {
 
 exports.request = async (req, res) => {
   try {
-    const { hospitals, spec, totalHospitals, totalPrice, totalPatients } =
-      req.body;
+    const {
+      hospitals,
+      spec,
+      totalHospitals,
+      totalPrice,
+      totalPatients,
+      iterations,
+      specsUsed,
+    } = req.body;
     const user = req.ethAddress;
+    console.log(req.body);
     const request = new Request({
       user,
       hospitals,
       spec,
       iterations,
-      usedSpecs,
+      specsUsed,
       totalHospitals,
       totalPrice,
       totalPatients,
     });
 
+    console.log(request);
     const date = new Date();
     request.date = date;
 
@@ -253,9 +262,12 @@ async function runPrediction(model, spec) {
   predictionOptions.args.push(model[0].coefficients);
   predictionOptions.args.push(model[0].intercept);
   predictionOptions.args.push(spec);
+  predictionOptions.args.push(model[0].classes);
+  predictionOptions.args.push(0);
+
 
   const predictionMessages = await PythonShell.run(
-    "src/script/prediction.py",
+    "src/script/heartPrediction/prediction.py",
     predictionOptions
   );
   if (predictionMessages.length === 0) {

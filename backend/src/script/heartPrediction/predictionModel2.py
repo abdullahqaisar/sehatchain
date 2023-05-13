@@ -7,7 +7,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
 
 arg1 = sys.argv[1]
-to_predict = arg1with_predict=[]
+to_predict = arg1
+with_predict=[]
 
 ## feature which will be used to predict
 arg2 = sys.argv[2]
@@ -43,11 +44,6 @@ classes=() #new addition
 epsilon = 5 + 0.5
 sensitivity = df1[linearfeatures].max().max() - df1[linearfeatures].min().min()
 
-# Add noise to the data
-for col in linearfeatures:
-    noise = np.random.laplace(loc=0, scale=sensitivity/epsilon, size=len(df1))
-    df1[col] = df1[col] + noise
-
 
 if with_predict == []:
     df2 = df1[cols]
@@ -80,16 +76,13 @@ coef1 = model.coef_ * length1
 X_zeros = np.zeros((1, X_newTest.shape[1]))
 intercept1 = model.predict(X_zeros) * length1
 
-
 coef_str = ','.join(map(str, coef1))
 
-print(X_zeros)
+# print(X_zeros)
 print(coef_str)
 print(intercept1)
 print(length1)
 print(model)
 print(classes)
-print(to_predict)
-print(with_predict_)
 print(iterations)
 
