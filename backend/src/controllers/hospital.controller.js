@@ -104,7 +104,7 @@ exports.trainModel = async (req, res, next) => {
   try {
     const reqId = req.body.requestId;
     const hospitalId = req.userId;
-    console.log(req.userId)
+    console.log(req.userId);
 
     const hospital = await Hospital.findOne({
       _id: hospitalId,
@@ -159,7 +159,7 @@ exports.trainModel = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
       message: "Internal Server Error",
       error: error,
@@ -176,7 +176,6 @@ async function runPredictionModel(spec, usedSpec, iterations, csvPath) {
     args: [spec, usedSpec, 1, csvPath],
     pythonOptions: ["-u"],
   };
-  console.log("Prediction Options: ", predictionOptions);
 
   let predictionMessages;
   try {
@@ -189,7 +188,6 @@ async function runPredictionModel(spec, usedSpec, iterations, csvPath) {
     throw new Error("Prediction model failed");
   }
 
-  console.log("Prediction Messages: ", predictionMessages);
   if (predictionMessages.length === 0) {
     throw new Error("Prediction model failed");
   }
@@ -217,10 +215,14 @@ async function runPredictionModel(spec, usedSpec, iterations, csvPath) {
     }
   }
 
-  for (let i = 0; i < classes.length; i++) {
-    if (classes[i] === ".") {
-      classes = classes.slice(0, i) + "," + classes.slice(i + 1);
-    }
+  if (classes != "()") {
+    classes = classes.split(" ");
+    classes = classes.map((item) => {
+      if (item == 0 || item == NaN) {
+        return 0;
+      }
+      return parseInt(item);
+    });
   }
 
   intercept = parseFloat(intercept);
@@ -228,8 +230,21 @@ async function runPredictionModel(spec, usedSpec, iterations, csvPath) {
   if (isNaN(intercept)) {
     throw new Error("Prediction model failed");
   }
+  // if the predictionMessages have more than 13 values, make coefficient a 2D array..
+  // divide the coefficients into arrays of 13 values
 
-  const coefficients = predictionMessages[0].split(",").map((x) => +x);
+  console.log(predictionMessages);
+
+  let coefficients = [];
+  let temp = predictionMessages
+    .join(" ")
+    .match(/-?\d+\.?\d*/g)
+    .map(Number);
+  for (let i = 0; i < temp.length; i += 13) {
+    coefficients.push(temp.slice(i, i + 13));
+  }
+  console.log("Coefficients ", coefficients);
+
   return { coefficients, intercept, newIterations, classes, model, length };
 }
 
@@ -292,6 +307,7 @@ async function runAggregationModel(modelList) {
     aggregationOptions.args.push(modelList[i].coefficients);
     aggregationOptions.args.push(modelList[i].intercept);
     aggregationOptions.args.push(modelList[i].length);
+    aggregationOptions.args.push(modelList[i].classes);
   }
 
   const aggregationMessages = await PythonShell.run(
@@ -309,7 +325,8 @@ async function runAggregationModel(modelList) {
   }
   console.log(coefficients);
   console.log(intercept);
-  return { coefficients, intercept, classes };F
+  return { coefficients, intercept, classes };
+  F;
 }
 
 async function updateRequestEnsamble(request, model) {

@@ -218,6 +218,7 @@ exports.makePrediction = async (req, res) => {
       });
     }
 
+    console.log(req.ensambleModel)
     const prediction = await runPrediction(
       request.ensambleModel,
       req.body.formData
@@ -259,6 +260,7 @@ async function runPrediction(model, spec) {
     args: [],
     pythonOptions: ["-u"],
   };
+  
   predictionOptions.args.push(model[0].coefficients);
   predictionOptions.args.push(model[0].intercept);
   predictionOptions.args.push(spec);

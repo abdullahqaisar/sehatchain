@@ -8,14 +8,15 @@ num_hospitals = (len(sys.argv) - 1) // 3
 coefficients = []
 intercepts = []
 lengths = []
-classes = ()
+classes = []
 
 for i in range(num_hospitals):
     coefficients_str = sys.argv[i*3 + 1]
     coefficients.append(np.array(coefficients_str.split(','), dtype=float))
     intercepts.append(float(sys.argv[i*3 + 2]))
     lengths.append(float(sys.argv[i*3 + 3]))
-    classes.append(sys.argv[i*3 + 4])
+    
+classes.append(sys.argv[4])
 
 combined_coef = sum(coefficients) / sum(lengths)
 combined_intercept = sum(intercepts) / sum(lengths)
