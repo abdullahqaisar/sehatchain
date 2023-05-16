@@ -10,27 +10,37 @@ spec = sys.argv[3]
 classes = sys.argv[4]
 iterations = int(sys.argv[5])
 
-print(coefficients_str)
+# replace nan with 0 in classes
+classes = classes.replace('NaN', '0')
 
-if classes == '()' or classes == "['NaN']":
+
+if classes == '()':
     ensemble = LinearRegression()
 else:
     ensemble = LogisticRegression()
+    classes = classes.replace('[', '')
+    classes = classes.replace(']', '')
+    classes = classes.replace("'", '')
+    classes = classes.split(',')
+    classes = np.array(classes, dtype=int)
     ensemble.classes_ = classes
 
+print(ensemble.classes_)
+coef = np.array([coefficients_str.split(',')], dtype=float)
+coef = coef.reshape(-1, 13)
+ensemble.coef_ = coef
 
-ensemble.coef_ = np.array([coefficients_str.split(',')], dtype=float)
 ensemble.intercept_ = [intercept]
 if iterations < 1:
-    # X_newTest = [0.0, 2.0, 112.0, 160.0, 0.0,
-    #              0.0, 138.0, 0.0, 0.0, 0.0, 3.0, 0.0]0, 2.
+    # X_newTest = [30, 2.0, 112.0, 160.0, 0.0,
+    #              0.0, 138.0, 0.0, 0.0, 0.0, 3.0, 0.0, 2.0]
     spec = np.array([spec.split(',')], dtype=float)
     X_newTest = spec
     X_newTest = np.array(X_newTest).reshape(1, -1)
 
-    # y_pred = ensemble.predict([[0.0,2.0,112.0,160.0,0.0,0.0,138.0,0.0,0.0,2.0,0.0,3.0,0.0]])
+    # y_pred = ensemble.predict([[30,2.0,1.0,112.0,160.0,0.0,0.0,138.0,0.0,2.0,0.0,3.0,0.0]])
     y_pred = ensemble.predict(X_newTest)
-    print(y_pred[0][0])
+    print(y_pred)
 
 else:
     print("model is not ready yet")
