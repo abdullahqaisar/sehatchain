@@ -187,6 +187,15 @@ exports.getHospitalData = async (req, res) => {
   }
 };
 
+exports.getCategories = async(req, res) => {
+  try{
+    
+  }
+  catch {
+
+  }
+}
+
 exports.getRequestById = async (req, res) => {
   try {
     console.log("here");

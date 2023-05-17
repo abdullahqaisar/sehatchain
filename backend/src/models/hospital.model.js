@@ -27,6 +27,11 @@ const HospitalSchema = new mongoose.Schema({
     unique: true,
   },
 
+  diseaseCategories: {
+    type: Array,
+    default: [],
+  },
+
   approved: {
     type: Boolean,
     default: false,
@@ -49,7 +54,7 @@ const HospitalSchema = new mongoose.Schema({
 
   patientsSpecs: {
     type: Array,
-    default: [],
+    default: [[],[],[]],
   },
 });
 

@@ -4,18 +4,19 @@ const Request = require("../models/request.model");
 const csv = require("csv-parser");
 const { PythonShell } = require("python-shell");
 
-exports.addPatient = async (req, res) => {
-  const data = req.body;
-  elements = Object.keys(data);
-  values = Object.values(data);
+// exports.addPatient = async (req, res) => {
+//   const data = req.body;
+//   elements = Object.keys(data);
+//   values = Object.values(data);
 
-  res.status(200).json({
-    message: "Patient Added Successfully",
-  });
-};
+//   res.status(200).json({
+//     message: "Patient Added Successfully",
+//   });
+// };
 
 exports.addCSV = async (req, res) => {
   const file = req.file;
+  const category = req.body.category;
   const price = req.body.price;
   const totalPatients = req.body.totalPatients;
   if (!file) {
@@ -33,18 +34,29 @@ exports.addCSV = async (req, res) => {
     hospital.csvPath = file.path;
     hospital.price = price;
     hospital.totalPatients = totalPatients;
+    if (hospital.categories && !hospital.categories.includes(category)) {
+      hospital.categories.push(category);
+    }
+
     const columnNames = [];
     fs.createReadStream(file.path)
       .pipe(csv())
       .on("headers", (headers) => {
         columnNames.push(...headers);
-        console.log(columnNames);
-        hospital.patientsSpecs = columnNames;
+        console.log("category: ", category);
+        if (category === "Heart Disease") {
+          hospital.patientsSpecs[0] = columnNames;
+        } else if (category === "Lung Disease") {
+          hospital.patientsSpecs[1] = columnNames;
+        } else {
+          hospital.patientsSpecs[2] = columnNames;
+        }
         hospital.save();
       })
       .on("end", () => {
         console.log("CSV file successfully processed");
       });
+    console.log(hospital);
 
     return res.status(200).json({
       message: "CSV file uploaded successfully",
@@ -230,10 +242,6 @@ async function runPredictionModel(spec, usedSpec, iterations, csvPath) {
   if (isNaN(intercept)) {
     throw new Error("Prediction model failed");
   }
-  // if the predictionMessages have more than 13 values, make coefficient a 2D array..
-  // divide the coefficients into arrays of 13 values
-
-  console.log(predictionMessages);
 
   let coefficients = [];
   let temp = predictionMessages

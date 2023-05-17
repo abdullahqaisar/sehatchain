@@ -6,11 +6,9 @@ import sys
 coefficients_str = sys.argv[1]
 intercept = float(sys.argv[2])
 spec = sys.argv[3]
-# bring tha classes from other page
 classes = sys.argv[4]
 iterations = int(sys.argv[5])
 
-# replace nan with 0 in classes
 classes = classes.replace('NaN', '0')
 
 

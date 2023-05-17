@@ -16,7 +16,7 @@ const upload = multer({
       console.log(hospitalId);
       const originalFileName = file.originalname;
       const fileNameParts = originalFileName.split(".");
-      const newFileName = `${hospitalId}.csv`;
+      const newFileName = `${hospitalId+req.body.category}.csv`;
       cb(null, newFileName);
     },
   }),

@@ -5,7 +5,7 @@ const uploadFile = require("../middlewares/uploadFile");
 
 const HospitalController = require("../controllers/hospital.controller");
 
-router.post("/addpatient", HospitalController.addPatient);
+// router.post("/addpatient", HospitalController.addPatient);
 router.get("/getrequests", auth, HospitalController.getRequests);
 router.post(
   "/uploadcsv",
