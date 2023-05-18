@@ -38,8 +38,8 @@ const HospitalSchema = new mongoose.Schema({
   },
 
   csvPath: {
-    type: String,
-    default: "",
+    type: Array,
+    default: ["", "", ""],
   },
 
   price: {
@@ -54,7 +54,7 @@ const HospitalSchema = new mongoose.Schema({
 
   patientsSpecs: {
     type: Array,
-    default: [[],[],[]],
+    default: [[], [], []],
   },
 });
 

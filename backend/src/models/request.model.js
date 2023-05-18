@@ -27,7 +27,6 @@ const RequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   specsUsed: {
     type: Array,
   },
@@ -46,6 +45,9 @@ const RequestSchema = new mongoose.Schema({
   },
   ensambleModel: {
     type: Array,
+  },
+  diseaseCategory: {
+    type: String,
   },
 });
 

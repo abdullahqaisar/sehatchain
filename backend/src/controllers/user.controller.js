@@ -78,7 +78,9 @@ exports.request = async (req, res) => {
       totalPatients,
       iterations,
       specsUsed,
+      category,
     } = req.body;
+
     const user = req.ethAddress;
     console.log(req.body);
     const request = new Request({
@@ -90,6 +92,7 @@ exports.request = async (req, res) => {
       totalHospitals,
       totalPrice,
       totalPatients,
+      diseaseCategory: category,
     });
 
     console.log(request);
@@ -150,7 +153,13 @@ exports.getCompletedRequests = async (req, res) => {
 
 exports.getHospitalData = async (req, res) => {
   try {
-    const data = await Hospital.find();
+    const category = req.query.category;
+
+    // get all the hospitals of that category
+    console.log("Category", category);
+    const data = await Hospital.find({ diseaseCategories: String(category) });
+    console.log(data);
+
     if (!data || data.length === 0) {
       return res.status(500).json({ msg: "No data found!" });
     }
@@ -187,14 +196,10 @@ exports.getHospitalData = async (req, res) => {
   }
 };
 
-exports.getCategories = async(req, res) => {
-  try{
-    
-  }
-  catch {
-
-  }
-}
+exports.getCategories = async (req, res) => {
+  try {
+  } catch {}
+};
 
 exports.getRequestById = async (req, res) => {
   try {
@@ -227,8 +232,8 @@ exports.makePrediction = async (req, res) => {
       });
     }
 
-    console.log(req.ensambleModel)
-    const prediction = await runPrediction(
+    console.log(req.ensambleModel);
+    let prediction = await runPrediction(
       request.ensambleModel,
       req.body.formData
     );
@@ -237,6 +242,14 @@ exports.makePrediction = async (req, res) => {
       return res.status(500).json({
         message: "Prediction failed",
       });
+    }
+    if (request.spec === "num") {
+      if (prediction == 0) {
+        prediction = "Heart Health > 50%";
+      }
+      else {
+        prediction = "Heart Health < 50%";
+      }
     }
 
     return res.status(200).json({
@@ -269,13 +282,12 @@ async function runPrediction(model, spec) {
     args: [],
     pythonOptions: ["-u"],
   };
-  
+
   predictionOptions.args.push(model[0].coefficients);
   predictionOptions.args.push(model[0].intercept);
   predictionOptions.args.push(spec);
   predictionOptions.args.push(model[0].classes);
   predictionOptions.args.push(0);
-
 
   const predictionMessages = await PythonShell.run(
     "src/script/heartPrediction/prediction.py",

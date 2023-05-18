@@ -17,7 +17,9 @@ const { PythonShell } = require("python-shell");
 exports.addCSV = async (req, res) => {
   const file = req.file;
   const category = req.body.category;
+  console.log(category);
   const price = req.body.price;
+
   const totalPatients = req.body.totalPatients;
   if (!file) {
     return res.status(400).json({
@@ -31,33 +33,26 @@ exports.addCSV = async (req, res) => {
     if (!hospital) {
       return res.status(404).json({ message: "No hospital found!" });
     }
-    hospital.csvPath = file.path;
+    hospital.csvPath[category] = file.path;
     hospital.price = price;
     hospital.totalPatients = totalPatients;
-    if (hospital.categories && !hospital.categories.includes(category)) {
-      hospital.categories.push(category);
+    if (
+      hospital.diseaseCategories &&
+      !hospital.diseaseCategories.includes(category)
+    ) {
+      hospital.diseaseCategories.push(category);
     }
-
     const columnNames = [];
     fs.createReadStream(file.path)
       .pipe(csv())
       .on("headers", (headers) => {
         columnNames.push(...headers);
-        console.log("category: ", category);
-        if (category === "Heart Disease") {
-          hospital.patientsSpecs[0] = columnNames;
-        } else if (category === "Lung Disease") {
-          hospital.patientsSpecs[1] = columnNames;
-        } else {
-          hospital.patientsSpecs[2] = columnNames;
-        }
+        hospital.patientsSpecs[category] = columnNames;
         hospital.save();
       })
       .on("end", () => {
         console.log("CSV file successfully processed");
       });
-    console.log(hospital);
-
     return res.status(200).json({
       message: "CSV file uploaded successfully",
       hospital,
@@ -72,9 +67,6 @@ exports.addCSV = async (req, res) => {
 
 exports.getRequests = async (req, res) => {
   const hospitalId = req.userId;
-
-  // get the requests where the status is pending and the hospitalId is in the hospitals array
-
   const requests = await Request.find({
     hospitals: { $in: [hospitalId] },
     status: "pending",
@@ -115,23 +107,29 @@ async function getRequest(reqId) {
 exports.trainModel = async (req, res, next) => {
   try {
     const reqId = req.body.requestId;
+    const category = req.body.category;
     const hospitalId = req.userId;
+
     console.log(req.userId);
 
+    console.log("body: ", reqId, category, hospitalId);
     const hospital = await Hospital.findOne({
       _id: hospitalId,
     });
+
     if (!hospital) {
       return res.status(404).json({
         message: "Hospital not found",
       });
     }
+
     const request = await getRequest(reqId);
     if (!request) {
       return res.status(404).json({
         message: "Request not found",
       });
     }
+
     console.log(
       "Request Spec",
       request.spec,
@@ -144,8 +142,10 @@ exports.trainModel = async (req, res, next) => {
       request.spec,
       request.usedSpec,
       request.iterations,
-      hospital.csvPath
+      hospital.csvPath[category],
+      category
     );
+
     if (!model) {
       return res.status(404).json({
         message: "Model not found",
@@ -179,7 +179,13 @@ exports.trainModel = async (req, res, next) => {
   }
 };
 
-async function runPredictionModel(spec, usedSpec, iterations, csvPath) {
+async function runPredictionModel(
+  spec,
+  usedSpec,
+  iterations,
+  csvPath,
+  category
+) {
   if (!usedSpec) {
     usedSpec = [];
   }
@@ -191,10 +197,16 @@ async function runPredictionModel(spec, usedSpec, iterations, csvPath) {
 
   let predictionMessages;
   try {
-    predictionMessages = await PythonShell.run(
-      "src/script/heartPrediction/predictionModel1.py",
-      predictionOptions
-    );
+    let src = "";
+    console.log("Category: ", category);
+  if (category == "0") {
+      src = "src/script/heartPrediction/predictionModel1.py";
+    } else if (category == "1") {
+      src = "src/script/lungPrediction/predictionModel1.py";
+    } else {
+      src = "src/script/heartPrediction/predictionModel1.py";
+    }
+    predictionMessages = await PythonShell.run(src, predictionOptions);
   } catch (error) {
     console.log(error);
     throw new Error("Prediction model failed");
