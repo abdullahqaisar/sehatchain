@@ -15,6 +15,8 @@ import {
   TextField,
 } from "@mui/material";
 import CustomTextField from "../../../components/elements/customTextField/CustomTextField";
+import { categories } from "../../../util/diseaseCategory.data";
+import { SectionHeading } from "../components/sectionHeading/SectionHeading";
 
 const startPayment = async (setTxs, ether, addr) => {
   console.log(ether, addr);
@@ -51,24 +53,25 @@ const NewRequest = () => {
   const [totalPatients, setTotalPatients] = useState(0);
   const [otherSpecs, setOtherSpecs] = useState([]);
   const [otherSelectedSpecs, setOtherSelectedSpecs] = useState([]);
-  const [usedSpecs, setUsedSpecs] = useState("");
+  const [category, setCategory] = useState("");
   const [iterations, setIterations] = useState(1);
   const [adminEth, setAdminEth] = useState(0);
   const [txs, setTxs] = useState([]);
 
   useEffect(() => {
     fetchMenuItems();
-  }, []);
+  }, [category]);
 
   const fetchMenuItems = async () => {
-    const response = await fetch("http://localhost:5000/api/user/hospitals");
+    const response = await fetch(
+      `http://localhost:5000/api/user/hospitals?category=${category}`
+    );
     const {
       hospitalNames,
       specs: fetchedSpecs,
       adminAddress,
     } = await response.json();
 
-    console.log("Admin ETH", adminAddress);
     const hospitalData = hospitalNames.reduce((data, hospital) => {
       const [name, id, price, totalPatients] = hospital.split(", ");
       data[id] = {
@@ -81,7 +84,7 @@ const NewRequest = () => {
     }, {});
 
     setHospitalMap(hospitalData);
-    setSpecs(fetchedSpecs);
+    setSpecs(fetchedSpecs[category]);
     setAdminEth(adminAddress);
   };
 
@@ -97,6 +100,7 @@ const NewRequest = () => {
         totalPatients,
         specsUsed: otherSelectedSpecs,
         iterations,
+        category,
       };
 
       const response = await fetch("http://localhost:5000/api/user/request", {
@@ -113,6 +117,12 @@ const NewRequest = () => {
     } else {
       window.alert("Payment failed");
     }
+  };
+
+  const handleCategoryChange = (event) => {
+    const { value } = event.target;
+    setCategory(value);
+    fetchMenuItems();
   };
 
   const handleSelectChange = (event) => {
@@ -145,46 +155,89 @@ const NewRequest = () => {
   };
 
   return (
-    <Box sx={{ pt: 6, pb: { xs: 6, md: 6 }, px: { xs: 3, sm: 6, md: 6 } }}>
-      <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <Grid item xs={8} md={8} m={2} p={2}>
-          <div>
-            <FormControl sx={{ mt: 2, minWidth: 300, mx: 6 }}>
-              <InputLabel id="hospitals-select-label">Hospitals</InputLabel>
-              <Select
-                labelId="hospitals-select"
-                id="multi-select"
-                multiple
-                variant="standard"
-                value={selectedHospitals}
-                onChange={handleSelectChange}
-                renderValue={() => selectedHospitalsNames.join(", ")}
-              >
-                {hospitalMap &&
-                  Object.keys(hospitalMap).map((id) => (
-                    <MenuItem key={id} value={id}>
-                      {hospitalMap[id].name}
+    <Box
+      sx={{
+        pt: 6,
+        pb: { xs: 6, md: 6 },
+        px: { xs: 3, sm: 6, md: 6 },
+      }}
+    >
+      <SectionHeading title="Model Training Request" align="center" />
+      <Typography
+        variant="h6"
+        sx={{
+          fontWeight: "bold",
+          color: "#217BF4",
+        }}
+      >
+        Provide all the details to start the training
+      </Typography>
+      <Box sx={{ mx: 6 }}>
+        <Grid container alignItems="center" justifyContent="center">
+          <Grid
+            item
+            xs={8}
+            md={12}
+            px={4}
+            py={4}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <FormControl sx={{ mx: 6 }}>
+                <InputLabel id="category-select-label">Category</InputLabel>
+                <Select
+                  labelId="category-select"
+                  id="category-select"
+                  value={category}
+                  onChange={handleCategoryChange}
+                  sx={{ bgcolor: "#F1F6FD", width: "100%" }}
+                >
+                  {Object.keys(categories).map((key) => (
+                    <MenuItem key={key} value={key}>
+                      {categories[key]}
                     </MenuItem>
                   ))}
-              </Select>
-            </FormControl>
-            <FormControl sx={{ mt: 2, minWidth: 300, mx: 6 }}>
-              <InputLabel id="spec-select-label">Specialization</InputLabel>
-              <Select
-                labelId="spec-select"
-                id="spec-select"
-                variant="standard"
-                value={selectedSpec}
-                onChange={handleSpecSelectChange}
-              >
-                {specs.map((spec) => (
-                  <MenuItem key={spec} value={spec}>
-                    {spec}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl sx={{ mt: 2, minWidth: 300, mx: 6 }}>
+                </Select>
+              </FormControl>
+              <FormControl sx={{ mt: 2, mx: 6 }}>
+                <InputLabel id="hospitals-select-label">Hospitals</InputLabel>
+                <Select
+                  labelId="hospitals-select"
+                  id="multi-select"
+                  multiple
+                  value={selectedHospitals}
+                  onChange={handleSelectChange}
+                  renderValue={() => selectedHospitalsNames.join(", ")}
+                  sx={{ bgcolor: "#F1F6FD", width: "100%" }}
+                >
+                  {hospitalMap &&
+                    Object.keys(hospitalMap).map((id) => (
+                      <MenuItem key={id} value={id}>
+                        {hospitalMap[id].name}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+              <FormControl sx={{ mt: 2, mx: 6 }}>
+                <InputLabel id="spec-select-label">Specialization</InputLabel>
+                <Select
+                  labelId="spec-select"
+                  id="spec-select"
+                  value={selectedSpec}
+                  onChange={handleSpecSelectChange}
+                  sx={{ bgcolor: "#F1F6FD", width: "100%" }}
+                >
+                  {specs.map((spec) => (
+                    <MenuItem key={spec} value={spec}>
+                      {spec}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+
+            {/* <FormControl sx={{ mt: 2, minWidth: 300, mx: 6 }}>
               <InputLabel id="other-spec-select">
                 Specs to Predict From
               </InputLabel>
@@ -203,34 +256,43 @@ const NewRequest = () => {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
-            <TextField
+            </FormControl> */}
+            {/* <TextField
               label="Iterations"
               type="number"
               value={iterations}
               onChange={(e) => setIterations(e.target.value)}
-            />
-          </div>
-        </Grid>
-        <Grid item xs={12} md={12} m={2} p={2}>
-          <Typography variant="h6" sx={{ mt: 2, mx: 6 }}>
-            Total Price: {totalPrice}
-          </Typography>
-          <Typography variant="h6" sx={{ mt: 2, mx: 6 }}>
-            Total Patients: {totalPatients}
-          </Typography>
-        </Grid>
-        <Grid container alignItems="left" justifyContent="left" mt={2}>
-          <Grid item xs={12} md={12} m={2} p={2}>
-            <CustomButton
-              backgroundColor="#217BF4"
-              color="#fff"
-              buttonText="Pay Now and Start Training"
-              onClick={handleSubmit}
-            />
+            /> */}
+          </Grid>
+          <Grid item xs={12} md={12} mx={4} p={2}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h6" sx={{ mt: 1, mx: 6 }}>
+                Total Price: {totalPrice}
+              </Typography>
+              <Typography variant="h6" sx={{ mt: 1, mx: 6 }}>
+                Total Patients: {totalPatients}
+              </Typography>
+            </Box>
+          </Grid>
+
+          <Grid container alignItems="left" justifyContent="left" mt={2}>
+            <Grid item xs={12} md={12} m={2} p={2}>
+              <CustomButton
+                backgroundColor="#217BF4"
+                color="#fff"
+                buttonText="Pay Now and Start Training"
+                onClick={handleSubmit}
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 };

@@ -4,9 +4,9 @@ import { Box, Grid } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-import PastRequests from "../../user/components/requestList/PastRequests";
 import { CustomIconButton } from "../../user/components/CustomIconButton/CustomIconButton";
 import { SectionHeading } from "../../user/components/sectionHeading/SectionHeading";
+import { AllRequests } from "./AllRequests";
 
 const Dashboard = () => {
   return (
@@ -17,7 +17,7 @@ const Dashboard = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <SectionHeading title="Hospital Name" align="center" />
+      <SectionHeading title="Welcome Back" align="left" />
       <Grid
         container
         justifyContent="center"
@@ -31,7 +31,7 @@ const Dashboard = () => {
             text="Patients"
             bgColor="#EAEAEA"
             mr={6}
-            href="../patients"
+            href="../patients/add"
           />
         </Grid>
 
@@ -45,7 +45,7 @@ const Dashboard = () => {
           />
         </Grid>
       </Grid>
-      <PastRequests />
+      <AllRequests />
     </Box>
   );
 };

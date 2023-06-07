@@ -132,49 +132,6 @@ const NewPatient = () => {
           />
         </Grid>
       </Grid>
-
-      {/* <Typography
-        mt={2}
-        variant="h6"
-        sx={{
-          fontWeight: "bold",
-          color: "#217BF4",
-        }}
-      >
-        Personal Information
-      </Typography> */}
-
-      {/* <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <PatientFields
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
-      </Grid>
-      <Typography
-        mt={2}
-        variant="h6"
-        sx={{
-          fontWeight: "bold",
-          color: "#217BF4",
-        }}
-      >
-        Medical Information
-      </Typography>
-      <Grid container alignItems="center" justifyContent="center" mt={2}>
-        <DiseaseFields
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
-
-        <Grid item xs={12} md={11} m={2}>
-          <CustomButton
-            backgroundColor="#217BF4"
-            color="#fff"
-            buttonText="Add Patient"
-            onClick={handleSubmit}
-          />
-        </Grid>
-      </Grid> */}
     </Box>
   );
 };

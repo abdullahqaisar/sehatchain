@@ -11,6 +11,8 @@ import {
 import axios from "../../../util/axios";
 import { RequestModal } from "./RequestDetailsModal";
 
+import { AllRequests } from "../dashboard/AllRequests";
+
 export function RequestTable() {
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -58,7 +60,10 @@ export function RequestTable() {
     console.log("Accept Request button clicked");
 
     const formData = new FormData();
+
     formData.append("requestId", selectedRequest._id);
+    formData.append("category", selectedRequest.diseaseCategory);
+
     const trainingResponse = await axios({
       method: "post",
       url: "/hospital/trainmodel",
@@ -70,7 +75,7 @@ export function RequestTable() {
     });
 
     if (trainingResponse.status === 200) {
-      console.log("Model trained successfully");
+      window.alert("Training Successful");
 
       const updatedRequests = requests.filter(
         (request) => request._id !== selectedRequest._id
@@ -80,43 +85,50 @@ export function RequestTable() {
       setTrainingResult(trainingResponse);
       setOpen(false);
     }
+    else {
+      window.alert("An error occoured, try again");
+    }
   };
 
   return (
     <>
-      <TableContainer sx={{ mt: 3 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell key={column.name} style={{ fontWeight: "bold" }}>
-                  {column.name}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {requests.map((request, index) => (
-              <TableRow key={request._id}>
-                <TableCell>{request.hospitals}</TableCell>
-                <TableCell>{request.spec}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      setSelectedRequest(requests[index]);
-                      setOpen(true);
-                    }}
-                  >
-                    View
-                  </Button>
-                </TableCell>
+      {!requests ? (
+        <h4>No New Requests Found</h4>
+      ) : (
+        <TableContainer sx={{ mt: 3, mb: 4 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell key={column.name} style={{ fontWeight: "bold" }}>
+                    {column.name}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {requests.map((request, index) => (
+                <TableRow key={request._id}>
+                  <TableCell>{request.hospitals}</TableCell>
+                  <TableCell>{request.spec}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        setSelectedRequest(requests[index]);
+                        setOpen(true);
+                      }}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       {selectedRequest && (
         <RequestModal
           open={open}
@@ -126,6 +138,7 @@ export function RequestTable() {
           trainingResult={trainingResult}
         />
       )}
+      <AllRequests />
     </>
   );
 }

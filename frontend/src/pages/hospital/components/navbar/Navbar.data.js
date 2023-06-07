@@ -11,7 +11,7 @@ export const NavbarItems = [
   },
   {
     text: "Patients",
-    link: "patients",
+    link: "patients/add",
     key: "3",
   },
 ];

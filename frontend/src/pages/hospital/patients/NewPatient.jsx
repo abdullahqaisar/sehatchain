@@ -1,7 +1,18 @@
 import { useState } from "react";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "../../../util/axios";
+
+import { categories } from "../../../util/diseaseCategory.data";
 
 import { CustomButton } from "../../../components/elements/customButton";
 import { SectionHeading } from "../../user/components/sectionHeading/SectionHeading";
@@ -10,10 +21,9 @@ const NewPatient = () => {
   const [file, setFile] = useState(null);
   const [price, setPrice] = useState(null);
   const [patients, setPatients] = useState(null);
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-    console.log(e.target.files[0]);
-  };
+  const [category, setCategory] = useState("");
+  const [diseaseName, setDiseaseName] = useState("");
+
   const handleUpload = async (event) => {
     event.preventDefault();
     console.log("hospital id:", localStorage.getItem("hospitalToken"));
@@ -23,9 +33,10 @@ const NewPatient = () => {
 
     try {
       const formData = new FormData();
+      formData.append("category", category);
       formData.append("file", file);
       formData.append("price", price);
-      console.log("form", formData);
+      // formData.append("diseaseName", diseaseName);
       formData.append("totalPatients", patients);
       const response = await axios({
         method: "post",
@@ -37,7 +48,11 @@ const NewPatient = () => {
         },
       });
 
-      console.log("response:", response);
+      if (response.status === 200) {
+        window.alert("File uploaded successfully");
+      } else {
+        window.alert("Something went wrong! Try again");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -50,10 +65,11 @@ const NewPatient = () => {
         pb: { xs: 6, md: 6 },
         px: { xs: 3, sm: 6, md: 6 },
       }}
+      alignItems="left"
+      justifyContent="left"
     >
       <SectionHeading title="Add a patient" align="center" />
       <Typography
-        mt={2}
         variant="h6"
         sx={{
           fontWeight: "bold",
@@ -62,14 +78,54 @@ const NewPatient = () => {
       >
         Add Multiple patients by uploading a CSV file
       </Typography>
-      <Box sx={{ mx: 6, my: 2, backgroundColor: "#F1F6FD" }}>
-        <Grid container alignItems="center" justifyContent="center" mt={2}>
-          <Grid item xs={12} md={12} m={2} p={2}>
+      <Box sx={{ mx: 8, my: 1 }} alignItems="left" justifyContent="left">
+        <Grid container alignItems="left" justifyContent="left" mt={2}>
+          <Grid item xs={10} md={12}>
+            <Grid m={1}>
+              <FormControl>
+                <InputLabel id="category-select-label">Category</InputLabel>
+                <Select
+                  labelId="category-select"
+                  id="category-select"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  sx={{ minWidth: 250 }}
+                >
+                  {Object.keys(categories).map((key) => (
+                    <MenuItem key={key} value={key}>
+                      {categories[key]}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            {/* 
+            <Grid>
+              <TextField
+                sx={{ minWidth: 250 }}
+                label="Disease Name"
+                value={diseaseName}
+                onChange={(e) => setDiseaseName(e.target.value)}
+                mx={2}
+                px={2}
+              />
+            </Grid> */}
+          </Grid>
+        </Grid>
+
+        <Grid container alignItems="left" justifyContent="left" mt={2}>
+          <Grid item xs={12} md={12} m={1}>
             <input
+              label="Upload CSV"
               type={"file"}
               accept={".csv"}
               onChange={(e) => setFile(e.target.files[0])}
             />
+          </Grid>
+        </Grid>
+
+        <Grid container alignItems="left" justifyContent="left" mt={2}>
+          <Grid item xs={12} md={12} m={2} p={2}>
             <TextField
               sx={{ minWidth: 250 }}
               label="Price per 100 Patients in ETH"
@@ -87,7 +143,7 @@ const NewPatient = () => {
           </Grid>
         </Grid>
 
-        <Grid container alignItems="center" justifyContent="center" mt={2}>
+        <Grid container alignItems="left" justifyContent="left" mt={2}>
           <Grid item xs={12} md={12} m={2} p={2}>
             <CustomButton
               backgroundColor="#217BF4"

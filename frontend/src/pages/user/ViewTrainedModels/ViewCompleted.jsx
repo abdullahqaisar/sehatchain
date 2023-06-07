@@ -6,6 +6,7 @@ import { CustomButton } from "../../../components/elements/customButton";
 import FormFields from "./FormFields";
 
 import { SectionHeading } from "../components/sectionHeading/SectionHeading";
+import { selects } from "./selects.data";
 
 const ViewCompleted = () => {
   const req = useParams();
@@ -58,6 +59,26 @@ const ViewCompleted = () => {
     if (response.status === 200) {
       console.log(response.data.prediction);
       setResult(response.data.prediction);
+      const spec = response.data.spec;
+
+      // if the spec if from any of these, then we need to get its key values from selects file
+      const specs = [
+        "gender",
+        "chest_pain_type",
+        "fasting_BP",
+        "resting_electrocardiographic",
+        "exercise_induced_angina",
+        "slope_peak_ex",
+        "no_of_major_vessels",
+        "thal",
+        "num",
+      ];
+
+      if (specs.includes(spec)) {
+        const key = selects[spec];
+        const val = key[response.data.prediction].label;
+        setResult(val);
+      }
     }
 
     window.alert("Request Submitted");
@@ -126,7 +147,7 @@ const ViewCompleted = () => {
                   color: "#000",
                 }}
               >
-                {request.spec}: {result} 
+                {request.spec}: {result}
               </Typography>
             </Box>
           )}

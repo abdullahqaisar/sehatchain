@@ -6,11 +6,11 @@ export function RequestModal(props) {
   const { open, onClose, selectedRequest, onAccept, trainingResult } = props;
 
   const handleAcceptRequest = () => {
+    console.log("Selected: ",selectedRequest);
     onAccept();
   };
 
   useEffect(() => {
-    console.log(selectedRequest);
   }, [selectedRequest]);
 
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -37,7 +37,6 @@ export function RequestModal(props) {
     if (reason === "clickaway") {
       return;
     }
-
     setSnackbarOpen(false);
   };
 
