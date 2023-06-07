@@ -65,6 +65,26 @@ exports.addCSV = async (req, res) => {
   }
 };
 
+exports.getAllRequests = async (req, res) => {
+  const hospitalId = req.userId;
+  // find all the hospitals which have hospital id in hospitas or approvedHositals
+  const requests = await Request.find({
+    $or: [
+      { hospitals: { $in: [hospitalId] } },
+      { approvedHospitals: hospitalId },
+    ],
+  });
+
+  if (!requests) {
+    return res.status(404).json({ message: "No requests found!" });
+  }
+  console.log(requests);
+  return res.status(200).json({
+    message: "Requests found!",
+    requests: requests,
+  });
+};
+
 exports.getRequests = async (req, res) => {
   const hospitalId = req.userId;
   const requests = await Request.find({
@@ -199,7 +219,7 @@ async function runPredictionModel(
   try {
     let src = "";
     console.log("Category: ", category);
-  if (category == "0") {
+    if (category == "0") {
       src = "src/script/heartPrediction/predictionModel1.py";
     } else if (category == "1") {
       src = "src/script/lungPrediction/predictionModel1.py";

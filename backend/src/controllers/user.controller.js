@@ -243,18 +243,11 @@ exports.makePrediction = async (req, res) => {
         message: "Prediction failed",
       });
     }
-    if (request.spec === "num") {
-      if (prediction == 0) {
-        prediction = "Heart Health > 50%";
-      }
-      else {
-        prediction = "Heart Health < 50%";
-      }
-    }
 
     return res.status(200).json({
       message: "Prediction made!",
       prediction,
+      spec: request.spec,
     });
   } catch (error) {
     console.log(error);

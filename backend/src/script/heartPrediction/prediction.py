@@ -11,7 +11,7 @@ iterations = int(sys.argv[5])
 
 classes = classes.replace('NaN', '0')
 
-if classes == '()':
+if classes == '()' or classes == "['()']":
     ensemble = LinearRegression()
 else:
     ensemble = LogisticRegression()
