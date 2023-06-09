@@ -5,11 +5,12 @@ import PageNotFound from "../../error/PageNotFound";
 import { Dashboard, NewRequest, ViewTrainedModels } from "..";
 import TrainingResults from "../trainingResults/TrainingResults";
 import ViewCompleted from "../ViewTrainedModels/ViewCompleted";
+import { userItem } from "../../../util/userSidebarItems";
 
 export function UserRoutes() {
   return (
     <Routes>
-      <Route element={<UserLayout />}>
+      <Route element={<UserLayout props={userItem} />}>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="newrequest" element={<NewRequest />} />
         <Route path="viewmodels" element={<ViewTrainedModels />} />
