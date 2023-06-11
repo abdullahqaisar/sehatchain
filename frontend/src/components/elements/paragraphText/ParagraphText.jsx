@@ -1,17 +1,17 @@
 import { Typography } from "@mui/material";
 
-export function SectionHeading(props) {
+export function ParagraphText(props) {
   return (
     <Typography
       sx={{
         textAlign: props.align,
-        fontSize: { xs: 20, md: 30 },
-        fontWeight: "700",
+        fontSize: { xs: 16, md: 16 },
+        fontWeight: "400",
         color: "#001E3C",
-        mb: 3,
+        mb: 1,
       }}
     >
-      {props.title}
+      {props.text}
     </Typography>
   );
 }

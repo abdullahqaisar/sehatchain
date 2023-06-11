@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import { CustomButton } from "../../../components/elements/customButton";
-import Web3 from "web3";
+import CustomSelect from "../components/customSelect/CustomSelect";
 import { ethers } from "ethers";
 
 import {
@@ -11,16 +11,12 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Input,
-  TextField,
 } from "@mui/material";
-import CustomTextField from "../../../components/elements/customTextField/CustomTextField";
 import { categories } from "../../../util/diseaseCategory.data";
-import { SectionHeading } from "../components/sectionHeading/SectionHeading";
+import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
 
 const startPayment = async (setTxs, ether, addr) => {
   console.log(ether, addr);
-  // convert ether to string
   ether = String(ether);
   try {
     if (!window.ethereum)
@@ -149,11 +145,6 @@ const NewRequest = () => {
     setOtherSpecs(specs.filter((spec) => spec !== value));
   };
 
-  const handleOtherSpecSelectChange = (event) => {
-    const { value } = event.target;
-    setOtherSelectedSpecs(value);
-  };
-
   return (
     <Box
       sx={{
@@ -162,137 +153,84 @@ const NewRequest = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <SectionHeading title="Model Training Request" align="center" />
-      <Typography
-        variant="h6"
-        sx={{
-          fontWeight: "bold",
-          color: "#217BF4",
-        }}
-      >
-        Provide all the details to start the training
-      </Typography>
-      <Box sx={{ mx: 6 }}>
-        <Grid container alignItems="center" justifyContent="center">
-          <Grid
-            item
-            xs={8}
-            md={12}
-            px={4}
-            py={4}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <FormControl sx={{ mx: 6 }}>
-                <InputLabel id="category-select-label">Category</InputLabel>
-                <Select
-                  labelId="category-select"
-                  id="category-select"
-                  value={category}
-                  onChange={handleCategoryChange}
-                  sx={{ bgcolor: "#F1F6FD", width: "100%" }}
-                >
-                  {Object.keys(categories).map((key) => (
-                    <MenuItem key={key} value={key}>
-                      {categories[key]}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl sx={{ mt: 2, mx: 6 }}>
-                <InputLabel id="hospitals-select-label">Hospitals</InputLabel>
-                <Select
-                  labelId="hospitals-select"
-                  id="multi-select"
-                  multiple
-                  value={selectedHospitals}
-                  onChange={handleSelectChange}
-                  renderValue={() => selectedHospitalsNames.join(", ")}
-                  sx={{ bgcolor: "#F1F6FD", width: "100%" }}
-                >
-                  {hospitalMap &&
-                    Object.keys(hospitalMap).map((id) => (
-                      <MenuItem key={id} value={id}>
-                        {hospitalMap[id].name}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
-              <FormControl sx={{ mt: 2, mx: 6 }}>
-                <InputLabel id="spec-select-label">Specialization</InputLabel>
-                <Select
-                  labelId="spec-select"
-                  id="spec-select"
-                  value={selectedSpec}
-                  onChange={handleSpecSelectChange}
-                  sx={{ bgcolor: "#F1F6FD", width: "100%" }}
-                >
-                  {specs.map((spec) => (
-                    <MenuItem key={spec} value={spec}>
-                      {spec}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-
-            {/* <FormControl sx={{ mt: 2, minWidth: 300, mx: 6 }}>
-              <InputLabel id="other-spec-select">
-                Specs to Predict From
-              </InputLabel>
-              <Select
-                labelId="other-spec-select"
-                label="Other Specs"
-                id="other-spec-select"
-                variant="standard"
-                multiple
-                value={otherSelectedSpecs}
-                onChange={handleOtherSpecSelectChange}
-              >
-                {otherSpecs.map((spec) => (
-                  <MenuItem key={spec} value={spec}>
-                    {spec}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
-            {/* <TextField
-              label="Iterations"
-              type="number"
-              value={iterations}
-              onChange={(e) => setIterations(e.target.value)}
-            /> */}
-          </Grid>
-          <Grid item xs={12} md={12} mx={4} p={2}>
-            <Box
+      <SectionHeading title="New Request" align="left" underline="True" />
+      <Grid item xs={6} sm={6} md={4}>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <CustomSelect
+            label="Category"
+            value={category}
+            onChange={handleCategoryChange}
+            options={Object.keys(categories).map((key) => ({
+              value: key,
+              label: categories[key],
+            }))}
+          />
+          <CustomSelect
+            label="Specialization"
+            value={selectedSpec}
+            onChange={handleSpecSelectChange}
+            options={specs.map((spec) => ({
+              value: spec,
+              label: spec,
+            }))}
+          />
+          <FormControl sx={{ mt: 2, mx: 6 }}>
+            <InputLabel id="hospitals-select-label">Hospitals</InputLabel>
+            <Select
+              labelId="hospitals-select"
+              id="multi-select"
+              multiple
+              value={selectedHospitals}
+              onChange={handleSelectChange}
+              renderValue={() => selectedHospitalsNames.join(", ")}
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                bgcolor: "#F1F6FD",
+                width: "100%",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#98CDFF",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#98CDFF",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#98CDFF",
+                },
               }}
             >
-              <Typography variant="h6" sx={{ mt: 1, mx: 6 }}>
-                Total Price: {totalPrice}
-              </Typography>
-              <Typography variant="h6" sx={{ mt: 1, mx: 6 }}>
-                Total Patients: {totalPatients}
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid container alignItems="left" justifyContent="left" mt={2}>
-            <Grid item xs={12} md={12} m={2} p={2}>
-              <CustomButton
-                backgroundColor="#217BF4"
-                color="#fff"
-                buttonText="Pay Now and Start Training"
-                onClick={handleSubmit}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-      </Box>
+              {hospitalMap &&
+                Object.keys(hospitalMap).map((id) => (
+                  <MenuItem key={id} value={id}>
+                    {hospitalMap[id].name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </Box>
+      </Grid>
+      <Grid item xs={12} sm={6} md={4}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6" sx={{ mt: 1, mx: 6 }}>
+            Total Price: {totalPrice}
+          </Typography>
+          <Typography variant="h6" sx={{ mt: 1, mx: 6 }}>
+            Total Patients: {totalPatients}
+          </Typography>
+        </Box>
+      </Grid>
+      <Grid item xs={12} sm={6} md={4}>
+        <CustomButton
+          backgroundColor="#217BF4"
+          color="#fff"
+          buttonText="Pay Now and Start Training"
+          onClick={handleSubmit}
+        />
+      </Grid>
     </Box>
   );
 };

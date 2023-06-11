@@ -1,6 +1,10 @@
 import * as React from "react";
+import { useEffect } from "react";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -15,14 +19,14 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
 import Logo from "../../assets/images/logos/logo_dark.svg";
-import { Outlet } from "react-router-dom";
 
-const drawerWidth = 320;
+const drawerWidth = 350;
 
 export default function Sidebar(items) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -30,9 +34,16 @@ export default function Sidebar(items) {
 
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  const handleListItemClick = (event, index) => {
+  const handleListItemClick = (event, index, link) => {
+    navigate("/sehatchain/user/" + link);
     setSelectedIndex(index);
   };
+  useEffect(() => {
+    const index = items.sidebarItems.findIndex((item) =>
+      location.pathname.includes(item.link)
+    );
+    setSelectedIndex(index);
+  }, [location]);
   const drawer = (
     <div>
       <Box sx={{ display: "flex", justifyContent: "center", p: 1 }}>
@@ -44,9 +55,9 @@ export default function Sidebar(items) {
       </Box>
       <List>
         {items.sidebarItems.map((text, index) => (
-          <ListItem key={text} disablePadding>
+          <ListItem key={text.key} disablePadding sx={{ my: 1 }}>
             <ListItemButton
-              onClick={(event) => handleListItemClick(event, index)}
+              onClick={(event) => handleListItemClick(event, index, text.link)}
               sx={{
                 borderRadius: 2,
                 mx: 2,
@@ -58,17 +69,26 @@ export default function Sidebar(items) {
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} sx={{ color: "#071B2F" }} />
+              <ListItemText
+                primary={
+                  <span
+                    style={{
+                      color: "#071B2F",
+                      fontSize: "1.1rem",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {text.text}
+                  </span>
+                }
+              />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <Divider sx={{ backgroundColor: "#AFD8FF", mx: 2 }} />
+      <Divider sx={{ backgroundColor: "#AFD8FF", mx: 4 }} />
     </div>
   );
-
-  //   const container =
-  //     window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -90,7 +110,7 @@ export default function Sidebar(items) {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: "#071B2F" }} />
           </IconButton>
           <Avatar sx={{ ml: "auto" }}>U</Avatar>
         </Toolbar>
@@ -113,6 +133,7 @@ export default function Sidebar(items) {
               boxSizing: "border-box",
               width: drawerWidth,
               backgroundColor: "#EBF5FF",
+              borderRight: "none",
             },
           }}
         >
@@ -126,6 +147,7 @@ export default function Sidebar(items) {
               boxSizing: "border-box",
               width: drawerWidth,
               backgroundColor: "#EBF5FF",
+              borderRight: "none",
             },
           }}
           open

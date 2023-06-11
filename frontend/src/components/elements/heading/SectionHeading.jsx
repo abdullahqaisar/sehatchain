@@ -8,7 +8,7 @@ const SectionHeading = (props) => {
       component="h2"
       sx={{
         textAlign: "left",
-        fontSize: { xs: 20, md: 30 },
+        fontSize: { xs: 20, md: 10 },
         fontWeight: "700",
         color: "#001E3C",
         mb: 3,

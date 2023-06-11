@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 import axios from "../../../util/axios";
+import CustomCard from "../../../components/elements/customCard/CustomCard";
+import CircularProgress from "@mui/material/CircularProgress";
+import Grid from "@mui/material/Grid";
+import { ParagraphText } from "../../../components/elements/paragraphText/ParagraphText";
 
 export function AllRequests() {
   const [requests, setRequests] = useState([""]);
+  const [loading, setLoading] = useState(true);
 
   async function fetchData() {
     const response = await axios({
@@ -23,13 +19,8 @@ export function AllRequests() {
       },
     });
     setRequests(response.data.requests);
+    setLoading(false);
   }
-
-  const columns = [
-    { name: "Hospitals", options: { filter: false } },
-    { name: "Label", options: { filter: false } },
-    { name: "Date", options: { filter: false } },
-  ];
 
   useEffect(() => {
     fetchData();
@@ -37,31 +28,28 @@ export function AllRequests() {
 
   return (
     <>
-      {!requests ? (
-        <h1>No Requests Found</h1>
+      {loading ? (
+        <CircularProgress />
+      ) : !requests ? (
+        <ParagraphText
+          text="You haven’t requested any models yet"
+          align="left"
+        />
       ) : (
-        <TableContainer sx={{ mt: 3 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell key={column.name} style={{ fontWeight: "bold" }}>
-                    {column.name}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {requests.map((request, index) => (
-                <TableRow key={request._id}>
-                  <TableCell>{request.hospitalNames}</TableCell>
-                  <TableCell>{request.spec}</TableCell>
-                  <TableCell>{request.date}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Grid container spacing={2}>
+          {requests.map((request, index) => (
+            <Grid item xs={12} sm={6} key={request._id}>
+              <CustomCard
+                requestId={request._id}
+                diseaseCategory={request.diseaseCategory}
+                spec={request.spec}
+                requestNumber={index + 1}
+                requestStatus={request.status}
+                formattedDate={request.formattedDate}
+              />
+            </Grid>
+          ))}
+        </Grid>
       )}
     </>
   );
