@@ -29,6 +29,7 @@ export function RequestTable() {
           authorization: `Bearer ${localStorage.getItem("hospitalToken")}`,
         },
       });
+      console.log(requests);
       setRequests(response.data.requests);
     }
 
@@ -84,8 +85,7 @@ export function RequestTable() {
       setSelectedRequest(null);
       setTrainingResult(trainingResponse);
       setOpen(false);
-    }
-    else {
+    } else {
       window.alert("An error occoured, try again");
     }
   };

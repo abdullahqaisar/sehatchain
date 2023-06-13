@@ -66,7 +66,11 @@ export default function Sidebar(items) {
                 }),
               }}
             >
-              <ListItemIcon>
+              <ListItemIcon
+                sx={{
+                  color: "#fff",
+                }}
+              >
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
               <ListItemText

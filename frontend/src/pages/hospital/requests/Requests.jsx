@@ -21,7 +21,7 @@ const Requests = () => {
         }}
       >
         Recent requests from users can be found here. You can accept or reject a
-        request by opening a request.
+        request by opening a requessst.ss
       </Typography>
       <RequestTable />
     </Box>

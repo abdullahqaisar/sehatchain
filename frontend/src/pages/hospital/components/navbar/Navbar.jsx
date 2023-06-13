@@ -176,9 +176,6 @@ export const Navbar = () => {
           }}
         >
           <Avatar sx={{ width: 34, height: 34 }}>A</Avatar>
-          <NavLink to="profile/hospital" variant="body2">
-            Hospital Name
-          </NavLink>
         </Box>
       </NavbarContainer>
     </Box>
