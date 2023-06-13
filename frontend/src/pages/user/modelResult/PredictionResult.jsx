@@ -4,7 +4,7 @@ import { SectionHeading } from "../../../components/elements/sectionHeading/Sect
 
 const PredictionResult = ({ spec, result }) => {
   return (
-    <Box mt={6} alignItems={"center"}>
+    <Box  alignItems={"center"}>
       <div
         style={{
           maxWidth: "100%",

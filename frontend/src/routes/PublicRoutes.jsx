@@ -42,6 +42,7 @@ export function PublicRoutes() {
         <Route path="hospital/register" element={<HospitalRegister />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
