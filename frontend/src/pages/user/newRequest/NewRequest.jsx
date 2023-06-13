@@ -146,7 +146,7 @@ const NewRequest = () => {
         sm={12}
         md={4}
         sx={{
-          px: { xs: 3, sm: 6, md: 14 , lg: 20},
+          px: { xs: 3, sm: 6, md: 14, lg: 20 },
         }}
       >
         <Box

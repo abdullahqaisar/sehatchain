@@ -1,10 +1,32 @@
-import { Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import { SectionHeading } from "../components/sectionHeading/SectionHeading";
+import { useState, useEffect } from "react";
+import axios from "../../../util/axios";
+import CustomCard from "../../../components/elements/customCard/CustomCard";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Grid, Box } from "@mui/material";
+import { ParagraphText } from "../../../components/elements/paragraphText/ParagraphText";
+import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
 
-import { CompletedRequests } from "./CompletedRequests";
+function ViewTrainedModels() {
+  const [requests, setRequests] = useState([""]);
+  const [loading, setLoading] = useState(true);
 
-const ViewTrainedModels = () => {
+  async function fetchData() {
+    const response = await axios({
+      method: "get",
+      url: "/user/requests/completed",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    setRequests(response.data.requests);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -13,18 +35,32 @@ const ViewTrainedModels = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <SectionHeading title="Completed Requests" align="center" />
-      <Typography
-        variant="p"
-        sx={{
-          color: "#656464",
-        }}
-      >
-        All your completed model requests can be found here
-      </Typography>
-      <CompletedRequests />
+      <SectionHeading title="Your Requests" align="left" underline="True" />
+      {loading ? (
+        <CircularProgress />
+      ) : !requests ? (
+        <ParagraphText
+          text="You haven’t requested any models yet"
+          align="left"
+        />
+      ) : (
+        <Grid container spacing={2}>
+          {requests.map((request, index) => (
+            <Grid item xs={12} sm={6} key={request._id}>
+              <CustomCard
+                requestId={request._id}
+                diseaseCategory={request.diseaseCategory}
+                spec={request.spec}
+                requestNumber={index + 1}
+                requestStatus={request.status}
+                formattedDate={request.formattedDate}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
   );
-};
+}
 
 export default ViewTrainedModels;

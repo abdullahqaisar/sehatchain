@@ -1,10 +1,12 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box } from "@mui/material";
 import CustomTextField from "../components/customTextField/CustomTextField";
+import CustomSelect from "../components/customSelect/CustomSelect";
 
-import { selects } from "./selects.data";
+import { heartSelect } from "./selects.data";
+import { lungSelect } from "./selects.data";
 
-const ModelResultForm = ({ formData, setFormData, spec }) => {
-  const fields = [
+const ModelResultForm = ({ formData, setFormData, spec, diseaseCategory }) => {
+  const heartModelFields = [
     {
       key: "age",
       label: "Age",
@@ -71,140 +73,14 @@ const ModelResultForm = ({ formData, setFormData, spec }) => {
     },
   ];
 
-  const lungSelectFields = [
-    {
-      key: "GENDER",
-      label: "Gender",
-      value: formData.GENDER,
-      onChange: (event) =>
-        setFormData({ ...formData, GENDER: event.target.value }),
-      options: [],
-    },
-    {
-      key: "SMOKING",
-      label: "Smoking",
-      value: formData.SMOKING,
-      onChange: (event) =>
-        setFormData({ ...formData, SMOKING: event.target.value }),
-      options: [],
-    },
-    {
-      key: "YELLOW_FINGERS",
-      label: "Yellow Fingers",
-      value: formData.YELLOW_FINGERS,
-      onChange: (event) =>
-        setFormData({ ...formData, YELLOW_FINGERS: event.target.value }),
-      options: [],
-    },
-    {
-      key: "ANXIETY",
-      label: "Anxiety",
-      value: formData.ANXIETY,
-      onChange: (event) =>
-        setFormData({ ...formData, ANXIETY: event.target.value }),
-      options: [],
-    },
-    {
-      key: "PEER_PRESSURE",
-      label: "Peer Pressure",
-      value: formData.PEER_PRESSURE,
-      onChange: (event) =>
-        setFormData({ ...formData, PEER_PRESSURE: event.target.value }),
-      options: [],
-    },
-    {
-      key: "CHRONIC DISEASE",
-      label: "Chronic Disease",
-      value: formData.CHRONIC_DISEASE,
-      onChange: (event) =>
-        setFormData({ ...formData, CHRONIC_DISEASE: event.target.value }),
-      options: [],
-    },
-    {
-      key: "FATIGUE",
-      label: "Fatigue",
-      value: formData.FATIGUE,
-      onChange: (event) =>
-        setFormData({ ...formData, FATIGUE: event.target.value }),
-      options: [],
-    },
-    {
-      key: "ALLERGY",
-      label: "Allergy",
-      value: formData.ALLERGY,
-      onChange: (event) =>
-        setFormData({ ...formData, ALLERGY: event.target.value }),
-      options: [],
-    },
-    {
-      key: "WHEEZING",
-      label: "Wheezing",
-      value: formData.WHEEZING,
-      onChange: (event) =>
-        setFormData({ ...formData, WHEEZING: event.target.value }),
-      options: [],
-    },
-    {
-      key: "ALCOHOL CONSUMING",
-      label: "Alcohol Consuming",
-      value: formData.ALCOHOL_CONSUMING,
-      onChange: (event) =>
-        setFormData({ ...formData, ALCOHOL_CONSUMING: event.target.value }),
-      options: [],
-    },
-
-    {
-      key: "COUGHING",
-      label: "Coughing",
-      value: formData.COUGHING,
-
-      onChange: (event) =>
-        setFormData({ ...formData, COUGHING: event.target.value }),
-      options: [],
-    },
-    {
-      key: "SHORTNESS OF BREATH",
-
-      label: "Shortness of Breath",
-      value: formData.SHORTNESS_OF_BREATH,
-      onChange: (event) =>
-        setFormData({ ...formData, SHORTNESS_OF_BREATH: event.target.value }),
-      options: [],
-    },
-    {
-      key: "SWALLOWING DIFFICULTY",
-      label: "Swallowing Difficulty",
-      value: formData.SWALLOWING_DIFFICULTY,
-      onChange: (event) =>
-        setFormData({ ...formData, SWALLOWING_DIFFICULTY: event.target.value }),
-      options: [],
-    },
-    {
-      key: "CHEST PAIN",
-      label: "Chest Pain",
-      value: formData.CHEST_PAIN,
-      onChange: (event) =>
-        setFormData({ ...formData, CHEST_PAIN: event.target.value }),
-      options: [],
-    },
-    {
-      key: "LUNG_CANCER",
-      label: "Lung Cancer",
-      value: formData.LUNG_CANCER,
-      onChange: (event) =>
-        setFormData({ ...formData, LUNG_CANCER: event.target.value }),
-      options: [],
-    },
-  ];
-
-  const selectFields = [
+  const heartModelSelectFields = [
     {
       key: "gender",
       label: "Gender",
       value: formData.gender,
       onChange: (event) =>
         setFormData({ ...formData, gender: event.target.value }),
-      options: selects.gender,
+      options: heartSelect.gender,
     },
     {
       key: "chest_pain_type",
@@ -212,7 +88,7 @@ const ModelResultForm = ({ formData, setFormData, spec }) => {
       value: formData.chestPainType,
       onChange: (event) =>
         setFormData({ ...formData, chestPainType: event.target.value }),
-      options: selects.chest_pain_type,
+      options: heartSelect.chest_pain_type,
     },
     {
       key: "fasting_BP",
@@ -220,7 +96,7 @@ const ModelResultForm = ({ formData, setFormData, spec }) => {
       value: formData.fastingBP,
       onChange: (event) =>
         setFormData({ ...formData, fastingBP: event.target.value }),
-      options: selects.fasting_BP,
+      options: heartSelect.fasting_BP,
     },
     {
       key: "resting_electrocardiographic",
@@ -231,7 +107,7 @@ const ModelResultForm = ({ formData, setFormData, spec }) => {
           ...formData,
           restingElectrocardiographic: event.target.value,
         }),
-      options: selects.resting_electrocardiographic,
+      options: heartSelect.resting_electrocardiographic,
     },
     {
       key: "exercise_induced_angina",
@@ -239,7 +115,7 @@ const ModelResultForm = ({ formData, setFormData, spec }) => {
       value: formData.exerciseInducedAngina,
       onChange: (event) =>
         setFormData({ ...formData, exerciseInducedAngina: event.target.value }),
-      options: selects.exercise_induced_angina,
+      options: heartSelect.exercise_induced_angina,
     },
     {
       key: "slope_peak_ex",
@@ -247,7 +123,7 @@ const ModelResultForm = ({ formData, setFormData, spec }) => {
       value: formData.slopePeakEx,
       onChange: (event) =>
         setFormData({ ...formData, slopePeakEx: event.target.value }),
-      options: selects.slope_peak_ex,
+      options: heartSelect.slope_peak_ex,
     },
     {
       key: "thal",
@@ -255,7 +131,7 @@ const ModelResultForm = ({ formData, setFormData, spec }) => {
       value: formData.thal,
       onChange: (event) =>
         setFormData({ ...formData, thal: event.target.value }),
-      options: selects.thal,
+      options: heartSelect.thal,
     },
 
     {
@@ -264,52 +140,194 @@ const ModelResultForm = ({ formData, setFormData, spec }) => {
       value: formData.num,
       onChange: (event) =>
         setFormData({ ...formData, num: event.target.value }),
-      options: selects.num,
+      options: heartSelect.num,
     },
   ];
 
-  let filteredFields = fields.filter((field) => field.key !== spec);
-  let filteredSelectFields = selectFields.filter((field) => field.key !== spec);
+  const lungModelFields = [
+    {
+      key: "AGE",
+      label: "Age",
+      type: "number",
+      min: 29,
+      max: 80,
+      value: formData.age,
+      onChange: (event) =>
+        setFormData({ ...formData, age: event.target.value }),
+    },
+  ];
+
+  const lungModelSelectFields = [
+    {
+      key: "GENDER",
+      label: "Gender",
+      value: formData.GENDER,
+      onChange: (event) =>
+        setFormData({ ...formData, GENDER: event.target.value }),
+      options: lungSelect.GENDER,
+    },
+    {
+      key: "SMOKING",
+      label: "Smoking",
+      value: formData.SMOKING,
+      onChange: (event) =>
+        setFormData({ ...formData, SMOKING: event.target.value }),
+      options: lungSelect.SMOKING,
+    },
+    {
+      key: "YELLOW_FINGERS",
+      label: "Yellow Fingers",
+      value: formData.YELLOW_FINGERS,
+      onChange: (event) =>
+        setFormData({ ...formData, YELLOW_FINGERS: event.target.value }),
+      options: lungSelect.YELLOW_FINGERS,
+    },
+    {
+      key: "ANXIETY",
+      label: "Anxiety",
+      value: formData.ANXIETY,
+      onChange: (event) =>
+        setFormData({ ...formData, ANXIETY: event.target.value }),
+      options: lungSelect.ANXIETY,
+    },
+    {
+      key: "PEER_PRESSURE",
+      label: "Peer Pressure",
+      value: formData.PEER_PRESSURE,
+      onChange: (event) =>
+        setFormData({ ...formData, PEER_PRESSURE: event.target.value }),
+      options: lungSelect.PEER_PRESSURE,
+    },
+    {
+      key: "CHRONIC DISEASE",
+      label: "Chronic Disease",
+      value: formData.CHRONIC_DISEASE,
+      onChange: (event) =>
+        setFormData({ ...formData, CHRONIC_DISEASE: event.target.value }),
+      options: lungSelect.CHRONIC_DISEASE,
+    },
+    {
+      key: "FATIGUE",
+      label: "Fatigue",
+      value: formData.FATIGUE,
+      onChange: (event) =>
+        setFormData({ ...formData, FATIGUE: event.target.value }),
+      options: lungSelect.FATIGUE,
+    },
+    {
+      key: "ALLERGY",
+      label: "Allergy",
+      value: formData.ALLERGY,
+      onChange: (event) =>
+        setFormData({ ...formData, ALLERGY: event.target.value }),
+      options: lungSelect.ALLERGY,
+    },
+    {
+      key: "WHEEZING",
+      label: "Wheezing",
+      value: formData.WHEEZING,
+      onChange: (event) =>
+        setFormData({ ...formData, WHEEZING: event.target.value }),
+      options: lungSelect.WHEEZING,
+    },
+    {
+      key: "ALCOHOL CONSUMING",
+      label: "Alcohol Consuming",
+      value: formData.ALCOHOL_CONSUMING,
+      onChange: (event) =>
+        setFormData({ ...formData, ALCOHOL_CONSUMING: event.target.value }),
+      options: lungSelect.ALCOHOL_CONSUMING,
+    },
+
+    {
+      key: "COUGHING",
+      label: "Coughing",
+      value: formData.COUGHING,
+
+      onChange: (event) =>
+        setFormData({ ...formData, COUGHING: event.target.value }),
+      options: lungSelect.COUGHING,
+    },
+    {
+      key: "SHORTNESS OF BREATH",
+
+      label: "Shortness of Breath",
+      value: formData.SHORTNESS_OF_BREATH,
+      onChange: (event) =>
+        setFormData({ ...formData, SHORTNESS_OF_BREATH: event.target.value }),
+      options: lungSelect.SHORTNESS_OF_BREATH,
+    },
+    {
+      key: "SWALLOWING DIFFICULTY",
+      label: "Swallowing Difficulty",
+      value: formData.SWALLOWING_DIFFICULTY,
+      onChange: (event) =>
+        setFormData({ ...formData, SWALLOWING_DIFFICULTY: event.target.value }),
+      options: lungSelect.SWALLOWING_DIFFICULTY,
+    },
+    {
+      key: "CHEST PAIN",
+      label: "Chest Pain",
+      value: formData.CHEST_PAIN,
+      onChange: (event) =>
+        setFormData({ ...formData, CHEST_PAIN: event.target.value }),
+      options: lungSelect.CHEST_PAIN,
+    },
+    {
+      key: "LUNG_CANCER",
+      label: "Lung Cancer",
+      value: formData.LUNG_CANCER,
+      onChange: (event) =>
+        setFormData({ ...formData, LUNG_CANCER: event.target.value }),
+      options: lungSelect.LUNG_CANCER,
+    },
+  ];
+
+  let filteredFields;
+  let filteredSelectFields;
+
+  if (diseaseCategory === "0") {
+    filteredFields = heartModelFields.filter((field) => field.key !== spec);
+    filteredSelectFields = heartModelSelectFields.filter(
+      (field) => field.key !== spec
+    );
+  } else if (diseaseCategory === "1") {
+    filteredFields = lungModelFields.filter((field) => field.key !== spec);
+    filteredSelectFields = lungModelSelectFields.filter(
+      (field) => field.key !== spec
+    );
+  }
 
   return (
-    <div>
-      {filteredFields.map((field) => (
-        <CustomTextField
-          key={field.label}
-          label={field.label}
-          type={field.type}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            min: field.min,
-            max: field.max,
-          }}
-          value={field.value}
-          onChange={field.onChange}
-        />
-      ))}
-
-      {filteredSelectFields.map((field) => (
-        <FormControl key={field.label} sx={{ mt: 2, minWidth: 250, mx: 2 }}>
-          <InputLabel id={`${field.label}-select-label`}>
-            {field.label}
-          </InputLabel>
-          <Select
-            labelId={`${field.label}-select-label`}
-            variant="standard"
+    <Box>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        {filteredFields.map((field) => (
+          <CustomTextField
+            key={field.label}
+            label={field.label}
+            type={field.type}
+            inputProps={{
+              min: field.min,
+              max: field.max,
+            }}
             value={field.value}
             onChange={field.onChange}
-          >
-            {field.options.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      ))}
-    </div>
+          />
+        ))}
+      </Box>
+
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        {filteredSelectFields.map((field) => (
+          <CustomSelect
+            key={field.label}
+            label={field.label}
+            value={field.value}
+            onChange={field.onChange}
+            options={field.options}
+          />
+        ))}
+      </Box>
+    </Box>
   );
 };
 

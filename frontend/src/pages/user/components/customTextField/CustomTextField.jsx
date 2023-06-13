@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, TextField } from "@mui/material";
+import { TextField, Typography, Box } from "@mui/material";
 
 const CustomTextField = ({
   label,
@@ -10,15 +10,30 @@ const CustomTextField = ({
   onChange,
 }) => {
   return (
-    <TextField
-      sx={{ mt: 2, minWidth: 250, mx: 2 }}
-      label={label}
-      type={type}
-      InputLabelProps={InputLabelProps}
-      inputProps={inputProps}
-      value={value}
-      onChange={onChange}
-    />
+    <Box sx={{ mt: 2, width: "100%" }}>
+      <label htmlFor={`${label}-select`}>
+        <Typography
+          sx={{ fontSize: 15, textAlign: "left", my: 1 }}
+          color="#071B2F"
+        >
+          {label}
+        </Typography>
+      </label>
+      <TextField
+        sx={{
+          width: "100%",
+          background: "#F5FAFF",
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#98CDFF",
+          },
+        }}
+        type={type}
+        InputLabelProps={InputLabelProps}
+        inputProps={inputProps}
+        value={value}
+        onChange={onChange}
+      />
+    </Box>
   );
 };
 

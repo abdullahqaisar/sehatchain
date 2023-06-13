@@ -9,9 +9,12 @@ import {
 
 const CustomSelect = ({ label, value, onChange, options, disabled }) => {
   return (
-    <FormControl sx={{ mt: 2 }}>
+    <FormControl sx={{ mt: 2, display: "flex", flexDirection: "column" }}>
       <label htmlFor={`${label}-select`}>
-        <Typography sx={{ fontSize: 15, textAlign: "left", my: 1 }} color="#071B2F">
+        <Typography
+          sx={{ fontSize: 15, textAlign: "left", my: 1 }}
+          color="#071B2F"
+        >
           {label}
         </Typography>
       </label>

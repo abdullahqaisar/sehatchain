@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Grid, Typography } from "@mui/material";
+import { CircularProgress } from "@mui/material";
+
 import axios from "../../../util/axios";
 import { CustomButton } from "../../../components/elements/customButton";
 import ModelResultForm from "./ModelResultForm";
 
 import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
-import { selects } from "./selects.data";
+import { heartSelect } from "./selects.data";
+import { lungSelect } from "./selects.data";
+
+import PredictionResult from "./PredictionResult";
 
 const ModelResult = () => {
   const req = useParams();
   const [request, setRequests] = useState([]);
   const [formData, setFormData] = useState({
+    // heart disease fields
     age: "",
     gender: "",
     chestPainType: "",
@@ -26,10 +32,32 @@ const ModelResult = () => {
     noOfMajorVessels: "",
     thal: "",
     num: "",
+
+    // lung disease fields
+    GENDER: "",
+    AGE: "",
+    SMOKING: "",
+    ALLERGY: "",
+    WHEEZING: "",
+    ALCOHOL_CONSUMING: "",
+    COUGHING: "",
+    SHORTNESS_OF_BREATH: "",
+    SWALLOWING_DIFFICULTY: "",
+    CHEST_PAIN: "",
+    LUNG_CANCER: "",
+    ANXIETY: "",
+    YELLOW_FINGERS: "",
+    PEER_PRESSURE: "",
+    CHRONIC_DISEASE: "",
+    FATIGUE: "",
   });
   const [result, setResult] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+  const [resultLoading, setResultLoading] = useState(false);
+
   async function fetchData() {
+    setLoading(true);
     const response = await axios({
       method: "get",
       url: "/user/requests/" + req.req_id,
@@ -38,11 +66,17 @@ const ModelResult = () => {
         authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    setRequests(response.data.request);
+    if (response.status === 200) {
+      console.log(response.data.request);
+      setRequests(response.data.request);
+    } else {
+      window.alert("Request not found");
+    }
+    setLoading(false);
   }
 
   const handleSubmit = async () => {
-    console.log(formData);
+    setResultLoading(true);
     const response = await axios({
       method: "post",
       url: "/user/requests/" + req.req_id + "/predict",
@@ -53,44 +87,70 @@ const ModelResult = () => {
       data: {
         requestId: req.req_id,
         formData,
+        diseaseCategory: request.diseaseCategory,
       },
     });
-    console.log(response.data);
     if (response.status === 200) {
       console.log(response.data.prediction);
       setResult(response.data.prediction);
       const spec = response.data.spec;
+      if (request.diseaseCategory === "0") {
+        const specs = [
+          "gender",
+          "chest_pain_type",
+          "fasting_BP",
+          "resting_electrocardiographic",
+          "exercise_induced_angina",
+          "slope_peak_ex",
+          "no_of_major_vessels",
+          "thal",
+          "num",
+        ];
 
-      // if the spec if from any of these, then we need to get its key values from selects file
-      const specs = [
-        "gender",
-        "chest_pain_type",
-        "fasting_BP",
-        "resting_electrocardiographic",
-        "exercise_induced_angina",
-        "slope_peak_ex",
-        "no_of_major_vessels",
-        "thal",
-        "num",
-      ];
+        if (specs.includes(spec)) {
+          const key = heartSelect[spec];
+          const value = Number(response.data.prediction);
+          const val = key[value - 1].label;
+          setResult(val);
+        }
+        setResultLoading(false);
+      } else if (request.diseaseCategory === "1") {
+        const specs = [
+          "GENDER",
+          "SMOKING",
+          "ALLERGY",
+          "WHEEZING",
+          "ALCOHOL_CONSUMING",
+          "COUGHING",
+          "SHORTNESS_OF_BREATH",
+          "SWALLOWING_DIFFICULTY",
+          "CHEST_PAIN",
+          "LUNG_CANCER",
+          "ANXIETY",
+          "YELLOW_FINGERS",
+          "PEER_PRESSURE",
+          "CHRONIC_DISEASE",
+          "FATIGUE",
+        ];
+        if (specs.includes(spec)) {
+          const key = lungSelect[spec];
+          const value = Number(response.data.prediction);
+          const val = key[value - 1].label;
+          setResult(val);
+        }
 
-      if (specs.includes(spec)) {
-        const key = selects[spec];
-        const val = key[response.data.prediction].label;
-        setResult(val);
+        setResultLoading(false);
       }
+    } else {
+      setResultLoading(false);
+      window.alert("Request not found");
     }
-
-    window.alert("Request Submitted");
   };
 
   useEffect(() => {
     fetchData();
+    console.log("requesttt ", request);
   }, []);
-
-  useEffect(() => {
-    console.log(result);
-  }, [result]);
 
   return (
     <Box
@@ -101,48 +161,63 @@ const ModelResult = () => {
       }}
     >
       <SectionHeading title="Predict Result" align="left" underline="True" />
-      <form onSubmit={handleSubmit}>
-        <Box sx={{ mx: 6, my: 2, py: 4 }}>
-          <ModelResultForm
-            formData={formData}
-            setFormData={setFormData}
-            spec={request.spec}
-          />
-
-          <Grid container alignItems="center" justifyContent="center" px={10}>
-            <Grid item xs={12} md={12} m={2} p={2}>
-              <CustomButton
-                backgroundColor="#217BF4"
-                color="#fff"
-                buttonText="Predict"
-                onClick={handleSubmit}
-              />
-            </Grid>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <Grid
+            item
+            xs={6}
+            sm={6}
+            md={4}
+            sx={{
+              px: { xs: 3, sm: 4, md: 14, lg: 20 },
+            }}
+          >
+            <ModelResultForm
+              formData={formData}
+              setFormData={setFormData}
+              spec={request.spec}
+              diseaseCategory={request.diseaseCategory}
+            />
           </Grid>
-          {result.length !== 0 && (
-            <Box mt={2}>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontWeight: "bold",
-                  color: "#217BF4",
-                }}
-              >
-                Results
-              </Typography>
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: "400",
-                  color: "#000",
-                }}
-              >
-                {request.spec}: {result}
-              </Typography>
-            </Box>
-          )}
-        </Box>
-      </form>
+          <Grid
+            item
+            xs={6}
+            sm={6}
+            md={4}
+            sx={{
+              px: { xs: 3, sm: 4, md: 14, lg: 20 },
+              mt: 4,
+            }}
+          >
+            <CustomButton
+              backgroundColor="#217BF4"
+              color="#fff"
+              buttonText="Predict"
+              onClick={handleSubmit}
+            />
+          </Grid>
+
+          <Grid mt={6}>
+            {result.length === 0 ? (
+              <></>
+            ) : (
+              <>
+                {resultLoading ? (
+                  <CircularProgress />
+                ) : (
+                  <PredictionResult
+                    spec={request.spec}
+                    result={result}
+                    loading={resultLoading}
+                  />
+                )}
+              </>
+            )}
+          </Grid>
+        </form>
+      )}
     </Box>
   );
 };
