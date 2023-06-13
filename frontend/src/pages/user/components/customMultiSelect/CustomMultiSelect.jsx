@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Chip,
   FormControl,
   InputLabel,
   MenuItem,
@@ -7,19 +8,39 @@ import {
   Typography,
 } from "@mui/material";
 
-const CustomSelect = ({ label, value, onChange, options, disabled }) => {
+const CustomMultiSelect = ({ label, value, onChange, options, disabled }) => {
   return (
     <FormControl sx={{ mt: 2 }}>
       <label htmlFor={`${label}-select`}>
-        <Typography sx={{ fontSize: 15, textAlign: "left", my: 1 }} color="#071B2F">
+        <Typography
+          sx={{ fontSize: 15, textAlign: "left", mb: 1 }}
+          color="#071B2F"
+        >
           {label}
         </Typography>
       </label>
       <Select
         labelId={`${label}-select`}
         id={`${label}-select`}
+        multiple
         value={value}
         onChange={onChange}
+        renderValue={(selected) => (
+          <div>
+            {selected.map((value) => (
+              <Chip
+                key={value}
+                label={options.find((option) => option.value === value).label}
+                onDelete={(event) => {
+                  event.stopPropagation();
+                  onChange({
+                    target: { value: selected.filter((v) => v !== value) },
+                  });
+                }}
+              />
+            ))}
+          </div>
+        )}
         sx={{
           bgcolor: "#F5FAFF",
           width: "100%",
@@ -52,4 +73,4 @@ const CustomSelect = ({ label, value, onChange, options, disabled }) => {
   );
 };
 
-export default CustomSelect;
+export default CustomMultiSelect;

@@ -19,7 +19,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Avatar from "@mui/material/Avatar";
-import Logo from "../../assets/images/logos/logo_dark.svg";
+import Logo from "../../assets/images/logos/logo.png";
 
 const drawerWidth = 350;
 
@@ -62,7 +62,7 @@ export default function Sidebar(items) {
                 borderRadius: 2,
                 mx: 2,
                 ...(index === selectedIndex && {
-                  backgroundColor: "#DBEDFF",
+                  backgroundColor: "#051322",
                 }),
               }}
             >
@@ -73,7 +73,7 @@ export default function Sidebar(items) {
                 primary={
                   <span
                     style={{
-                      color: "#071B2F",
+                      color: "#FFFF",
                       fontSize: "1.1rem",
                       fontWeight: 600,
                     }}
@@ -132,7 +132,7 @@ export default function Sidebar(items) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: "#EBF5FF",
+              backgroundColor: "#071B2F",
               borderRight: "none",
             },
           }}
@@ -146,7 +146,7 @@ export default function Sidebar(items) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: "#EBF5FF",
+              backgroundColor: "#071B2F",
               borderRight: "none",
             },
           }}

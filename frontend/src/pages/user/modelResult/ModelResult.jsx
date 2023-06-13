@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import { Box, Grid, Typography } from "@mui/material";
 import axios from "../../../util/axios";
 import { CustomButton } from "../../../components/elements/customButton";
-import FormFields from "./FormFields";
+import ModelResultForm from "./ModelResultForm";
 
-import { SectionHeading } from "../components/sectionHeading/SectionHeading";
+import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
 import { selects } from "./selects.data";
 
-const ViewCompleted = () => {
+const ModelResult = () => {
   const req = useParams();
   const [request, setRequests] = useState([]);
   const [formData, setFormData] = useState({
@@ -100,24 +100,14 @@ const ViewCompleted = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <SectionHeading title="Make a Prediction" align="center" />
-      <Typography
-        variant="body1"
-        sx={{
-          color: "#656464",
-        }}
-      >
-        Please provide all the give specs to predict your required value
-      </Typography>
+      <SectionHeading title="Predict Result" align="left" underline="True" />
       <form onSubmit={handleSubmit}>
-        <Box sx={{ mx: 6, my: 2, backgroundColor: "#F1F6FD", py: 4 }}>
-          <div>
-            <FormFields
-              formData={formData}
-              setFormData={setFormData}
-              spec={request.spec}
-            />
-          </div>
+        <Box sx={{ mx: 6, my: 2, py: 4 }}>
+          <ModelResultForm
+            formData={formData}
+            setFormData={setFormData}
+            spec={request.spec}
+          />
 
           <Grid container alignItems="center" justifyContent="center" px={10}>
             <Grid item xs={12} md={12} m={2} p={2}>
@@ -157,4 +147,4 @@ const ViewCompleted = () => {
   );
 };
 
-export default ViewCompleted;
+export default ModelResult;

@@ -1,43 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
-import { CustomButton } from "../../../components/elements/customButton";
-import CustomSelect from "../components/customSelect/CustomSelect";
-import { ethers } from "ethers";
+import { Typography, Grid } from "@mui/material";
 
-import {
-  Typography,
-  Grid,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-} from "@mui/material";
-import { categories } from "../../../util/diseaseCategory.data";
+import NewRequestForm from "./NewRequestForm";
+import { CustomButton } from "../../../components/elements/customButton";
 import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
 
-const startPayment = async (setTxs, ether, addr) => {
-  console.log(ether, addr);
-  ether = String(ether);
-  try {
-    if (!window.ethereum)
-      throw new Error("No crypto wallet found. Please install it.");
-
-    await window.ethereum.send("eth_requestAccounts");
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    ethers.utils.getAddress(addr);
-    const tx = await signer.sendTransaction({
-      to: addr,
-      value: ethers.utils.parseEther(ether),
-    });
-    console.log({ ether, addr });
-    console.log("tx", tx);
-    setTxs([tx]);
-    return tx;
-  } catch (err) {
-    console.log(err);
-  }
-};
+import { startPayment } from "../../../util/payment";
+import axios from "../../../util/axios";
 
 const NewRequest = () => {
   const [selectedHospitals, setSelectedHospitals] = useState([]);
@@ -59,14 +29,8 @@ const NewRequest = () => {
   }, [category]);
 
   const fetchMenuItems = async () => {
-    const response = await fetch(
-      `http://localhost:5000/api/user/hospitals?category=${category}`
-    );
-    const {
-      hospitalNames,
-      specs: fetchedSpecs,
-      adminAddress,
-    } = await response.json();
+    const response = await axios.get(`/user/hospitals?category=${category}`);
+    const { hospitalNames, specs: fetchedSpecs, adminAddress } = response.data;
 
     const hospitalData = hospitalNames.reduce((data, hospital) => {
       const [name, id, price, totalPatients] = hospital.split(", ");
@@ -99,13 +63,14 @@ const NewRequest = () => {
         category,
       };
 
-      const response = await fetch("http://localhost:5000/api/user/request", {
+      const response = await axios({
         method: "post",
+        url: "/user/request",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(formData),
+        data: formData,
       });
       const data = await response.json();
       window.alert("Request Submitted");
@@ -149,85 +114,82 @@ const NewRequest = () => {
     <Box
       sx={{
         pt: 6,
-        pb: { xs: 6, md: 6 },
-        px: { xs: 3, sm: 6, md: 6 },
+        px: 6,
+        pb: 4,
       }}
     >
       <SectionHeading title="New Request" align="left" underline="True" />
-      <Grid item xs={6} sm={6} md={4}>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <CustomSelect
-            label="Category"
-            value={category}
-            onChange={handleCategoryChange}
-            options={Object.keys(categories).map((key) => ({
-              value: key,
-              label: categories[key],
-            }))}
-          />
-          <CustomSelect
-            label="Specialization"
-            value={selectedSpec}
-            onChange={handleSpecSelectChange}
-            options={specs.map((spec) => ({
-              value: spec,
-              label: spec,
-            }))}
-          />
-          <FormControl sx={{ mt: 2, mx: 6 }}>
-            <InputLabel id="hospitals-select-label">Hospitals</InputLabel>
-            <Select
-              labelId="hospitals-select"
-              id="multi-select"
-              multiple
-              value={selectedHospitals}
-              onChange={handleSelectChange}
-              renderValue={() => selectedHospitalsNames.join(", ")}
-              sx={{
-                bgcolor: "#F1F6FD",
-                width: "100%",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#98CDFF",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#98CDFF",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#98CDFF",
-                },
-              }}
-            >
-              {hospitalMap &&
-                Object.keys(hospitalMap).map((id) => (
-                  <MenuItem key={id} value={id}>
-                    {hospitalMap[id].name}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        </Box>
+      <Grid
+        item
+        xs={6}
+        sm={6}
+        md={4}
+        sx={{
+          px: { xs: 3, sm: 4, md: 14, lg: 20 },
+        }}
+      >
+        <NewRequestForm
+          category={category}
+          handleCategoryChange={handleCategoryChange}
+          selectedSpec={selectedSpec}
+          handleSpecSelectChange={handleSpecSelectChange}
+          specs={specs}
+          selectedHospitals={selectedHospitals}
+          handleSelectChange={handleSelectChange}
+          selectedHospitalsNames={selectedHospitalsNames}
+          hospitalMap={hospitalMap}
+        />
       </Grid>
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid
+        item
+        xs={12}
+        sm={12}
+        md={4}
+        sx={{
+          px: { xs: 3, sm: 6, md: 14 , lg: 20},
+        }}
+      >
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            my: 2,
+            background: "#F5FAFF",
+            py: 2,
+            px: 2,
+            borderRadius: 2,
           }}
         >
-          <Typography variant="h6" sx={{ mt: 1, mx: 6 }}>
-            Total Price: {totalPrice}
-          </Typography>
-          <Typography variant="h6" sx={{ mt: 1, mx: 6 }}>
-            Total Patients: {totalPatients}
-          </Typography>
+          <Grid container>
+            <Grid item xs={12} sm={12} md={6}>
+              <Typography
+                sx={{
+                  fontSize: 16,
+                  textAlign: { xs: "center", sm: "center", md: "left" },
+                }}
+                color="#071B2F"
+              >
+                <b>Total Price:</b> {totalPrice} Eth
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Typography
+                sx={{
+                  fontSize: 16,
+                  textAlign: { xs: "center", sm: "center", md: "right" },
+                }}
+                color="#071B2F"
+              >
+                <b>Total Patients:</b> {totalPatients}
+              </Typography>
+            </Grid>
+          </Grid>
         </Box>
-      </Grid>
-      <Grid item xs={12} sm={6} md={4}>
         <CustomButton
           backgroundColor="#217BF4"
           color="#fff"
-          buttonText="Pay Now and Start Training"
+          buttonText="Submit Request"
           onClick={handleSubmit}
         />
       </Grid>
