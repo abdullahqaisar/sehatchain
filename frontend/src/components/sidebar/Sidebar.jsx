@@ -99,8 +99,8 @@ export default function Sidebar(items) {
       <AppBar
         position="fixed"
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          ml: { md: `${drawerWidth}px` },
           backgroundColor: "white",
           borderBottom: "2px solid #DBEDFF",
           boxShadow: "none",
@@ -112,7 +112,7 @@ export default function Sidebar(items) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, display: { md: "none" } }}
           >
             <MenuIcon sx={{ color: "#071B2F" }} />
           </IconButton>
@@ -121,7 +121,7 @@ export default function Sidebar(items) {
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{ width: { md: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
         <Drawer
@@ -132,7 +132,7 @@ export default function Sidebar(items) {
             keepMounted: true,
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { xs: "block", md: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
@@ -146,7 +146,7 @@ export default function Sidebar(items) {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: "none", sm: "block" },
+            display: { xs: "none", md: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,

@@ -2,11 +2,10 @@ import * as React from "react";
 
 import { Box, Grid } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-
-import { CustomIconButton } from "../../user/components/CustomIconButton/CustomIconButton";
-import { SectionHeading } from "../../user/components/sectionHeading/SectionHeading";
 import { AllRequests } from "./AllRequests";
+
+import { CustomIconButtonLarge } from "../../../components/elements/customIconButtonLarge/CustomIconButtonLarge";
+import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
 
 const Dashboard = () => {
   return (
@@ -17,34 +16,25 @@ const Dashboard = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <SectionHeading title="Welcome Back" align="left" />
+      <SectionHeading title="Get Started" align="left" underline="True" />
       <Grid
         container
-        justifyContent="center"
+        justifyContent="left"
         sx={{
           pb: 6,
         }}
       >
-        <Grid item md={6} xs={12}>
-          <CustomIconButton
+        <Grid item md={4} xs={12}>
+          <CustomIconButtonLarge
             Icon={AddCircleIcon}
             text="Patients"
-            bgColor="#EAEAEA"
+            bgColor="#DBEDFF"
             mr={6}
             href="../patients/add"
           />
         </Grid>
-
-        <Grid item md={6} xs={12}>
-          <CustomIconButton
-            Icon={CheckCircleIcon}
-            text="Manage Requests"
-            bgColor="#DBEAFF"
-            ml={6}
-            href="../requests"
-          />
-        </Grid>
       </Grid>
+      <SectionHeading title="All Requests" align="left" underline="True" />
       <AllRequests />
     </Box>
   );

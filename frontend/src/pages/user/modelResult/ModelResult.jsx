@@ -5,11 +5,11 @@ import { CircularProgress } from "@mui/material";
 
 import axios from "../../../util/axios";
 import { CustomButton } from "../../../components/elements/customButton";
-import ModelResultForm from "./ModelResultForm";
+import ModelResultForm from "./modelResultForm/ModelResultForm";
 
 import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
-import { heartSelect } from "./selects.data";
-import { lungSelect } from "./selects.data";
+import { heartSelect } from "./modelResultForm/selects.data";
+import { lungSelect } from "./modelResultForm/selects.data";
 
 import PredictionResult from "./PredictionResult";
 

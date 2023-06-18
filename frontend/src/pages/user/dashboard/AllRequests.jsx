@@ -38,7 +38,7 @@ export function AllRequests() {
       ) : (
         <Grid container spacing={2}>
           {requests.map((request, index) => (
-            <Grid item xs={12} sm={6} key={request._id}>
+            <Grid item xs={12} sm={12} md={6} key={request._id}>
               <CustomCard
                 requestId={request._id}
                 diseaseCategory={request.diseaseCategory}
