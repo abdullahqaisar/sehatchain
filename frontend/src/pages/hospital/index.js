@@ -1,7 +1,6 @@
 import Dashboard from "./dashboard/Dashboard";
-import Patients from "./patients/Patients";
 import Requests from "./requests/Requests";
 import NewPatient from "./patients/NewPatient";
-import ManageRequest from "./requests/ManageRequest";
+import Feedback from "./feedback/Feedback";
 
-export { Dashboard, Patients, Requests, NewPatient, ManageRequest };
+export { Dashboard, Requests, NewPatient, Feedback };

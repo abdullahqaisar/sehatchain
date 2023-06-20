@@ -1,6 +1,5 @@
-import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { SectionHeading } from "../../user/components/sectionHeading/SectionHeading";
+import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
 
 import { RequestTable } from "./RequestTable";
 
@@ -13,16 +12,7 @@ const Requests = () => {
         px: { xs: 3, sm: 6, md: 6 },
       }}
     >
-      <SectionHeading title="Received Requests" align="center" />
-      <Typography
-        variant="p"
-        sx={{
-          color: "#656464",
-        }}
-      >
-        Recent requests from users can be found here. You can accept or reject a
-        request by opening a requessst.ss
-      </Typography>
+      <SectionHeading title="Training Requests" align="left" underline="True" />
       <RequestTable />
     </Box>
   );

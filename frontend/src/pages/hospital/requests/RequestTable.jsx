@@ -7,17 +7,21 @@ import {
   TableHead,
   TableRow,
   Button,
+  Snackbar,
 } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 import axios from "../../../util/axios";
 import { RequestModal } from "./RequestDetailsModal";
-
-import { AllRequests } from "../dashboard/AllRequests";
 
 export function RequestTable() {
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [open, setOpen] = useState(false);
   const [trainingResult, setTrainingResult] = useState(null);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -36,9 +40,32 @@ export function RequestTable() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (trainingResult) {
+      if (trainingResult.status === 200) {
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Request approved successfully.");
+        setSnackbarOpen(true);
+      } else {
+        setSnackbarSeverity("error");
+        setSnackbarMessage(
+          `There was an error while approving the request. Error status code: ${trainingResult.status}.`
+        );
+        setSnackbarOpen(true);
+      }
+    }
+  }, [trainingResult]);
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   const columns = [
     { name: "Hospitals", options: { filter: false } },
-    { name: "Label", options: { filter: false } },
+    { name: "Spec", options: { filter: false } },
     {
       name: "View",
       options: {
@@ -76,8 +103,6 @@ export function RequestTable() {
     });
 
     if (trainingResponse.status === 200) {
-      window.alert("Training Successful");
-
       const updatedRequests = requests.filter(
         (request) => request._id !== selectedRequest._id
       );
@@ -109,7 +134,11 @@ export function RequestTable() {
             <TableBody>
               {requests.map((request, index) => (
                 <TableRow key={request._id}>
-                  <TableCell>{request.hospitals}</TableCell>
+                  <TableCell>
+                    {request.diseaseCategory === "0"
+                      ? "Heart Disease Prediction"
+                      : "Lung Cancer Prediction"}
+                  </TableCell>
                   <TableCell>{request.spec}</TableCell>
                   <TableCell>
                     <Button
@@ -127,6 +156,20 @@ export function RequestTable() {
               ))}
             </TableBody>
           </Table>
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={5000}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <MuiAlert
+              onClose={handleCloseSnackbar}
+              severity={snackbarSeverity}
+              sx={{ width: "100%" }}
+            >
+              {snackbarMessage}
+            </MuiAlert>
+          </Snackbar>
         </TableContainer>
       )}
       {selectedRequest && (
@@ -138,7 +181,6 @@ export function RequestTable() {
           trainingResult={trainingResult}
         />
       )}
-      <AllRequests />
     </>
   );
 }

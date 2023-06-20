@@ -1,44 +1,14 @@
 import React, { useEffect } from "react";
-import { Modal, Box, Typography, Button, Snackbar } from "@mui/material";
-import MuiAlert from "@mui/material/Alert";
+import { Modal, Box, Typography, Button } from "@mui/material";
 
 export function RequestModal(props) {
-  const { open, onClose, selectedRequest, onAccept, trainingResult } = props;
+  const { open, onClose, selectedRequest, onAccept } = props;
 
   const handleAcceptRequest = () => {
-    console.log("Selected: ",selectedRequest);
     onAccept();
   };
 
-  useEffect(() => {
-  }, [selectedRequest]);
-
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
-  const [snackbarMessage, setSnackbarMessage] = React.useState("");
-
-  useEffect(() => {
-    if (trainingResult) {
-      if (trainingResult.status === 200) {
-        setSnackbarSeverity("success");
-        setSnackbarMessage("Request approved successfully.");
-        setSnackbarOpen(true);
-      } else {
-        setSnackbarSeverity("error");
-        setSnackbarMessage(
-          `There was an error while approving the request. Error status code: ${trainingResult.status}.`
-        );
-        setSnackbarOpen(true);
-      }
-    }
-  }, [trainingResult]);
-
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
+  useEffect(() => {}, [selectedRequest]);
 
   return (
     <div>
@@ -65,20 +35,6 @@ export function RequestModal(props) {
           >
             X
           </Button>
-          <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={5000}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          >
-            <MuiAlert
-              onClose={handleCloseSnackbar}
-              severity={snackbarSeverity}
-              sx={{ width: "100%" }}
-            >
-              {snackbarMessage}
-            </MuiAlert>
-          </Snackbar>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
             Request Details
           </Typography>

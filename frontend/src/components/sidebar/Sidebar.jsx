@@ -35,10 +35,11 @@ export default function Sidebar(items) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleListItemClick = (event, index, link) => {
-    navigate("/sehatchain/user/" + link);
+    navigate(items.path+ link);
     setSelectedIndex(index);
   };
   useEffect(() => {
+    console.log("path ",items.path);
     const index = items.sidebarItems.findIndex((item) =>
       location.pathname.includes(item.link)
     );

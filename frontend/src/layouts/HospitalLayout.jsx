@@ -1,14 +1,9 @@
-import { Outlet } from "react-router-dom";
+import { Sidebar } from "../components/sidebar";
 
-import { Navbar } from "../pages/hospital/components/navbar/Navbar";
-import { Footer } from "../components/footer";
-
-export function HospitalLayout() {
+export function HospitalLayout(sidebarItems) {
   return (
     <>
-      <Navbar />
-      <Outlet />
-      <Footer />
+      <Sidebar sidebarItems={sidebarItems.props} path={sidebarItems.path} />
     </>
   );
 }
