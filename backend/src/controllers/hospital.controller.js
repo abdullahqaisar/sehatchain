@@ -78,7 +78,6 @@ exports.getAllRequests = async (req, res) => {
   if (!requests) {
     return res.status(404).json({ message: "No requests found!" });
   }
-  console.log(requests);
   return res.status(200).json({
     message: "Requests found!",
     requests: requests,
@@ -89,12 +88,13 @@ exports.getRequests = async (req, res) => {
   const hospitalId = req.userId;
   const requests = await Request.find({
     hospitals: { $in: [hospitalId] },
-    status: "pending",
+    status: "unapproved",
   });
 
   if (!requests) {
     return res.status(404).json({ message: "No requests found!" });
   }
+  console.log("requests", requests);
   return res.status(200).json({
     message: "Requests found!",
     requests: requests,

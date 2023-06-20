@@ -22,16 +22,16 @@ const validate = (method) => {
 };
 
 exports.contactus = async (req, res) => {
-  var mailOptions;
+  console.log("hi");
+  let mailOptions;
   try {
     const errors = validate(req);
-    if (!errors.isEmpty()) {
+    if (!errors) {
       console.log(errors);
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors });
     }
 
     const { name, email, message } = req.body;
-    console.log(req.body);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -64,6 +64,7 @@ exports.contactus = async (req, res) => {
       message: "Email successfully sent!",
     });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 };
@@ -120,11 +121,24 @@ exports.request = async (req, res) => {
 exports.getAllRequests = async (req, res) => {
   try {
     const user = req.ethAddress;
-    const requests = await Request.find({ user: user });
+    var requests = await Request.find({ user: user }).sort({ date: -1 });
     if (!requests) {
       console.log("No data found!");
       return res.status(500).json({ msg: "No data found!" });
     }
+    // format the date
+    for (let i = 0; i < requests.length; i++) {
+      const date = requests[i].date;
+
+      const formattedDate = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      requests[i].formattedDate = formattedDate;
+    }
+    console.log(requests);
+
     return res.status(200).json({
       requests,
     });
@@ -235,7 +249,8 @@ exports.makePrediction = async (req, res) => {
     console.log(req.ensambleModel);
     let prediction = await runPrediction(
       request.ensambleModel,
-      req.body.formData
+      req.body.formData,
+      request.diseaseCategory
     );
     console.log(prediction);
     if (!prediction) {
@@ -258,7 +273,7 @@ exports.makePrediction = async (req, res) => {
   }
 };
 
-async function runPrediction(model, spec) {
+async function runPrediction(model, spec, diseaseCategory) {
   console.log(spec);
 
   spec = Object.values(spec);
@@ -282,10 +297,18 @@ async function runPrediction(model, spec) {
   predictionOptions.args.push(model[0].classes);
   predictionOptions.args.push(0);
 
-  const predictionMessages = await PythonShell.run(
-    "src/script/heartPrediction/prediction.py",
-    predictionOptions
-  );
+  let predictionMessages;
+  if (diseaseCategory === "0") {
+    predictionMessages = await PythonShell.run(
+      "src/script/heartPrediction/prediction.py",
+      predictionOptions
+    );
+  } else if (diseaseCategory === "1") {
+    predictionMessages = await PythonShell.run(
+      "src/script/lungPrediction/prediction.py",
+      predictionOptions
+    );
+  }
   if (predictionMessages.length === 0) {
     console.log("Prediction failed");
     throw new Error("Prediction failed");

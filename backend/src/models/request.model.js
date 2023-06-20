@@ -49,6 +49,9 @@ const RequestSchema = new mongoose.Schema({
   diseaseCategory: {
     type: String,
   },
+  formattedDate: {
+    type: String,
+  },
 });
 
 module.exports = Request = mongoose.model("request", RequestSchema);

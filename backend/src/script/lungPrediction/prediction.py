@@ -23,7 +23,7 @@ else:
     ensemble.classes_ = classes
 
 coef = np.array([coefficients_str.split(',')], dtype=float)
-coef = coef.reshape(-1, 13)
+coef = coef.reshape(-1, 15)
 ensemble.coef_ = coef
 
 ensemble.intercept_ = [intercept]
@@ -37,8 +37,6 @@ if iterations < 1:
     # y_pred = ensemble.predict([[30,2.0,1.0,112.0,160.0,0.0,0.0,138.0,0.0,2.0,0.0,3.0,0.0]])
     y_pred = ensemble.predict(X_newTest)
     print(int(y_pred))
-    # age is in format [[53.94633885]] for linear regression
-    # I just want 53
 
 else:
     print("model is not ready yet")
