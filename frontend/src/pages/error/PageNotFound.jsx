@@ -1,38 +1,26 @@
-import { Box, Typography } from "@mui/material";
-import styled from '@emotion/styled'
-
-const useStyles = styled({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-  },
-  errorNumber: {
-    fontSize: "10rem",
-    fontWeight: "bold",
-    color: "#001E3C",
-  },
-  errorText: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    color: "#001E3C",
-    marginTop: "1rem",
-  },
-});
+import { Box } from "@mui/material";
 
 function PageNotFound() {
-  const classes = useStyles();
-
   return (
-    <Box className={classes.root}>
-      <Typography variant="h3" className={classes.errorNumber}>
-        404
-      </Typography>
-      <Typography variant="h3" className={classes.errorText}>
-        Page Not Found
-      </Typography>
+    <Box
+      style={{
+        background: "#EBF5FF",
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: "50vh",
+          color: "#001E3C",
+        }}
+      >
+        <b>404</b>
+        <span style={{ margin: "0 10px" }}>|</span> This Page could not be found
+      </div>
     </Box>
   );
 }
