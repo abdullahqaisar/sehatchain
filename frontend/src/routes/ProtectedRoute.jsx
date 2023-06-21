@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../util/axios";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
 export const ProtectedRoute = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +39,7 @@ export const ProtectedRoute = (props) => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   return (

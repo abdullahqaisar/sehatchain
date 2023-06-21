@@ -51,7 +51,9 @@ const FeedbackForm = () => {
         setSnackbarOpen(true);
       }
     } catch (err) {
-      console.log(err);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Error sending mail, please try again");
+      setSnackbarOpen(true);
     }
   };
 

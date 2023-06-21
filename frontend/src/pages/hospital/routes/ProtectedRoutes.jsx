@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../util/axios";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -9,7 +10,7 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("prooo")
+    console.log("prooo");
     checkLogin();
   });
 
@@ -36,7 +37,27 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Box
+        style={{
+          background: "#EBF5FF",
+          height: "100vh",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            paddingTop: "50vh",
+            color: "#001E3C",
+          }}
+        >
+          <b>Loading...</b>
+        </div>
+      </Box>
+    );
   }
 
   return (

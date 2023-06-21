@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import { FormControl, MenuItem, Select, Typography } from "@mui/material";
 
 const CustomSelect = ({ label, value, onChange, options, disabled }) => {
   return (

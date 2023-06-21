@@ -1,24 +1,40 @@
-import { TextField } from "@mui/material";
+import React from "react";
+import { TextField, Typography, Box } from "@mui/material";
 
-function CustomTextField(props) {
+const CustomTextField = ({
+  label,
+  type,
+  InputLabelProps,
+  inputProps,
+  value,
+  onChange,
+}) => {
   return (
-    <TextField
-      label={props.label}
-      variant="outlined"
-      color="primary"
-      fullWidth
-      InputProps={{
-        disableUnderline: true,
-      }}
-      sx={{
-        borderRadius: 1,
-        backgroundColor: "#DBEAFF",
-      }}
-      name={props.name}
-      value={props.value}
-      onChange={props.onChange}
-    />
+    <Box sx={{ mt: 2, width: "100%" }}>
+      <label htmlFor={`${label}-select`}>
+        <Typography
+          sx={{ fontSize: 15, textAlign: "left", my: 1 }}
+          color="#071B2F"
+        >
+          {label}
+        </Typography>
+      </label>
+      <TextField
+        sx={{
+          width: "100%",
+          background: "#F5FAFF",
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#98CDFF",
+          },
+        }}
+        type={type}
+        InputLabelProps={InputLabelProps}
+        inputProps={inputProps}
+        value={value}
+        onChange={onChange}
+      />
+    </Box>
   );
-}
+};
 
 export default CustomTextField;
