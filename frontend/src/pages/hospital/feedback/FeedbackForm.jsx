@@ -3,7 +3,7 @@ import * as React from "react";
 import { Box, Grid, Typography, TextField } from "@mui/material";
 import axios from "../../../util/axios";
 import { CustomButton } from "../../../components/elements/customButton";
-import CustomTextField from "../components/customTextField/CustomTextField";
+import CustomTextField from "../../../components/elements/customTextField/CustomTextField";
 
 import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
