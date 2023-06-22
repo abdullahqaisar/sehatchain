@@ -121,10 +121,13 @@ exports.request = async (req, res) => {
 exports.getAllRequests = async (req, res) => {
   try {
     const user = req.ethAddress;
-    var requests = await Request.find({ user: user }).sort({ date: -1 });
-    if (!requests) {
+    let requests = await Request.find({ user: user }).sort({ date: -1 });
+    console.log("requests: ", requests);
+    if (!requests || requests.length === 0) {
       console.log("No data found!");
-      return res.status(500).json({ msg: "No data found!" });
+      return res.status(200).json({
+        requests,
+      });
     }
     // format the date
     for (let i = 0; i < requests.length; i++) {
@@ -137,7 +140,6 @@ exports.getAllRequests = async (req, res) => {
       });
       requests[i].formattedDate = formattedDate;
     }
-    console.log(requests);
 
     return res.status(200).json({
       requests,
