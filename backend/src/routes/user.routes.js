@@ -4,6 +4,10 @@ const auth = require("../middlewares/auth");
 
 const UserController = require("../controllers/user.controller");
 
+router.get("/", async (req, res) => {
+  //show hello world
+  res.send("Hello World");
+});
 router.post("/contactus", UserController.contactus);
 router.post("/request", auth, UserController.request);
 router.get("/hospitals", UserController.getHospitalData);
@@ -12,6 +16,5 @@ router.get("/requests/all", auth, UserController.getAllRequests);
 router.get("/requests/completed", auth, UserController.getCompletedRequests);
 router.get("/requests/:id", auth, UserController.getRequestById);
 router.post("/requests/:id/predict", auth, UserController.makePrediction);
-
 
 module.exports = router;
