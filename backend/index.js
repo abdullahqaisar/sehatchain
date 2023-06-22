@@ -32,7 +32,7 @@
 // app.use("/api/hospital", hospitalRoutes);
 
 const mongoose = require("mongoose");
-const users = require("./routes/users");
+const users = require("./src/routes/users");
 const express = require("express");
 const app = express();
 const cors = require("cors");
