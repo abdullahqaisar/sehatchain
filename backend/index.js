@@ -11,11 +11,10 @@ const adminRoutes = require("./src/routes/admin.routes");
 require("dotenv").config();
 
 mongoose
-  .connect("mongodb://127.0.0.1/sehatchain", {
-    useNewUrlParser: true,
+  .connect(process.env.MONGODB_URI, {
     useUnifiedTopology: true,
+    useNewUrlParser: true,
   })
-
   .then(() => {
     console.log("Server is running on port " + process.env.PORT);
     app.listen(process.env.PORT);

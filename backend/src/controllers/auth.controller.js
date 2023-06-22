@@ -49,29 +49,35 @@ exports.register = async (req, res) => {
 };
 
 exports.registerHospital = async (req, res) => {
-  const { hospitalName, hospitalAddress, hospitalEmail, hospitalEthAddress } =
-    req.body;
-  console.log(req.body);
-  const existingHospital = await Hospital.findOne({ hospitalEthAddress });
-  if (existingHospital) {
-    return res
-      .status(400)
-      .json({ msg: "Hospital with this address already exists!" });
-  }
-  let newHospital = await new Hospital({
-    hospitalName,
-    hospitalAddress,
-    hospitalEmail,
-    hospitalEthAddress,
-  });
+  try {
+    const { hospitalName, hospitalAddress, hospitalEmail, hospitalEthAddress } =
+      req.body;
+    console.log(req.body);
+    const existingHospital = await Hospital.findOne({ hospitalEthAddress });
+    if (existingHospital) {
+      return res
+        .status(400)
+        .json({ msg: "Hospital with this address already exists!" });
+    }
+    let newHospital = await new Hospital({
+      hospitalName,
+      hospitalAddress,
+      hospitalEmail,
+      hospitalEthAddress,
+    });
 
-  savedHospital = await newHospital.save();
-  if (!savedHospital) {
-    return res.status(500).json({ error: "Failed to save hospital" });
+    savedHospital = await newHospital.save();
+    if (!savedHospital) {
+      return res.status(500).json({ error: "Failed to save hospital" });
+    }
+    return res.status(200).json({
+      message:
+        "Registeration successful!, Please wait for 24 hours for approval",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
   }
-  return res.status(200).json({
-    message: "Registeration successful!, Please wait for 24 hours for approval",
-  });
 };
 
 exports.loginHospital = async (req, res) => {
