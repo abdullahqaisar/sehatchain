@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 
-import { HospitalLayout } from "../../../layouts";
+import { AdminLayout } from "../../../layouts";
 import PageNotFound from "../../error/PageNotFound";
 import { Dashboard } from "..";
 
 export function AdminRoutes() {
   return (
     <Routes>
-      <Route element={<HospitalLayout />}>
+      <Route element={<AdminLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
         {/* <Route path="patients" element={<Patients />} />
         <Route path="newpatient" element={<NewPatient />} />

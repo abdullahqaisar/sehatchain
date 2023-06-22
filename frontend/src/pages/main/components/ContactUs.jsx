@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import InputBase from "@mui/material/InputBase";
+import axios from "../../../util/axios";
 
 import { Box, Grid, Typography, TextField } from "@mui/material";
 import { Container } from "@mui/system";
@@ -17,18 +17,19 @@ const AboutUs = () => {
     try {
       console.log("Name: ", name);
       console.log("Question: ", message);
-      const response = await fetch("http://localhost:5000/api/user/contactus", {
-        method: "POST",
+      const response = await axios({
+        method: "post",
+        url: "/user/contactus",
         headers: {
           "Content-Type": "application/json",
         },
-
-        body: JSON.stringify({
+        data: {
           name,
           email,
           message,
-        }),
+        },
       });
+
       const responseData = await response.json();
       console.log(responseData);
       if (response.status === 200) {

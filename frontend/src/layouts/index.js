@@ -1,4 +1,5 @@
 import { HospitalLayout } from "./HospitalLayout";
 import { UserLayout } from "./UserLayout";
+import { AdminLayout } from "./AdminLayout";
 
-export { HospitalLayout, UserLayout };
+export { HospitalLayout, UserLayout, AdminLayout };

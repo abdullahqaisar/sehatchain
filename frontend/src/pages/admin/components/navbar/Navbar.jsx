@@ -137,6 +137,7 @@ export const Navbar = () => {
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <CustomMenuIcon onClick={toggleDrawer("left", true)} />
+
             <Drawer
               anchor="left"
               open={mobileMenu["left"]}
@@ -148,11 +149,17 @@ export const Navbar = () => {
               src={Logo}
               alt="logo"
               onClick={() => {
-                handleClick("../hospital/dashboard");
+                handleClick("../admin/dashboard");
               }}
             />
           </Box>
-
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, color: "white" }}
+          >
+            Admin Dashboard
+          </Typography>
           <NavbarLinksBox>
             {NavbarItems.map(({ text, key, link }, index) => (
               <NavLink
@@ -176,9 +183,6 @@ export const Navbar = () => {
           }}
         >
           <Avatar sx={{ width: 34, height: 34 }}>A</Avatar>
-          <NavLink to="profile/hospital" variant="body2">
-            Hospital Name
-          </NavLink>
         </Box>
       </NavbarContainer>
     </Box>

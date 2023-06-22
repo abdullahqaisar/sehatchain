@@ -8,7 +8,7 @@ export function RequestModal(props) {
     onAccept();
   };
 
-  useEffect(() => {}, [selectedRequest]);
+  useEffect(() => {console.log(selectedRequest)}, [selectedRequest]);
 
   return (
     <div>
@@ -19,7 +19,7 @@ export function RequestModal(props) {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: { xs: 200, md: 400 },
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
@@ -39,16 +39,19 @@ export function RequestModal(props) {
             Request Details
           </Typography>
           <Typography variant="body1">
-            <b>Hospitals: </b>
-            {selectedRequest ? selectedRequest.hospitals : ""}
+            <b>
+              {selectedRequest.diseaseCategory === "0"
+                ? "Heart Disease Prediction"
+                : "Lung Cancer Prediction"}
+            </b>
           </Typography>
           <Typography variant="body1">
-            <b>Specialization: </b>
+            <b>To Predict: </b>
             {selectedRequest ? selectedRequest.spec : ""}
           </Typography>
           <Typography variant="body1">
-            <b>Description: </b>
-            {selectedRequest ? selectedRequest.description : ""}
+            <b>Date: </b>
+            {selectedRequest ? selectedRequest.formattedDate : ""}
           </Typography>
           <Button
             variant="contained"
