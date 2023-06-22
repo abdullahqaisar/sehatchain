@@ -18,6 +18,7 @@ exports.addCSV = async (req, res) => {
   const file = req.file;
   const category = req.body.category;
   console.log(category);
+
   const price = req.body.price;
 
   const totalPatients = req.body.totalPatients;
@@ -93,6 +94,17 @@ exports.getRequests = async (req, res) => {
 
   if (!requests) {
     return res.status(404).json({ message: "No requests found!" });
+  }
+  // format the date
+  for (let i = 0; i < requests.length; i++) {
+    const date = requests[i].date;
+
+    const formattedDate = date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    requests[i].formattedDate = formattedDate;
   }
   console.log("requests", requests);
   return res.status(200).json({
