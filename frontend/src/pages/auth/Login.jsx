@@ -95,7 +95,7 @@ function Login() {
       <Card
         sx={{
           py: 4,
-          px: 10,
+          px: 6,
         }}
       >
         <Logo src={icon} alt="icon" />
@@ -207,7 +207,7 @@ function Login() {
         onClose={() => setOpenSnackbar1(false)}
       >
         <Alert onClose={() => setOpenSnackbar1(false)} severity="error">
-          Please install MetaMask wallet first
+          Install MetaMask Extension in your browser to continue!
         </Alert>
       </Snackbar>
       <Snackbar
