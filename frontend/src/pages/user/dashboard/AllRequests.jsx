@@ -30,7 +30,7 @@ export function AllRequests() {
     <>
       {loading ? (
         <CircularProgress />
-      ) : !requests ? (
+      ) : !requests || requests.length === 0 ? (
         <ParagraphText
           text="You haven’t requested any models yet"
           align="left"

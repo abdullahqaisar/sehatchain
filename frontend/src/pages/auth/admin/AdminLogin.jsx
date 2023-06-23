@@ -5,7 +5,7 @@ import CustomButton from "../../../components/elements/customButton/CustomButton
 import { Box, Typography, TextField, Card, Link } from "@mui/material";
 import styled from "@emotion/styled";
 import Web3 from "web3";
-import { ethers } from "ethers";
+import axios from "../../../util/axios";
 
 const Logo = styled("img")`
   width: 4rem;
@@ -22,10 +22,7 @@ const Submit = styled("div")`
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isConnected, setIsConnected] = useState(false);
-  const [ethAddress, setEthAddress] = useState("");
   const [account, setAccount] = useState("");
-  const [ethBalance, setEthBalance] = useState("");
 
   const navigate = useNavigate();
 
@@ -50,10 +47,6 @@ function Login() {
         const web3 = new Web3(currentProvider);
         const userAccount = await web3.eth.getAccounts();
         await setAccount(userAccount[0]);
-        console.log("account", account);
-        let ethBalance = await web3.eth.getBalance(account);
-        setEthBalance(ethBalance);
-        setIsConnected(true);
         checkAccount();
       }
     } catch (err) {
@@ -64,20 +57,12 @@ function Login() {
   const checkAccount = async () => {
     try {
       console.log("My account is", account);
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
 
-        body: JSON.stringify({
-          ethAddress: account,
-        }),
+      const response = await axios.post("admin/login", {
+        ethAddress: account,
       });
-      const responseData = await response.json();
-      console.log(responseData);
       if (response.status === 200) {
-        localStorage.setItem("token", responseData.token);
+        localStorage.setItem("token", response.data.token);
         console.log(localStorage.getItem("token"));
         navigate("/sehatchain/admin/dashboard", { replace: false });
       } else {
@@ -88,11 +73,6 @@ function Login() {
       console.log(err);
     }
   };
-
-  const onDisconnect = () => {
-    setIsConnected(false);
-  };
-
   return (
     <Box
       display="flex"

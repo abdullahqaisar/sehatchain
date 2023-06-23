@@ -6,15 +6,14 @@ import { Box, Typography, Grid, TextField, Link } from "@mui/material";
 import heroImage from "../../../assets/images/hero.png";
 
 import CustomButton from "../../../components/elements/customButton/CustomButton";
+import axios from "../../../util/axios";
 
 import Web3 from "web3";
 
 function Register() {
-  const [isConnected, setIsConnected] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [ethAccount, setEthAccount] = useState("");
-  const [ethBalance, setEthBalance] = useState("");
 
   const navigate = useNavigate();
 
@@ -39,14 +38,7 @@ function Register() {
         const web3 = new Web3(currentProvider);
         const userAccount = await web3.eth.getAccounts();
         const account = userAccount[0];
-        console.log("account", account);
         setEthAccount(account);
-        let ethBalance = await web3.eth.getBalance(account);
-        setEthBalance(ethBalance);
-        console.log("ethBalance", ethBalance);
-        console.log("account", account);
-        setIsConnected(true);
-        console.log("Name: ", name);
         register();
       }
     } catch (err) {
@@ -56,19 +48,11 @@ function Register() {
 
   const register = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/admin/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          adminName: name,
+      const response = await axios.post("/admin/register", {
+        adminName: name,
           adminEmail: email,
           adminEthAddress: ethAccount,
-        }),
       });
-      const responseData = await response.json();
-      console.log(responseData);
       if (response.status === 200) {
         window.alert("Account created Successfully");
         navigate("/sehatchain/admin/login", { replace: false });

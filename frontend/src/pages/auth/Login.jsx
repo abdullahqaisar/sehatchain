@@ -5,7 +5,10 @@ import CustomButton from "../../components/elements/customButton/CustomButton";
 import { Box, Typography, TextField, Card, Link } from "@mui/material";
 import styled from "@emotion/styled";
 import Web3 from "web3";
-import { ethers } from "ethers";
+import axios from "../../util/axios";
+
+import { Snackbar } from "@mui/material";
+import Alert from "@mui/material/Alert";
 
 const Logo = styled("img")`
   width: 4rem;
@@ -19,33 +22,13 @@ const Submit = styled("div")`
   margin: 1rem 0 2rem;
 `;
 
-const startPayment = async ({ setError, setTxs, ether, addr }) => {
-  try {
-    if (!window.ethereum)
-      throw new Error("No crypto wallet found. Please install it.");
-
-    await window.ethereum.send("eth_requestAccounts");
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    ethers.utils.getAddress(addr);
-    const tx = await signer.sendTransaction({
-      to: addr,
-      value: ethers.utils.parseEther(ether),
-    });
-    console.log({ ether, addr });
-    console.log("tx", tx);
-    setTxs([tx]);
-  } catch (err) {
-    setError(err.message);
-  }
-};
-
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isConnected, setIsConnected] = useState(false);
   const [account, setAccount] = useState("");
-  const [ethBalance, setEthBalance] = useState("");
+  const [openSnackbar1, setOpenSnackbar1] = useState(false);
+  const [openSnackbar2, setOpenSnackbar2] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -56,7 +39,7 @@ function Login() {
     } else if (window.web3) {
       provider = window.web3.currentProvider;
     } else {
-      window.alert("Please install MetaMask wallet first");
+      setOpenSnackbar1(true);
       console.log("Non-ethereum browser detected. You should install Metamask");
     }
     return provider;
@@ -70,10 +53,7 @@ function Login() {
         const web3 = new Web3(currentProvider);
         const userAccount = await web3.eth.getAccounts();
         await setAccount(userAccount[0]);
-        console.log("account", account);
-        let ethBalance = await web3.eth.getBalance(account);
-        setEthBalance(ethBalance);
-        setIsConnected(true);
+
         checkAccount();
       }
     } catch (err) {
@@ -83,29 +63,21 @@ function Login() {
 
   const checkAccount = async () => {
     try {
-      console.log("My account is", account);
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          ethAddress: account,
-        }),
+      const response = await axios.post("auth/login", {
+        ethAddress: account,
       });
-      const responseData = await response.json();
-      console.log(responseData);
+
       if (response.status === 200) {
-        localStorage.setItem("token", responseData.token);
-        console.log(localStorage.getItem("token"));
+        localStorage.setItem("token", response.data.token);
         navigate("/sehatchain/user/dashboard", { replace: false });
       } else {
-        window.alert("You don't have an account, please register first");
+        setSnackbarMessage("You don't have an account, please register first");
+        setOpenSnackbar2(true);
         navigate("/sehatchain/register", { replace: false });
       }
     } catch (err) {
-      console.log(err);
+      setSnackbarMessage("You don't have an account, please register first");
+      setOpenSnackbar2(true);
     }
   };
 
@@ -229,6 +201,24 @@ function Login() {
           </Link>
         </Typography>
       </Card>
+      <Snackbar
+        open={openSnackbar1}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar1(false)}
+      >
+        <Alert onClose={() => setOpenSnackbar1(false)} severity="error">
+          Please install MetaMask wallet first
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openSnackbar2}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar2(false)}
+      >
+        <Alert onClose={() => setOpenSnackbar2(false)} severity="success">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

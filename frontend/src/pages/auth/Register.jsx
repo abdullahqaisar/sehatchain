@@ -4,17 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { Box, Typography, Grid, TextField, Link } from "@mui/material";
 
 import heroImage from "../../assets/images/hero.png";
-
+import axios from "../../util/axios";
 import CustomButton from "../../components/elements/customButton/CustomButton";
+
+import { Snackbar } from "@mui/material";
+import Alert from "@mui/material/Alert";
 
 import Web3 from "web3";
 
 function Register() {
-  const [isConnected, setIsConnected] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [ethAccount, setEthAccount] = useState("");
-  const [ethBalance, setEthBalance] = useState("");
+  const [openSnackbar1, setOpenSnackbar1] = useState(false);
+  const [openSnackbar2, setOpenSnackbar2] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -25,7 +29,7 @@ function Register() {
     } else if (window.web3) {
       provider = window.web3.currentProvider;
     } else {
-      window.alert("Please install MetaMask wallet first");
+      setOpenSnackbar1(true);
       console.log("Non-ethereum browser detected. You should install Metamask");
     }
     return provider;
@@ -40,12 +44,6 @@ function Register() {
         const userAccount = await web3.eth.getAccounts();
         const account = userAccount[0];
         setEthAccount(account);
-        let ethBalance = await web3.eth.getBalance(account);
-        setEthBalance(ethBalance);
-        console.log("ethBalance", ethBalance);
-        console.log("account", account);
-        setIsConnected(true);
-        console.log("Name: ", name);
         register();
       }
     } catch (err) {
@@ -55,30 +53,32 @@ function Register() {
 
   const register = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          ethAddress: ethAccount,
-        }),
+      const response = await axios.post("auth/register", {
+        name: name,
+        email: email,
+        ethAddress: ethAccount,
       });
-      const responseData = await response.json();
-      console.log(responseData);
       if (response.status === 200) {
-        window.alert("Account created Successfully");
+        setSnackbarMessage("Account created Successfully");
+        setOpenSnackbar2(true);
         navigate("/sehatchain/user/dashboard", { replace: false });
       } else if (response.status === 401) {
-        window.alert("You already have an account, Please proceed to Login ");
+        setSnackbarMessage(
+          "You already have an account, Please proceed to Login"
+        );
+        setOpenSnackbar2(true);
         navigate("/sehatchain/login", { replace: false });
       } else {
-        window.alert("There was an error, please try again");
+        setSnackbarMessage(
+          "You already have an account, Please proceed to Login"
+        );
+        setOpenSnackbar2(true);
       }
     } catch (err) {
-      console.log(err);
+      setSnackbarMessage(
+        "You already have an account, Please proceed to Login"
+      );
+      setOpenSnackbar2(true);
     }
   };
 
@@ -204,6 +204,24 @@ function Register() {
           </Grid>
         </Grid>
       </Grid>
+      <Snackbar
+        open={openSnackbar1}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar1(false)}
+      >
+        <Alert onClose={() => setOpenSnackbar1(false)} severity="error">
+          Please install MetaMask wallet first
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openSnackbar2}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar2(false)}
+      >
+        <Alert onClose={() => setOpenSnackbar2(false)} severity="success">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
