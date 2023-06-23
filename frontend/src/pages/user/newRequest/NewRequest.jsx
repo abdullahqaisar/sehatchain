@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/system";
-import { Typography, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
 import NewRequestForm from "./NewRequestForm";
+import NewRequestSummary from "./NewRequestSummary";
 import { CustomButton } from "../../../components/elements/customButton";
 import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
 
 import { startPayment } from "../../../util/payment";
 import axios from "../../../util/axios";
+
+import { Snackbar } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 
 const NewRequest = () => {
   const [selectedHospitals, setSelectedHospitals] = useState([]);
@@ -17,12 +20,13 @@ const NewRequest = () => {
   const [hospitalMap, setHospitalMap] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPatients, setTotalPatients] = useState(0);
-  const [otherSpecs, setOtherSpecs] = useState([]);
-  const [otherSelectedSpecs, setOtherSelectedSpecs] = useState([]);
   const [category, setCategory] = useState("");
   const [iterations, setIterations] = useState(1);
   const [adminEth, setAdminEth] = useState(0);
   const [txs, setTxs] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
+  const [snackbarMessage, setSnackbarMessage] = React.useState("");
 
   useEffect(() => {
     fetchMenuItems();
@@ -47,6 +51,12 @@ const NewRequest = () => {
     setSpecs(fetchedSpecs[category]);
     setAdminEth(adminAddress);
   };
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const handleSubmit = async () => {
     const payment = await startPayment(setTxs, totalPrice, adminEth);
@@ -58,7 +68,6 @@ const NewRequest = () => {
         totalHospitals,
         totalPrice,
         totalPatients,
-        specsUsed: otherSelectedSpecs,
         iterations,
         category,
       };
@@ -72,11 +81,19 @@ const NewRequest = () => {
         },
         data: formData,
       });
-      const data = await response.json();
-      window.alert("Request Submitted");
-      console.log(data);
+      if (response.status === 200) {
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Request Sent! Please wait 24 hours for approval.");
+        setSnackbarOpen(true);
+      } else {
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Error making request, please try again");
+        setSnackbarOpen(true);
+      }
     } else {
-      window.alert("Payment failed");
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Payment failed");
+      setSnackbarOpen(true);
     }
   };
 
@@ -107,7 +124,6 @@ const NewRequest = () => {
   const handleSpecSelectChange = (event) => {
     const { value } = event.target;
     setSelectedSpec(value);
-    setOtherSpecs(specs.filter((spec) => spec !== value));
   };
 
   return (
@@ -149,43 +165,10 @@ const NewRequest = () => {
           px: { xs: 3, sm: 6, md: 14, lg: 20 },
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            my: 2,
-            background: "#F5FAFF",
-            py: 2,
-            px: 2,
-            borderRadius: 2,
-          }}
-        >
-          <Grid container>
-            <Grid item xs={12} sm={12} md={6}>
-              <Typography
-                sx={{
-                  fontSize: 16,
-                  textAlign: { xs: "center", sm: "center", md: "left" },
-                }}
-                color="#071B2F"
-              >
-                <b>Total Price:</b> {totalPrice} Eth
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} md={6}>
-              <Typography
-                sx={{
-                  fontSize: 16,
-                  textAlign: { xs: "center", sm: "center", md: "right" },
-                }}
-                color="#071B2F"
-              >
-                <b>Total Patients:</b> {totalPatients}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Box>
+        <NewRequestSummary
+          totalPrice={totalPrice}
+          totalPatients={totalPatients}
+        />
         <CustomButton
           backgroundColor="#217BF4"
           color="#fff"
@@ -193,6 +176,19 @@ const NewRequest = () => {
           onClick={handleSubmit}
         />
       </Grid>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <MuiAlert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </Box>
   );
 };

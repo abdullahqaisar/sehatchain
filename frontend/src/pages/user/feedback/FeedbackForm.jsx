@@ -65,7 +65,7 @@ const FeedbackForm = () => {
         md={12}
         sx={{ alignItems: "center", justifyContent: "center" }}
       >
-        <Grid md={12}>
+        <Grid xs={12} md={12}>
           <CustomTextField
             key="Name"
             label="Name"

@@ -1,5 +1,5 @@
 import Dashboard from "./dashboard/Dashboard";
 import NewRequest from "./newRequest/NewRequest";
-import ViewTrainedModels from "./ViewTrainedModels/ViewTrainedModels";
+import TrainedModels from "./trainedModels/TrainedModels";
 
-export { Dashboard, NewRequest,ViewTrainedModels };
+export { Dashboard, NewRequest, TrainedModels };

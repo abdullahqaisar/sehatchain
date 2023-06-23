@@ -6,7 +6,7 @@ import { Grid, Box } from "@mui/material";
 import { ParagraphText } from "../../../components/elements/paragraphText/ParagraphText";
 import { SectionHeading } from "../../../components/elements/sectionHeading/SectionHeading";
 
-function ViewTrainedModels() {
+function TrainedModels() {
   const [requests, setRequests] = useState([""]);
   const [loading, setLoading] = useState(true);
 
@@ -38,9 +38,9 @@ function ViewTrainedModels() {
       <SectionHeading title="Your Requests" align="left" underline="True" />
       {loading ? (
         <CircularProgress />
-      ) : !requests ? (
+      ) : !requests || requests.length === 0 ? (
         <ParagraphText
-          text="You haven’t requested any models yet"
+          text="You have received no trained model yet!"
           align="left"
         />
       ) : (
@@ -63,4 +63,4 @@ function ViewTrainedModels() {
   );
 }
 
-export default ViewTrainedModels;
+export default TrainedModels;
