@@ -8,10 +8,16 @@ import { Container } from "@mui/system";
 import { CustomButton } from "../../../components/elements/customButton";
 import SectionText from "./SectionText";
 
+import { Snackbar } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
+
 const AboutUs = () => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [message, setMessage] = React.useState("");
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
+  const [snackbarMessage, setSnackbarMessage] = React.useState("");
 
   const sendEmail = async () => {
     try {
@@ -29,17 +35,26 @@ const AboutUs = () => {
           message,
         },
       });
-
-      const responseData = await response.json();
-      console.log(responseData);
       if (response.status === 200) {
-        window.alert("Message sent, we will reply in 24 hrs");
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Message sent, we will reply in 24 hrs");
+        setSnackbarOpen(true);
       } else {
-        window.alert("Error sending mail, please try again");
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Error sending mail, please try again");
+        setSnackbarOpen(true);
       }
     } catch (err) {
-      console.log(err);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Error sending mail, please try again");
+      setSnackbarOpen(true);
     }
+  };
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   return (
@@ -55,6 +70,19 @@ const AboutUs = () => {
           "linear-gradient(0deg, rgba(241, 246, 253, 0) 1.63%, #F1F6FD 20.5%, #F1F6FD 58.57%, #FFFFFF 100%)",
       }}
     >
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <MuiAlert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
       <Container maxWidth={false}>
         <Grid container sx={{ alignItems: "center", justifyContent: "center" }}>
           <Grid item md={6}>

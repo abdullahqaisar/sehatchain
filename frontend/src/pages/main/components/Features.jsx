@@ -29,7 +29,7 @@ const Features = () => {
           justifyContent="center"
         >
           <Grid item md={12}>
-            <Grid sm={12} md={6}>
+            <Grid sm={10} md={6} p={2}>
               <SectionText
                 sectionName="Features"
                 question="Why use SehatChain?"

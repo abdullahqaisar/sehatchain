@@ -94,8 +94,8 @@ function Login() {
     >
       <Card
         sx={{
-          py: 2,
-          px: 4,
+          py: 4,
+          px: 10,
         }}
       >
         <Logo src={icon} alt="icon" />
@@ -121,7 +121,7 @@ function Login() {
             required
             sx={{ mt: 2 }}
           />
-          <TextField
+          {/* <TextField
             label="Password"
             variant="outlined"
             fullWidth
@@ -130,9 +130,9 @@ function Login() {
             type="password"
             required
             sx={{ mt: 2 }}
-          />
+          /> */}
           <Submit>
-            <CustomButton
+            {/* <CustomButton
               backgroundColor="#217BF4"
               color="#fff"
               sx={{ m: 2 }}
@@ -174,11 +174,11 @@ function Login() {
                   backgroundColor: "#D9D9D9",
                 }}
               ></Box>
-            </Box>
+            </Box> */}
 
             <CustomButton
               backgroundColor="#217BF4"
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, }}
               color="#fff"
               buttonText="Sign in with Metamask"
               type="submit"
