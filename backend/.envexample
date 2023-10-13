@@ -1,0 +1,11 @@
+JWT_SECRET = "";
+
+#Port to listen on
+PORT = 
+
+# Database configuration
+MONGODB_DEV_URI = "mongodb://localhost:27017/sehatchain"
+MONGODB_URI = ""
+
+EMAIL_USER = ""
+EMAIL_PASSWORD = ""
