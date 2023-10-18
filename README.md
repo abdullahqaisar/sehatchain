@@ -5,7 +5,6 @@
 - **Frontend**: React
 - **Backend**: Node.js with Express
 - **Database**: MongoDB
-- **Blockchain**: Ethereum
 
 You can access the project on GitHub: [SehatChain Repository](https://github.com/abdullahqaisar/sehatchain)
 
@@ -32,7 +31,6 @@ SehatChain is a comprehensive platform designed to facilitate the acquisition of
 - **Purchase Models**: Users can purchase the healthcare data models they need.
 - **AI-Powered Analysis**: Advanced AI algorithms for data analysis.
 - **Blockchain Transactions**: Secure and transparent transactions using Ethereum blockchain.
-- **User Profiles**: Users can create and manage their profiles.
 - **Collaboration**: Share and collaborate on data models with other users.
 - **Dashboard**: Personalized dashboard for user activities and model management.
 
@@ -47,8 +45,6 @@ Before you begin, make sure you have the following software installed on your sy
 - [Node.js](https://nodejs.org/) - JavaScript runtime environment.
 - [MongoDB](https://www.mongodb.com/) - A NoSQL database for storing data.
 - [MetaMask](https://metamask.io/) - A digital wallet for Ethereum.
-- [Truffle](https://www.trufflesuite.com/truffle) - A development environment for Ethereum.
-- [Ganache](https://www.trufflesuite.com/ganache) - A local blockchain for Ethereum development.
 
 ### Installation
 
@@ -94,19 +90,20 @@ You'll need to set up environment variables for the project. Create a `.env` fil
 
 ```env
 PORT=3001
+JWT_SECRET="secretkey"
 MONGODB_URI=your-mongodb-uri
-SECRET_KEY=your-secret-key
-ETHEREUM_RPC_URL=your-ethereum-rpc-url
+EMAIL_USER = ""
+EMAIL_PASSWORD = ""
 ```
 
 - `PORT`: Port on which the Node.js server will run.
 - `MONGODB_URI`: Your MongoDB connection URI.
 - `SECRET_KEY`: Secret key for JWT token generation.
-- `ETHEREUM_RPC_URL`: Ethereum RPC URL for connecting to the Ethereum network.
-
+- `EMAIL_USER`: Used for Emailing
+- `EMAIL_PASSWORD`: Used for Emailing
 ## Usage
 
-- Visit [http://localhost:3000](http://localhost:3000) to access the SehatChain frontend.
+- Visit [http://localhost:3000/sehatchain](http://localhost:3000/sehatchain) to access the SehatChain frontend.
 - Register or log in to start exploring healthcare data models and making purchases.
 
 ## Contributing
