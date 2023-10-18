@@ -1,4 +1,4 @@
 # SehatChain
 
 ## LiveLink
-https://abdullahqaisar.github.io/sehatchain/
+https://sehatchain-ai.vercel.app/sehatchain
