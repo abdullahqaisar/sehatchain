@@ -30,7 +30,6 @@ SehatChain is a comprehensive platform designed to facilitate the acquisition of
 - **Browse Data Models**: Easily browse available healthcare data models.
 - **Purchase Models**: Users can purchase the healthcare data models they need.
 - **AI-Powered Analysis**: Advanced AI algorithms for data analysis.
-- **Blockchain Transactions**: Secure and transparent transactions using Ethereum blockchain.
 - **Collaboration**: Share and collaborate on data models with other users.
 - **Dashboard**: Personalized dashboard for user activities and model management.
 
@@ -66,7 +65,7 @@ Before you begin, make sure you have the following software installed on your sy
    npm install
    ```
 
-3. Configure the project as per the Configuration section below.
+3. Configure the project as per the Configuration section below. Set the evironment variables like here 
 
 4. Start the frontend and backend servers:
 
@@ -77,7 +76,7 @@ Before you begin, make sure you have the following software installed on your sy
 
    # Start the backend server
    cd ../backend
-   npm start
+   nodemon start
    ```
 
 5. Access the application at [http://localhost:3000](http://localhost:3000).
