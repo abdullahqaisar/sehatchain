@@ -20,7 +20,6 @@
     "web-vitals": "^2.1.4",
     "web3": "^1.7.1"
   },
-  "homepage": "/sehatchain",
   "scripts": {
     "start": "react-scripts start",
     "predeploy": "npm run build",
