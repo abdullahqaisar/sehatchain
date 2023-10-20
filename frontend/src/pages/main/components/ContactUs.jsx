@@ -19,7 +19,37 @@ const AboutUs = () => {
   const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
 
+  const handleValidation = () => {
+    if (!name || !email || !message) {
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Please fill in all required fields.");
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    if (!emailPattern.test(email)) {
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Please enter a valid email address.");
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    const namePattern = /^[a-zA-Z\s]+$/;
+    if (!namePattern.test(name)) {
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Name should not contain numbers or special characters.");
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    return true;
+  };
+
   const sendEmail = async () => {
+    if (!handleValidation()) {
+      return;
+    }
     try {
       console.log("Name: ", name);
       console.log("Question: ", message);
