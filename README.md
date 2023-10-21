@@ -80,7 +80,7 @@ Before you begin, make sure you have the following software installed on your sy
    npm start
    ```
 
-5. Access the application at [http://localhost:3000](http://localhost:3000).
+5. Access the application at [http://localhost:3000/sehatchain](http://localhost:3000/sehatchain).
 
 ## Configuration
 
