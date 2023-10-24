@@ -22,12 +22,10 @@ const validate = (method) => {
 };
 
 exports.contactus = async (req, res) => {
-  console.log("hi");
   let mailOptions;
   try {
     const errors = validate(req);
     if (!errors) {
-      console.log(errors);
       return res.status(400).json({ errors: errors });
     }
 
@@ -49,11 +47,9 @@ exports.contactus = async (req, res) => {
     const sent = await transporter
       .sendMail(mailOptions)
       .then(() => {
-        console.log("Email Sent!");
         return true;
       })
       .catch((err) => {
-        console.log(err);
         return false;
       });
 
@@ -64,7 +60,6 @@ exports.contactus = async (req, res) => {
       message: "Email successfully sent!",
     });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ error: e.message });
   }
 };
@@ -83,7 +78,6 @@ exports.request = async (req, res) => {
     } = req.body;
 
     const user = req.ethAddress;
-    console.log(req.body);
     const request = new Request({
       user,
       hospitals,
@@ -96,7 +90,6 @@ exports.request = async (req, res) => {
       diseaseCategory: category,
     });
 
-    console.log(request);
     const date = new Date();
     request.date = date;
 
@@ -113,7 +106,6 @@ exports.request = async (req, res) => {
       message: "Request successfully sent!",
     });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ error: e.message });
   }
 };
@@ -122,9 +114,7 @@ exports.getAllRequests = async (req, res) => {
   try {
     const user = req.ethAddress;
     let requests = await Request.find({ user: user }).sort({ date: -1 });
-    console.log("requests: ", requests);
     if (!requests || requests.length === 0) {
-      console.log("No data found!");
       return res.status(200).json({
         requests,
       });
@@ -145,7 +135,6 @@ exports.getAllRequests = async (req, res) => {
       requests,
     });
   } catch (e) {
-    console.log(e);
     return res.status(500).json({ error: e.message });
   }
 };
@@ -155,14 +144,12 @@ exports.getCompletedRequests = async (req, res) => {
     const user = req.ethAddress;
     const requests = await Request.find({ user: user, status: "Completed" });
     if (!requests) {
-      console.log("No data found!");
       return res.status(500).json({ msg: "No data found!" });
     }
     return res.status(200).json({
       requests,
     });
   } catch (e) {
-    console.log(e);
     return res.status(500).json({ error: e.message });
   }
 };
@@ -172,9 +159,7 @@ exports.getHospitalData = async (req, res) => {
     const category = req.query.category;
 
     // get all the hospitals of that category
-    console.log("Category", category);
     const data = await Hospital.find({ diseaseCategories: String(category) });
-    console.log(data);
 
     if (!data || data.length === 0) {
       return res.status(500).json({ msg: "No data found!" });
@@ -186,7 +171,6 @@ exports.getHospitalData = async (req, res) => {
 
     const admin = await Admin.findOne({ email: "abdullahqaisarr@gmail.com" });
     if (!admin) {
-      console.log("No admin found!");
       return res.status(500).json({ msg: "No admin found!" });
     }
 
@@ -207,7 +191,6 @@ exports.getHospitalData = async (req, res) => {
       adminAddress: admin.adminEthAddress,
     });
   } catch (e) {
-    console.log(e);
     return res.status(500).json({ error: e.message });
   }
 };
@@ -219,26 +202,21 @@ exports.getCategories = async (req, res) => {
 
 exports.getRequestById = async (req, res) => {
   try {
-    console.log("here");
     const id = req.params.id;
     const request = await Request.findById(id);
     if (!request) {
-      console.log("No data found!");
       return res.status(500).json({ msg: "No data found!" });
     }
-    console.log(request);
     return res.status(200).json({
       request,
     });
   } catch (e) {
-    console.log(e);
     return res.status(500).json({ error: e.message });
   }
 };
 
 exports.makePrediction = async (req, res) => {
   try {
-    console.log(req.body);
     const reqId = req.body.requestId;
     const request = await Request.findById(reqId);
 
@@ -248,13 +226,11 @@ exports.makePrediction = async (req, res) => {
       });
     }
 
-    console.log(req.ensambleModel);
     let prediction = await runPrediction(
       request.ensambleModel,
       req.body.formData,
       request.diseaseCategory
     );
-    console.log(prediction);
     if (!prediction) {
       return res.status(500).json({
         message: "Prediction failed",
@@ -267,7 +243,6 @@ exports.makePrediction = async (req, res) => {
       spec: request.spec,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Internal Server Error",
       error: error,
@@ -276,7 +251,6 @@ exports.makePrediction = async (req, res) => {
 };
 
 async function runPrediction(model, spec, diseaseCategory) {
-  console.log(spec);
 
   spec = Object.values(spec);
   spec = spec.filter((value) => {
@@ -286,7 +260,6 @@ async function runPrediction(model, spec, diseaseCategory) {
     return parseInt(value);
   });
 
-  console.log("Specs are: ", spec);
   const predictionOptions = {
     mode: "text",
     args: [],
@@ -312,10 +285,8 @@ async function runPrediction(model, spec, diseaseCategory) {
     );
   }
   if (predictionMessages.length === 0) {
-    console.log("Prediction failed");
     throw new Error("Prediction failed");
   }
 
-  console.log(predictionMessages);
   return predictionMessages;
 }

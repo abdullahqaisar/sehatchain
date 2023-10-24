@@ -9,11 +9,9 @@ exports.register = async (req, res) => {
   try {
     const { adminName, adminEmail, adminEthAddress } = req.body;
 
-    console.log(adminEthAddress);
     // Check if admin already exists
     const admin = await Admin.findOne({ adminEthAddress });
 
-    console.log(adminName);
     // Create new admin
     const newAdmin = new Admin({
       adminName,
@@ -29,7 +27,6 @@ exports.register = async (req, res) => {
       admin: newAdmin,
     });
   } catch (e) {
-    console.log(e);
     return res.status(500).json({ error: e.message });
   }
 };
@@ -93,7 +90,6 @@ exports.approveRequest = async (req, res) => {
       request,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Internal Server Error",
     });

@@ -11,17 +11,14 @@ const createToken = (ethAddress, userId) => {
 };
 
 const handleError = (err) => {
-  console.log(err);
   return err;
 };
 
 exports.register = async (req, res) => {
   try {
     let { name, email, ethAddress } = req.body;
-    console.log(req.body);
     const existingUser = await User.findOne({ ethAddress });
-    if (existingUser) {
-      console.log("User with this address already exists!");
+      if (existingUser) {
       return res
         .status(400)
         .json({ msg: "User with this address already exists!" });
@@ -31,10 +28,8 @@ exports.register = async (req, res) => {
       email,
       ethAddress,
     });
-
-    console.log(newUser);
     savedUser = await newUser.save();
-    if (!savedUser) {
+      if (!savedUser) {
       return res.status(500).json({ error: "Failed to save user" });
     }
     const token = createToken(savedUser.ethAddress, savedUser._id);
@@ -43,7 +38,6 @@ exports.register = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -52,7 +46,6 @@ exports.registerHospital = async (req, res) => {
   try {
     const { hospitalName, hospitalAddress, hospitalEmail, hospitalEthAddress } =
       req.body;
-    console.log(req.body);
     const existingHospital = await Hospital.findOne({ hospitalEthAddress });
     if (existingHospital) {
       return res
@@ -75,7 +68,6 @@ exports.registerHospital = async (req, res) => {
         "Registeration successful!, Please wait for 24 hours for approval",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -83,14 +75,10 @@ exports.registerHospital = async (req, res) => {
 exports.loginHospital = async (req, res) => {
   try {
     const { hospitalEthAddress, hospitalEmail } = req.body;
-    console.log(req.body);
-    console.log(hospitalEthAddress);
-    console.log(hospitalEmail);
     const hospital = await Hospital.findOne({
       hospitalEthAddress,
       hospitalEmail,
     });
-    console.log(hospital);
     if (!hospital) {
       return res
         .status(401)
@@ -98,7 +86,6 @@ exports.loginHospital = async (req, res) => {
     }
 
     // if (!hospital.approved) {
-    //   console.log("Not approved");
     //   return res.status(401).json({
     //     message:
     //       "Account not approved yet! Please wait until your account is approved",
@@ -118,7 +105,6 @@ exports.loginHospital = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { ethAddress } = req.body;
-    console.log(req.body);
     const user = await User.findOne({ ethAddress });
     if (!user) {
       return res
@@ -151,7 +137,6 @@ exports.userRoute = async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.userId = decoded.userId;
   } catch (error) {
-    console.log(error);
     return res.status(401).json({ message: "Invalid token" });
   }
 
@@ -160,7 +145,6 @@ exports.userRoute = async (req, res) => {
 
 exports.hospitalRoute = async (req, res) => {
   const authorizationHeader = req.header("Authorization");
-  console.log(authorizationHeader);
   if (!authorizationHeader) {
     return res.status(401).json({ message: "Missing authorization header" });
   }
@@ -172,11 +156,9 @@ exports.hospitalRoute = async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    console.log("HIi", decoded);
     req.hospitalId = decoded.hospitalId;
     return res.status(200).json({ message: "Login Successful" });
   } catch (error) {
-    console.log(error);
     return res.status(401).json({ message: "Invalid token" });
   }
 };

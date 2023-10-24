@@ -17,7 +17,6 @@ const { PythonShell } = require("python-shell");
 exports.addCSV = async (req, res) => {
   const file = req.file;
   const category = req.body.category;
-  console.log(category);
 
   const price = req.body.price;
 
@@ -51,15 +50,11 @@ exports.addCSV = async (req, res) => {
         hospital.patientsSpecs[category] = columnNames;
         hospital.save();
       })
-      .on("end", () => {
-        console.log("CSV file successfully processed");
-      });
     return res.status(200).json({
       message: "CSV file uploaded successfully",
       hospital,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Internal Server Error",
     });
@@ -106,7 +101,6 @@ exports.getRequests = async (req, res) => {
     });
     requests[i].formattedDate = formattedDate;
   }
-  console.log("requests", requests);
   return res.status(200).json({
     message: "Requests found!",
     requests: requests,
@@ -142,9 +136,6 @@ exports.trainModel = async (req, res, next) => {
     const category = req.body.category;
     const hospitalId = req.userId;
 
-    console.log(req.userId);
-
-    console.log("body: ", reqId, category, hospitalId);
     const hospital = await Hospital.findOne({
       _id: hospitalId,
     });
@@ -161,14 +152,6 @@ exports.trainModel = async (req, res, next) => {
         message: "Request not found",
       });
     }
-
-    console.log(
-      "Request Spec",
-      request.spec,
-      request.usedSpec,
-      request.iterations,
-      hospital.csvPath
-    );
 
     const model = await runPredictionModel(
       request.spec,
@@ -196,14 +179,12 @@ exports.trainModel = async (req, res, next) => {
     ) {
       return next();
     } else {
-      console.log("Request not yet approved by all hospitals");
       return res.status(200).json({
         message: "Request Accepted!",
         request: trainedRequest,
       });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Internal Server Error",
       error: error,
@@ -230,7 +211,6 @@ async function runPredictionModel(
   let predictionMessages;
   try {
     let src = "";
-    console.log("Category: ", category);
     if (category == "0") {
       src = "src/script/heartPrediction/predictionModel1.py";
     } else if (category == "1") {
@@ -240,7 +220,6 @@ async function runPredictionModel(
     }
     predictionMessages = await PythonShell.run(src, predictionOptions);
   } catch (error) {
-    console.log(error);
     throw new Error("Prediction model failed");
   }
 
@@ -249,7 +228,6 @@ async function runPredictionModel(
   }
 
   let length = parseFloat(predictionMessages.pop());
-  console.log("Length: ", length);
 
   if (isNaN(length)) {
     throw new Error("Prediction model failed");
@@ -259,11 +237,6 @@ async function runPredictionModel(
   let classes = predictionMessages.pop();
   let model = predictionMessages.pop();
   let intercept = predictionMessages.pop();
-
-  console.log("Model: ", model);
-  console.log("Intercept: ", intercept);
-  console.log("Classes: ", classes);
-  console.log("Iterations: ", newIterations);
 
   for (let i = 0; i < intercept.length; i++) {
     if (intercept[i] === "[") {
@@ -295,18 +268,15 @@ async function runPredictionModel(
   for (let i = 0; i < temp.length; i += 13) {
     coefficients.push(temp.slice(i, i + 13));
   }
-  console.log("Coefficients ", coefficients);
 
   return { coefficients, intercept, newIterations, classes, model, length };
 }
 
 async function updateRequest(request, hospitalId, model) {
-  console.log("Model: ", model);
   request.model.push(model);
   request.hospitals = request.hospitals.filter((id) => id !== hospitalId);
   request.approvedHospitals.push(hospitalId);
   const trainedRequest = await request.save();
-  console.log("Approve: ", trainedRequest.approvedHospitals.length);
   return trainedRequest;
 }
 
@@ -324,7 +294,6 @@ exports.aggregateModels = async (req, res) => {
         message: "Aggregation failed",
       });
     }
-    console.log("Aggregated Model: ", aggregatedModel);
     const ensambledModel = await updateRequestEnsamble(
       request,
       aggregatedModel
@@ -340,7 +309,6 @@ exports.aggregateModels = async (req, res) => {
       request: ensambledModel,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Internal Server Error",
       error: error,
@@ -375,8 +343,6 @@ async function runAggregationModel(modelList) {
       intercept = intercept.slice(i + 1, intercept.length - 1);
     }
   }
-  console.log(coefficients);
-  console.log(intercept);
   return { coefficients, intercept, classes };
   F;
 }
