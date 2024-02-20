@@ -1,7 +1,6 @@
-```markdown
 # SehatChain Backend
 
-This document provides detailed instructions for setting up and running the backend part of the SehatChain project, a MERN stack application focused on providing healthcare data models powered by AI. 
+This document provides detailed instructions for setting up and running the backend part of the SehatChain project, a MERN stack application focused on providing healthcare data models powered by AI. You can read the complete project readme [here](../README.md).
 
 ## Table of Contents
 
@@ -64,7 +63,7 @@ This command will start the Node.js server on the port specified in your `.env` 
 
 ## Contributing
 
-We welcome contributions to the SehatChain project. Please refer to the project's [Contribution Guidelines](CONTRIBUTING.md) for more information on how you can contribute.
+We welcome contributions to the SehatChain project. Please refer to the project's [Contribution Guidelines](../CONTRIBUTING.md) for more information on how you can contribute.
 
 ---
 
