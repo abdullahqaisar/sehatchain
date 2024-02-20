@@ -1,6 +1,6 @@
 # SehatChain
 
-**SehatChain** is a MERN (MongoDB, Express, React, Node.js) project that provides researchers and healthcare professionals with a platform to access and purchase healthcare data models powered by AI and Blockchain technology.
+**SehatChain** is a MERN (MongoDB, Express, React, Node.js) project that provides researchers and healthcare professionals with a platform to access and purchase healthcare data models powered by AI.
 
 - **Frontend**: React
 - **Backend**: Node.js with Express
