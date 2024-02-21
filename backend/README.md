@@ -68,6 +68,3 @@ We welcome contributions to the SehatChain project. Please refer to the project'
 ---
 
 For any questions or assistance, feel free to reach out to the project maintainers.
-
-
-This `README.md` is crafted to guide users through the process of setting up, configuring, and using the backend services of your SehatChain project. It covers the essentials from prerequisites and installation steps to starting the server and contributing to the project.
