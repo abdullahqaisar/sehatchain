@@ -4,15 +4,6 @@ const Request = require("../models/request.model");
 const csv = require("csv-parser");
 const { PythonShell } = require("python-shell");
 
-// exports.addPatient = async (req, res) => {
-//   const data = req.body;
-//   elements = Object.keys(data);
-//   values = Object.values(data);
-
-//   res.status(200).json({
-//     message: "Patient Added Successfully",
-//   });
-// };
 
 exports.addCSV = async (req, res) => {
   const file = req.file;
